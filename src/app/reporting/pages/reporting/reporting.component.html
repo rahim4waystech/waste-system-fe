@@ -1,0 +1,109 @@
+<div class="fullcontainer ">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class='titleContainer'>
+            <h3 class='header'>Reporting</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <ng-container *ngIf='showAllReports'>
+                <div class="content-block">
+                  <div class="row mb-2">
+                    <div class="col-md-4" *ngFor='let report of this.reports'>
+                      <button *ngIf='!report.disabled' class='btn btn-block btn-primary w-100'
+                        (click)='this.loadReport(report.link)'>{{report.name}}</button>
+                      <button *ngIf='report.disabled' class='btn btn-block btn-primary w-100'
+                        disabled>{{report.name}}</button>
+                    </div>
+                    <div class='col-md-4'>
+                      <button class='btn btn-block btn-primary w-100' routerLink='/reporting/load-count'>Load Count</button>
+                    </div>
+                    <div class='col-md-4'>
+                      <button class='btn btn-block btn-primary w-100' routerLink='/reporting/tonne-count'>Tonne Count</button>
+                    </div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class='col-md-4'>
+                      <button class='btn btn-block btn-primary w-100' routerLink='/reporting/invoice-ticket'>Find Invoice by
+                        Ticket</button>
+                    </div>
+                    <div class='col-md-4'>
+                      <button class='btn btn-block btn-primary w-100' routerLink='/reporting/jobs'>Jobs</button>
+                    </div>
+                    <div class='col-md-4'>
+                      <button class='btn btn-block btn-primary w-100' routerLink='/reporting/same-customer-site'>Same Customer
+                        and Site</button>
+                    </div>
+                    <div class='col-md-4'>
+                      <button class='btn btn-block btn-primary w-100' routerLink='/reporting/jobs-sepa'>Sepa Jobs</button>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf='!showAllReports'>
+                <div class="row content-block">
+                  <div class="col">
+                    <button class='btn btn-info btn-block' (click)='this.loadReport("all")'>All Reports</button>
+                  </div>
+                </div>
+
+                <div class="row content-block">
+                  <div class="col-lg-4 form-group">
+                    <label>Start Date</label>
+                    <input type="date" [(ngModel)]='this.tempStart' class="form-control">
+                  </div>
+                  <div class="col-lg-4 form-group">
+                    <label>End Date</label>
+                    <input type="date" [(ngModel)]='this.tempEnd' class="form-control ">
+                  </div>
+                  <div class="col-lg-2 mt-auto">
+                    <button class='btn btn-block btn-success' (click)='changeDates()'>Update</button><br />
+                    
+                  </div>
+                
+                </div>
+<hr>
+                <div class="row">
+                  <div class="col-lg-12 my-1 dropdown text-end">
+                    <!-- <div class=""> -->
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" (click)='this.exportToCSV()'>Export to CSV</a>
+                      <!-- <a class="dropdown-item" href="#">Import CSV</a> -->
+                    </div>
+                    <!-- </div> -->
+                  </div>
+                  <div class="col-12">
+                  <table class='table table-bordered table-hover'>
+                    <thead class='table-dark'>
+                      <tr>
+                        <th [attr.colspan]='this.reportData.columnCount'>{{this.reportData.header}}</th>
+                      </tr>
+                      <tr>
+                        <th *ngFor='let column of this.reportData.columns'>{{column}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor='let row of this.reportData.data'>
+                        <td *ngFor='let item of row.row'>{{this.handleNull(item)}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

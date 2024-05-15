@@ -1,0 +1,28 @@
+<div class="fullcontainer">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class='sheet'>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class='header'>Create a new subcontractor</h3>
+          </div>
+          <div class="card-body">
+            <div class="p-2">
+            <form (ngSubmit)='this.onSubmit()' method='post'>
+              <app-subcontractor-form [subcontractor]='this.subcontractor'></app-subcontractor-form>
+              <div class="row">
+                <div class="col-12 mt-3 text-end">
+              <button type="submit" class="btn btn-success">Save</button>&nbsp;
+              <button type="button" class="btn btn-danger" routerLink='/subcontractors'>Cancel</button>
+            </div>
+          </div>
+            </form>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>

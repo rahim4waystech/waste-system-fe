@@ -1,0 +1,60 @@
+<div class="fullcontainer ml-5">
+  <app-workshop-nav></app-workshop-nav>
+  <div class="p-3">
+    <div class="row content-block mt-2">
+      <h4>Driver Defects</h4>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <app-tabs>
+          <app-tab title='All Defect Reports'>
+            <div class="row">
+              <div class="col">
+                <app-grid
+                  entity='defects'
+                  [filters]='this.allDefectsFilters'
+                  [columns]='this.allDefectsColumns'
+                  [buttons]='this.allDefectsButtons'
+                  [searchFilters]='this.allDefectsSearchFilters'
+                  [searchFields]='this.allDefectsSearchFields'
+                  >
+                </app-grid>
+              </div>
+            </div>
+          </app-tab>
+          <app-tab title='Accepted'>
+            <div class="row">
+              <div class="col">
+                <app-grid
+                  entity='defects'
+                  [filters]='this.acceptedDefectsFilters'
+                  [columns]='this.acceptedDefectsColumns'
+                  [buttons]='this.acceptedDefectsButtons'
+                  [searchFilters]='this.acceptedDefectsSearchFilters'
+                  [searchFields]='this.acceptedDefectsSearchFields'
+                  >
+                </app-grid>
+              </div>
+            </div>
+          </app-tab>
+          <app-tab title='Rejected'>
+            <div class="row">
+              <div class="col">
+                <app-grid
+                  entity='defects'
+                  [filters]='this.rejectedDefectsFilters'
+                  [columns]='this.rejectedDefectsColumns'
+                  [buttons]='this.rejectedDefectsButtons'
+                  [searchFilters]='this.rejectedDefectsSearchFilters'
+                  [searchFields]='this.rejectedDefectsSearchFields'
+                  >
+                </app-grid>
+              </div>
+            </div>
+          </app-tab>
+        </app-tabs>
+      </div>
+    </div>
+  </div>
+</div>

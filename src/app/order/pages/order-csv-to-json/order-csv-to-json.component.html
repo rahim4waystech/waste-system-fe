@@ -1,0 +1,48 @@
+<div class="fullcontainer">
+    <div class='sheet'>
+        <h1 class='header'>Artic Sheet Import</h1>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="inputEmail4">Date</label>
+              <input type="date" name='name' [(ngModel)]='this.date' [class.is-invalid]='!this.date' class="form-control" id="inputEmail4">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <input type='file' (change)="fileChanged($event)"/><br /><br />
+            <button class='btn btn-primary' (click)='this.run()'>Import</button>&nbsp;
+            <button class='btn btn-danger' routerLink="/orders/artics">Cancel</button>
+        </div>
+        
+        <ng-container *ngIf="this.parsed">
+            <div *ngFor="let item of this.tableData;index as itemIdx">
+                <h2>VIRIDOR - {{ item.location }} Jobs</h2>
+                <hr />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ref No</th>
+                            <th>Location</th>
+                            <th>Parent Job Id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let job of item.orders;index as orderIdx">
+                            <tr *ngIf="job['REF.NO.'] !== ''">
+                                <td>{{ job['REF.NO.'] }}</td>
+                                <td>{{ item.location }}</td>
+                                <td>
+                                    <input type="text" class="form-control"  [(ngModel)]='this.parentJobIds[itemIdx + "-" + orderIdx]' />
+                                </td>
+                            </tr>
+                    </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <button class='btn btn-primary' (click)='this.save()'>Save</button>&nbsp;
+            <button class='btn btn-danger' (click)='this.run()'>Cancel</button>
+        </ng-container>
+    </div>
+</div>
+

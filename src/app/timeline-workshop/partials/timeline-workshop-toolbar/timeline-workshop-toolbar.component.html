@@ -1,0 +1,38 @@
+<bs-datepicker-inline  *ngIf='this.isDatePickerVisible' (bsValueChange)='this.onDateSelected($event)' [bsValue]='this.date' class='datePicker'> </bs-datepicker-inline>
+
+<div class='timelineToolbarContainer'>
+  <div class="row">
+    <div class="col-lg-6 my-auto">
+    <button class='btn btn-secondary' (click)='this.openModal("workshopAddFitterModal")'><i class="fas fa-plus"></i> Assign Fitter</button>&nbsp;
+    <button  class='btn btn-danger' data-toggle="tooltip" data-placement="top"
+    title="Remove Defect" (click)='this.onDeleteJobClicked()'><i class="fas fa-ban"></i></button> &nbsp;
+    <button (click)='this.onStartJobClicked()' class='btn btn-success' data-toggle="tooltip" data-placement="top"
+    title="Start Defect"><i class="fas fa-stopwatch"></i></button>&nbsp;
+    <button (click)='this.onEndJobClicked()' class='btn btn-warning'  data-toggle="tooltip" data-placement="top"
+    title="End defect"><i class="fas fa-bell-slash"></i></button>&nbsp;
+  
+</div>
+<div class="col-lg-6  text-end my-auto">
+  <div>
+    <div class="dateSelectorContainer">
+      <button class="btn btn-primary" (click)='this.prevDay()'><i class="fas fa-chevron-left"></i></button>
+      <div class="dateSelectorBox" (click)='this.isDatePickerVisible = !this.isDatePickerVisible'>
+         <span><i class="fas fa-calendar-alt" style='font-size: 0.8rem'></i>&nbsp;&nbsp; {{ getFormattedDate() }}</span>
+      </div>
+      <button class="btn btn-primary" (click)='this.nextDay()'><i class="fas fa-chevron-right"></i></button>
+   </div>
+</div>
+</div>
+</div>
+</div>
+<hr>
+ <div class="row">
+  <div class="col-lg-6 form-group">
+    <div class='vehicleTypeSelector' >
+      <select class='form-select'>
+      </select>
+    </div>
+  </div>
+ </div>
+
+

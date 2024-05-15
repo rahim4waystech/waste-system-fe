@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="form-group col-md-4">
+    <label for="inputEmail4">Date</label>
+    <input type="date" name='name' [(ngModel)]='this.fuel.date' [class.is-invalid]='!this.fuel.date' class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputEmail4">Fuel</label>
+    <input type="number" name='name' [(ngModel)]='this.fuel.fuel' [class.is-invalid]='!this.fuel.fuel' class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputEmail4">Mileage</label>
+    <input type="number" name='name' [(ngModel)]='this.fuel.mileage' [class.is-invalid]='!this.fuel.mileage' class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Vehicle</label>
+    <select class='form-select' [class.is-invalid]='this.fuel.vehicleId === -1' (change)='this.fuel.vehicleId = +$event.target.value; this.fuel.vehicle.id = this.fuel.vehicleId'>
+      <option value='-1'>Select a vehicle</option>
+      <option *ngFor='let item of this.vehicles' [value]='item.id' [selected]='this.fuel.vehicleId === item.id'>{{ item.name }}</option>
+    </select>
+  </div>
+  <div class="form-group col-md-8">
+    <label for="inputPassword4">Notes</label>
+    <textarea rows="1" name='notes' [(ngModel)]='this.fuel.notes' class="form-control"></textarea>
+  </div>
+</div> 

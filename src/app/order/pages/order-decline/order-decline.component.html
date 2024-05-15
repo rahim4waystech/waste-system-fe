@@ -1,0 +1,19 @@
+  <div class="fullcontainer">
+  <div class="sheet">
+    <h1 class='header'>Decline Order</h1>
+
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Reason</label>
+        <select class='form-control' (change)='this.reason = $event.target.value'>
+          <option value=''>Select a reason</option>
+          <option value='reason 1'>Reason 1</option>
+          <option value='reason 2'>Reason 2</option>
+          <option value='reason 3'>Reason 3</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-danger" (click)='this.onDeclineClicked()'>Decline</button>&nbsp;
+    <button type="button" class="btn btn-primary" routerLink='/orders/'>No! Take me back!</button>
+  </div>
+</div>

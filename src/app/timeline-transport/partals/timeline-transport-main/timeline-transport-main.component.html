@@ -1,0 +1,315 @@
+<div class="row">
+  <div class="col-12">
+    <!-- modal comennt by shujat -->
+    <app-timeline-transport-edit-row-modal
+      [assignment]='this.currentJobAssignment'></app-timeline-transport-edit-row-modal>
+    <app-timeline-transport-new-job [job]='this.newJob'></app-timeline-transport-new-job>
+    <app-timeline-transport-job-information [job]='this.currentJob'></app-timeline-transport-job-information>
+    <app-timeline-transport-copy-jobs></app-timeline-transport-copy-jobs>
+    <app-timeline-transport-copy-job-to-unit [date]='this.date'
+      [job]='this.copyJob'></app-timeline-transport-copy-job-to-unit>
+    <app-timeline-transport-add-assignment-note></app-timeline-transport-add-assignment-note> 
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6 ms-auto text-start">
+    <button class='btn btn-secondary' (click)='this.onPDFDownload()'><i class="fas fa-file-pdf"></i> Download
+      sheet</button>
+  </div>
+  <div class="col-lg-6 text-end">
+    <button class='btn btn-secondary' (click)="onAddAssignmentNoteClicked()"><i class="fas fa-file-pdf"></i> Add Driver
+      note</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class='alert alert-primary' *ngIf='this.jobAssignments.length === 0'>
+      No units available for this date. Please add a unit to start.
+    </div>
+
+    <ng-container *ngIf='
+    (this.timelineSettings.timelineOrientationTipper && this.orderTypeId === 3) ||
+    (this.timelineSettings.timelineOrientationGrab && this.orderTypeId === 5) ||
+    (this.timelineSettings.timelineOrientationConcrete && this.orderTypeId === 6) ||
+    (this.timelineSettings.timelineOrientationSweeper && this.orderTypeId === 7) ||
+    (this.timelineSettings.timelineOrientationShredder && this.orderTypeId === 8) ||
+    (this.timelineSettings.timelineOrientationTanker && this.orderTypeId === 9) ||
+    (this.timelineSettings.timelineOrientationArtic && this.orderTypeId === 4)
+  '>
+
+      <div class="table-responsive">
+        <table class='jobAllocationTable' *ngIf='this.jobAssignments.length > 0'>
+          <thead>
+            <tr>
+              <th>Unit</th>
+              <th style='padding-right: 4rem;'>&nbsp;</th>
+              <th>Assigned Jobs</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody id=''>
+
+            <!-- FIRST ROW USED FOR HEADER CHECKBOXES -->
+            <tr class='selectors'>
+              <td>
+                <div style='width:10rem'>&nbsp;</div>
+              </td>
+              <td>&nbsp;</td>
+              <td>
+                <div class='allocationContainer'>
+                  <ng-container *ngFor='let blocki of this.getEmptySlotAsArray()'>
+                    <div class='blockContainer'>
+                      <input type='checkbox' [value]='blocki' (click)='onSelectAllCheckboxClicked($event,blocki)'
+                        [checked]='isSelectAllSelected(blocki)' />
+                      <div class='timelineBlock' style='background-color: #34495e;color:white;'>
+                        Select All
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngFor='let item of this.jobAssignments' [attr.data-ja-id]='item.id'>
+              <td title='Phone: {{getContact(item)}}, Notes: {{ item.notes }}'>
+
+
+                <div class='roundHeaderHorizontal' [class.sub]='item.subcontractorId !== -1'>
+
+                  <div class='mainContent' style='float:left'>
+                    <ng-container *ngIf='item.vehicleId !== -1'>
+                      <span class="fas fa-fw fa-truck"></span> {{ item.vehicle.registration }} <span
+                        class="far fa-fw fa-id-card"></span> {{ item.driver.firstName + ' ' + item.driver.lastName }}
+                      ({{ item.driverStartTime }})
+                    </ng-container>
+
+                    <ng-container *ngIf='item.subcontractorId !== -1 && item.subcontractorId !== 0'>
+                      <span class="far fa-fw fa-id-card"></span> {{ item.subcontractor.name }} ({{ item.driverStartTime
+                      }})
+                    </ng-container>
+                    <br />
+                    <!-- <span *ngIf='item.upcomingInspection !== undefined' class='text-danger'>Inspection Due: {{item.upcomingInspection}}</span> -->
+
+                  </div>
+                  <div style='float:right;'>
+                    <button class='btn btn-primary btn-small' (click)='this.openEditModal(item)'><i
+                        class="fas fa-pencil-alt" style='font-size: 0.8rem'></i></button>&nbsp;
+                    <button class='btn btn-danger btn-small' (click)='this.deleteJobAssignment(item.id)'><i
+                        class="fas fa-trash" style='font-size: 0.8rem'></i></button>&nbsp;
+                    <button class='btn btn-info btn-small' (click)='this.copyJobs(item)'><i class="fas fa-copy"
+                        style='font-size: 0.8rem'></i></button>
+                  </div>
+                  <input type="checkbox" [checked]='this.isAssignmentBoxChecked(item)'
+                    (click)='onSelectedAssignmentCheckbox($event,item)' />
+                </div>
+              </td>
+              <td>&nbsp;</td>
+              <td>
+                <div class='allocationContainer'>
+                  <ng-container *ngFor='let blocki of this.getEmptySlotAsArray()'>
+                    <div *ngIf='!this.getJobByJobAssignmentIdAndBlockId(item.id, blocki)' class='blockContainer'>
+                      <input type='checkbox' (click)='onEmptySlotChecked(item.id, blocki)'
+                        [checked]='isEmptySlockCheckChecked(item.id, blocki)' />
+                      <div class='timelineBlock' [class.drop]='this.currentHoveredEmptySlot === blocki'
+                        [attr.data-id]='blocki' (dragenter)='this.dragEnter($event, item)'
+                        (dragleave)='this.dragLeave($event)' (drop)='this.onOrderDrop($event, blocki, item.id)'
+                        (dragover)='$event.preventDefault();'>
+                      </div>
+                    </div>
+                    <div *ngIf='this.getJobByJobAssignmentIdAndBlockId(item.id, blocki)' class='blockContainer'
+                      [attr.title]='this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).timelineNotes'>
+                      <input type='checkbox'
+                        [disabled]='!this.isCheckboxActive(getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                        [checked]='this.isBoxChecked(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                        (click)='onSelectedCheckbox($event,this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))' />
+                      <div [attr.title]='this.getHoverText(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                        class='timelineBlock allocated' (dragover)='$event.preventDefault();'
+                        (drop)='this.onOrderDropOnJob($event, blocki, this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                        [class.drop]='this.curenntHoveredJob === this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).id'
+                        (dragenter)='this.dragEnterJob($event, this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                        (dragleave)='this.dragLeaveJob($event, this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                        (dragstart)='this.dragStart($event, this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                        (dragend)='this.dragEnd($event)' draggable='true'
+                        [style.background-color]='this.getColorCodeForJob(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'>
+                        <strong>{{ this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).time }} </strong>
+                        {{ this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).order.account.name }} - {{
+                        this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).order.site.name }}
+                        <ng-container
+                          *ngIf='this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).order.tipSite !== null && this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).order.tipSite !== undefined'>
+                          TO {{ this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).order.tipSite.name }}
+                        </ng-container>
+
+                        <ng-container
+                          *ngIf='this.getCreatedBy(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki)) !== null'>
+                          <span>Created By: {{ this.getCreatedBy(this.getJobByJobAssignmentIdAndBlockId(item.id,
+                            blocki)) }}</span><br />
+                        </ng-container>
+
+                        <ng-container
+                          *ngIf='this.getUpdatedBy(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki)) !== null'>
+                          <span>Changed By: {{ this.getUpdatedBy(this.getJobByJobAssignmentIdAndBlockId(item.id,
+                            blocki)) }}</span><br />
+                        </ng-container>
+
+                        <button class='btn btn-secondary btn-small' style='width:2rem'
+                          (click)='openOrderModal(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'>
+                          <i class="fas fa-info-circle" style='color:black;font-size:0.8rem'></i>
+
+                        </button>&nbsp;
+                        <button
+                          (click)='this.copyJob = this.getJobByJobAssignmentIdAndBlockId(item.id, blocki); this.openModal("transportCopyJobToUnitModal")'
+                          class='btn btn-info btn-small' style='width:2rem'>
+                          <i class="fas fa-copy" style='color:white;font-size:0.8rem'></i>
+                        </button>
+                        <button class='dragHandle'><i style='color: black !important;'
+                            class="fas fa-arrows-alt"></i></button>
+
+
+                        <div class='qty'>
+                          <div class='qtyNo'>{{ this.getPODQtyForJobId(this.getJobByJobAssignmentIdAndBlockId(item.id,
+                            blocki)) }} {{ this.getUnitForJob(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))
+                            }}(s)</div>
+                        </div>
+                        <div class='jobStatus'
+                          *ngIf='this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).driverJobStatusId !== -1 && this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).driverJobStatusId !== null'>
+                          <div class='jobStatusName'>{{
+                            this.getDriverStatus(this.getJobByJobAssignmentIdAndBlockId(item.id,
+                            blocki).driverJobStatusId) }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </td>
+              <td>
+                <i class="fas fa-plus-square" (click)='addEmptySlot()'></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+ 
+<div class="row">
+  <div class="col-12">
+    <ng-container *ngIf='
+    (!this.timelineSettings.timelineOrientationTipper && this.orderTypeId === 3) ||
+    (!this.timelineSettings.timelineOrientationGrab && this.orderTypeId === 5) ||
+    (!this.timelineSettings.timelineOrientationConcrete && this.orderTypeId === 6) ||
+    (!this.timelineSettings.timelineOrientationSweeper && this.orderTypeId === 7) ||
+    (!this.timelineSettings.timelineOrientationShredder && this.orderTypeId === 8) ||
+    (!this.timelineSettings.timelineOrientationTanker && this.orderTypeId === 9) ||
+    (!this.timelineSettings.timelineOrientationArtic && this.orderTypeId === 4)
+  '>
+
+
+
+      <div class='timelineRoundsContainer row'>
+        <div class='timelineRound col-6' *ngFor='let item of this.jobAssignments;let i=index'>
+          <div class="table-responsive">
+            <table>
+              <tr>
+                <td>
+                  <div class="roundHeader" [class.sub]='item.subcontractorId !== -1'>
+                    <div>
+                      <br />
+                      <ng-container *ngIf='item.vehicleId !== -1'>
+
+                        <span class="fas fa-fw fa-truck"></span> {{ item.vehicle.registration }}
+                        <span class="far fa-fw fa-id-card"></span> {{ item.driver.firstName + ' ' + item.driver.lastName
+                        }} ({{ item.driverStartTime }})
+                        <br />
+                        <span class="fas fa-fw fa-phone" *ngIf='getContact(item) !== "" && getContact(item)'></span>
+                        {{getContact(item)}}
+                        <br />
+                        <span *ngIf='item.upcomingInspection !== undefined' class='text-danger'>Inspection Due:
+                          {{item.upcomingInspection}}</span>
+                      </ng-container>
+
+                      <ng-container *ngIf='item.subcontractorId !== -1 && item.subcontractorId !== 0'>
+                        <span class="far fa-fw fa-id-card"></span> {{ item.subcontractor.name }} ({{
+                        item.driverStartTime
+                        }})
+                      </ng-container>
+                    </div>
+                    <button class='btn btn-primary btn-small' (click)='openEditModal(item)'><i
+                        class="fas fa-pencil-alt"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngFor='let blocki of this.getEmptySlotAsArray()'>
+                <td>
+                  <div *ngIf='!this.getJobByJobAssignmentIdAndBlockId(item.id, blocki)' class='blockContainer'>
+                    <input type='checkbox' disabled='disabled' />
+                    <div class='timelineBlock' [class.drop]='this.currentHoveredEmptySlot === blocki'
+                      [attr.data-id]='blocki' (dragenter)='this.dragEnter($event, item)'
+                      (dragleave)='this.dragLeave($event)' (drop)='this.onOrderDrop($event, blocki, item.id)'
+                      (dragover)='$event.preventDefault();'>
+                    </div>
+                  </div>
+                  <div *ngIf='this.getJobByJobAssignmentIdAndBlockId(item.id, blocki)' class='blockContainer'>
+                    <input type='checkbox'
+                      [disabled]='!this.isCheckboxActive(getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                      [checked]='this.isBoxChecked(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                      (click)='onSelectedCheckbox($event,this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))' />
+                    <div [attr.title]='this.getHoverText(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                      class='timelineBlock allocated' (dragover)='$event.preventDefault();'
+                      (drop)='this.onOrderDropOnJob($event, blocki, this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                      [class.drop]='this.curenntHoveredJob === this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).id'
+                      (dragenter)='this.dragEnterJob($event, this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                      (dragleave)='this.dragLeaveJob($event, this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                      (dragstart)='this.dragStart($event, this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'
+                      (dragend)='this.dragEnd($event)' draggable='true'
+                      [style.background-color]='this.getColorCodeForJob(this.getJobByJobAssignmentIdAndBlockId(item.id, blocki))'>
+                      <strong>{{ this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).time }} </strong>
+                      {{ this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).order.account.name }} - {{
+                      this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).order.site.name }}
+                      <div class='qty'>
+                        <div class='qtyNo'>{{ this.getJobByJobAssignmentIdAndBlockId(item.id, blocki).qty }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <i class="fas fa-plus-square" (click)='addEmptySlot()'></i>
+              </tr>
+            </table>
+          </div>
+          <!-- <div
+      class="roundContainer"
+      [class.drop]='this.currentHoveringRoundId === item.id'
+      [attr.data-id]='item.id'
+      (dragenter)='this.dragEnter($event, item)'
+      (dragleave)='this.dragLeave($event)'
+      (drop)='this.onOrderDrop($event,0,item.id)'
+      (dragover)='$event.preventDefault();'>
+      <ng-container *ngFor='let job of item.jobs'>
+        <div
+          class='orderContainer'
+          [class.dragging]='this.draggingId == job.id'
+          data-id='{{ job.id }}'
+          draggable="true"
+          (dragstart)='dragStart($event, job)'
+          (dragend)='dragEnd($event)'
+          [style.background-color]='this.getColourForJobStatus(job.jobStatusId)'
+          *ngIf='this.job.jobStatusId !== 3'>
+          <input
+            type='checkbox'
+            [disabled]='!this.isCheckboxActive(getJobByJobAssignmentIdAndBlockId(item.id, 0))'
+            [checked]='this.isBoxChecked(this.getJobByJobAssignmentIdAndBlockId(item.id, 0))'
+            (click)='onSelectedCheckbox($event,this.getJobByJobAssignmentIdAndBlockId(item.id, 0))'
+          />
+          <strong>{{job.time}} | {{ job.order.account.name }} - {{job.order.site.name}}</strong><br />
+        </div>
+      </ng-container>
+    </div> -->
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

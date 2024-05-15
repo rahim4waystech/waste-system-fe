@@ -1,0 +1,26 @@
+<jw-modal id='emailInvoiceModal'>
+  <h1 class='header'>Email invoices</h1>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>Message</label>
+      <textarea [(ngModel)]='this.message' style='height: 10rem' class='form-control'>Hi,
+Please find attached your requested invoices.
+
+Regards,
+The Management team
+      </textarea>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>Send to</label>
+      <input type='text' class='form-control' [(ngModel)]='this.email.email'/>
+    </div>
+  </div>
+
+
+  <button class='btn btn-success' (click)='send()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+</jw-modal>

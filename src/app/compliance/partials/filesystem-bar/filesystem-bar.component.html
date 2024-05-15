@@ -1,0 +1,16 @@
+<app-new-folder-modal [currentFolder]='this.currentFolder'></app-new-folder-modal>
+<app-new-form-modal [currentFolder]='this.currentFolder'></app-new-form-modal>
+<app-upload-file-modal [currentFolder]='this.currentFolder'></app-upload-file-modal>
+
+<div class="row content-block p-3 mb-2">
+  <div class="col-7">
+    {{this.currentFolder.description}}
+  </div>
+  <div class="col p-0 text-right">
+    <div class="btn-group">
+      <button class='btn btn-info' (click)='this.openModal("uploadFileSystemModal")'><i class="fas fa-file-upload"></i> Upload File</button>
+      <button class='btn btn-info' (click)='this.openModal("newFormModal")'><i class="fas fa-calendar-plus"></i> Create Form</button>
+      <button class='btn btn-info' (click)='this.openModal("newFolderModal")'><i class="fas fa-folder-plus"></i> New Folder</button>
+    </div>
+  </div>
+</div>

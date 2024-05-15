@@ -1,0 +1,16 @@
+<jw-modal id='gridManageColumns'>
+
+    <h1 class='header'>Manage Grid Columns</h1>
+
+    <div>
+        <div *ngFor='let column of this.gridColumns'>
+            <input type='checkbox' type='checkbox'
+            [(ngModel)]="column.active"
+            [ngModelOptions]="{standalone: true}"/> {{ column.label }}
+        </div>
+        
+    </div>
+
+    <button class='btn btn-success' (click)='save()'>Save</button>&nbsp;
+    <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+</jw-modal>

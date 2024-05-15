@@ -1,0 +1,17 @@
+<jw-modal id='contactAccountModal'>
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <h3 class='header'>Select Account</h3>
+
+    <app-grid entity='account' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+        [searchFilters]='this.searchFilters' [searchFields]='this.searchFields' [checkboxSelector]='true'
+        (checkboxSelected)='this.onCheckedSelected($event)' [amount]='10'></app-grid>
+
+    <div class="row mt-1">
+        <div class="col-12 text-end">
+            <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+            <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+        </div>
+    </div>
+
+</jw-modal>

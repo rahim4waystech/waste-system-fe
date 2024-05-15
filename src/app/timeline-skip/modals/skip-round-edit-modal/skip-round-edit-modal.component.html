@@ -1,0 +1,52 @@
+<jw-modal id="skipRoundEditModal">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <h1 class='header'>Edit skip round - {{ this.round.name }}</h1>
+  <div class="form-row" style='display:none'>
+    <div class="form-group">
+      <input type="radio" [checked]='this.roundOption === "own"' name='group[]' (change)="this.onOptionSelect($event, 'own')"/>
+      <label for="inputEmail4">&nbsp;&nbsp;Own Vehicle</label>
+    </div>
+    <div class="form-group">
+      &nbsp;&nbsp;<input type="radio" name='group[]' [checked]='this.roundOption === "sub"' (change)="this.onOptionSelect($event, 'sub')"/>
+      <label for="inputEmail4">&nbsp;&nbsp;Subcontractor</label>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Name</label>
+      <input type="text" [(ngModel)]='this.round.name' [class.is-invalid]='!this.round.name' name='name' class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Depot</label>
+      <ng-select [(ngModel)]="this.round.depotId" name='depot' [class.is-invalid]='this.round.depotId === -1' (change)='onDepotChanged($event)'>
+        <ng-option *ngFor='let depot of this.depots' [value]='this.depot.id'>{{ depot.name }}</ng-option>
+      </ng-select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4" [class.is-invalid]='!this.round.driverStartTime'>Driver Start Time</label>
+      <input type="time" [(ngModel)]='this.round.driverStartTime' name='name' class="form-control" id="inputEmail4">
+    </div>
+  <div class="form-group col-md-4" *ngIf='this.round.depotId !== -1 && this.roundOption === "own"'>
+    <label for="inputEmail4">Driver</label>
+    <ng-select [(ngModel)]="this.round.driverId" name='driver' [class.is-invalid]='this.round.driverId === -1' (change)='this.round.driverId = +$event; this.round.driver.id = this.round.driverId'>
+      <ng-option *ngFor='let driver of this.drivers' [value]='this.driver.id'>{{ driver.firstName + ' ' + driver.lastName }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="form-group col-md-4" *ngIf='this.round.depotId !== -1 && this.roundOption === "own"'>
+    <label for="inputEmail4">Vehicle</label>
+    <ng-select [(ngModel)]="this.round.vehicleId" name='vehicle' [class.is-invalid]='this.round.vehicleId === -1' (change)='this.round.vehicleId = +$event; this.round.vehicle.id = this.round.vehicleId'>
+      <ng-option *ngFor='let vehicle of this.vehicles' [value]='this.vehicle.id' [selected]='this.vehicle.id === this.round.vehicleId'>{{ vehicle.registration }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="form-group col-md-4" *ngIf='this.roundOption === "sub"'>
+    <label for="inputEmail4">Subcontractor</label>
+    <ng-select [(ngModel)]='this.round.subcontractorId'[class.is-invalid]='this.round.subcontractorId === -1' (change)='this.round.subcontractorId = +$event; this.round.subcontractor = {id: this.round.subcontractorId}'>
+      <ng-option *ngFor='let sub of this.subcontractors' [value]='this.sub.id'>{{ sub.name }}</ng-option>
+    </ng-select>
+  </div>
+  </div>
+
+  <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+</jw-modal>

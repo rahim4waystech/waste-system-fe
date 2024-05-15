@@ -1,0 +1,95 @@
+<jw-modal id='leadAccountModal'>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <h3 class='header'>Select Account</h3>
+
+  <div class="row">
+    <div class="col-12">
+      <app-grid entity='account' [inverse]=true [filters]='this.filters' [columns]='this.columns'
+        [buttons]='this.buttons' [searchFilters]='this.searchFilters' [searchFields]='this.searchFields'
+        [radioSelector]='true' (radioButtonSelected)='this.onCheckedSelected($event)' [amount]='10'></app-grid>
+    </div>
+  </div>
+
+  <ng-container *ngIf='!newAccount'>
+    <div class="row">
+      <div class="col-lg-6">
+        <button class='btn btn-block btn-info' (click)='this.newAccount = true;$event.preventDefault()'>Add New
+          Account</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf='newAccount'>
+    <div class="row">
+      <div class="col-lg-6">
+      <h5>  Add New Account</h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="accountName">Name</label>
+        <input type="text" name='name' [(ngModel)]='this.account.name' [class.is-invalid]='!this.account.name'
+          class="form-control" id="accountName"
+          oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="accountRef">Account Ref</label>
+        <input type="text" name='name' [(ngModel)]='this.account.accountRef'
+          [class.is-invalid]='this.account.accountRef === ""' [class.is-valid]='this.account.accountRef !== ""'
+          class="form-control" id="accountRef">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" name='name' [(ngModel)]='this.account.phoneNumber' class="form-control" id="phoneNumber">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="billing1">Address Line 1</label>
+        <input type="text" name='name' [(ngModel)]='this.account.billingAddress1' class="form-control" id="billing1">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="billing2">Address Line 2</label>
+        <input type="text" name='name' [(ngModel)]='this.account.billingAddress2' class="form-control" id="billing2">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="billing3">City</label>
+        <input type="text" name='name' [(ngModel)]='this.account.billingCity' class="form-control" id="billing3">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="billing4">Country</label>
+        <input type="text" name='name' [(ngModel)]='this.account.billingCountry' class="form-control" id="billing4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="billing5">Postcode</label>
+        <div class="row">
+          <div class="col-6">
+            <input type="text" name='name' [(ngModel)]='this.account.billingPostCode' class="form-control" id="billing5">
+          </div>
+          <div class="col-6">
+            <app-address-picker [postcode]='this.account.billingPostCode'
+          (onAddressFound)='this.foundBillingAddress($event)'></app-address-picker>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="row ">
+      <div class="col-lg-6">
+        <button class='btn btn-success' (click)='this.save()'>Add Account</button> &nbsp;
+        <button class='btn btn-danger' (click)='this.clearNewAccount()'>Clear new Account</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="row">
+    <div class="col-lg-6 text-end ms-auto">
+      <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+    </div>
+  </div>
+
+
+
+
+
+</jw-modal>

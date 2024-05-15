@@ -1,0 +1,43 @@
+
+
+      <jw-modal id='addCallbackModal'>
+        <div class="card m-0">
+          <div class="card-header">
+            <h3 class='header'>Add Callback </h3>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+            <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+        
+        <div class="row">
+            <div class='form-group col-md-6'>
+                <label>Calendar</label>
+                <select (change)='this.calendarId = +$event.target.value'  class='form-select'>
+                <option value='-1'>Select a calendar</option>
+                <option *ngFor='let calendar of this.calendars' [value]='calendar.id'>{{ calendar.name }}</option>
+                </select>
+              </div>
+        
+            <div class='form-group col-md-6'>
+                <label>Callback Date</label>
+                <input  type='date' class='form-control' [(ngModel)]='this.date'/>
+              </div>
+              <div class='form-group col-md-12'>
+                <label>Description</label>
+                <textarea   type='date' class='form-control' [(ngModel)]='this.description'></textarea>
+              </div>
+            
+        
+              
+        </div> 
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-12 text-end">
+                <button class='btn btn-success' (click)='save()'>Save</button>&nbsp;
+              <button class='btn btn-danger' (click)='close()' data-bs-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </jw-modal>

@@ -1,0 +1,12 @@
+<div class="fullcontainer">
+  <div class="sheet">
+    <h1 class='header'>Edit Job - {{ this.job.order.account.name }}/{{ this.job.order.site.name }}/{{ this.job.date }}</h1>
+    <hr />
+    <br />
+
+    <app-job-form [job]='this.job'></app-job-form>
+
+    <button type="submit" (click)='save()' class="btn btn-success">Save</button>&nbsp;
+    <button type="button" class="btn btn-danger" routerLink='/jobs'>Cancel</button>
+  </div>
+  </div>

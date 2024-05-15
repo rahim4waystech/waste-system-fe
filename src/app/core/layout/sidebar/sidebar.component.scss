@@ -1,0 +1,21 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    // width: 250px;
+    // height: 100vh;
+    width: 280px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #f3f6f9 !important;
+    transition: 0.5s;
+    z-index: 999;
+    border-color: transparent !important;
+}
+.sidebar::-webkit-scrollbar{
+    width:  2px !important;
+}
+body {
+background-color: #ffffff !important;
+}

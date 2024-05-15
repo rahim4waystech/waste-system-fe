@@ -1,0 +1,29 @@
+<div class="fullcontainer">
+    <div class="sheet">
+       <div class="row">
+        <div class="col-lg-7 mx-auto">
+          <div class="card">
+            <div class="card-header">
+              <h3 class='header'>Delete POD NO: {{ this.pod.id }}</h3>
+            </div>
+            <div class="card-body">
+              <p>Are you sure you wish to delete this POD? 
+                This will delete it from the system. If you wish to restore please contact support.</p>
+        
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-12 text-end">
+                  <button type="submit" class="btn btn-danger" (click)='this.onCancelClicked()'>Yes! I'm Sure!</button>&nbsp;
+                  <button type="button" class="btn btn-primary" routerLink='/pods'>No! Take me back!</button>
+                </div>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+       </div>
+      
+    </div>
+  </div>
+  

@@ -1,0 +1,70 @@
+<jw-modal id="ArtictransportJobCreationModal">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <h1 class='header'>Add job</h1>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Qty ({{ this.getUnitForJob()  }})</label>
+      <input type="number" [(ngModel)]='this.job.qty' [class.is-invalid]='this.job.qty <= 0' name='name' class="form-control" id="inputEmail4">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Time</label>
+      <input type="time" [(ngModel)]='this.job.time' [class.is-invalid]='!this.job.time' name='name' class="form-control" id="inputEmail4">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Split</label>
+      <input type="checkbox" [(ngModel)]='this.split' name='name' id="inputEmail4">
+    </div>
+  </div>
+  
+  <div class="form-group" *ngIf="this.split">
+    <label for="inputEmail4">Collection Artic</label>
+    <ng-select [(ngModel)]='this.jobAssignment.vehicleId' (change)='this.jobAssignment.vehicleId = +$event; this.jobAssignment.vehicle.id = this.jobAssignment.vehicleId;'>
+      <ng-option *ngFor='let vehicle of this.ArticVehicles' [value]='this.vehicle.id'>{{ vehicle.registration }}</ng-option>
+    </ng-select>
+  </div>
+ 
+  <div class="form-group" *ngIf="this.split">
+    <label for="inputEmail4">Collection Trailer</label>
+    <ng-select [(ngModel)]='this.jobAssignment.trailerId' (change)='this.jobAssignment.trailerId = +$event; this.jobAssignment.trailer.id = this.jobAssignment.vehicleId; updateNameFromVehicle();'>
+      <ng-option *ngFor='let vehicle of this.vehicles' [value]='this.vehicle.id'>{{ vehicle.registration }}</ng-option>
+    </ng-select>
+  </div>
+ 
+  <div class="form-group" *ngIf="this.split">
+    <label for="inputEmail4">Collection Driver</label>
+    <ng-select [(ngModel)]='this.jobAssignment.driverId' (change)='this.jobAssignment.driverId= +$event; this.jobAssignment.driver = this.vehicle;'>
+      <ng-option *ngFor='let driver of this.drivers' [value]='this.driver.id'>{{ driver.firstName }} {{ driver.lastName }}</ng-option>
+    </ng-select>
+  </div>
+  
+  <div class="form-row" *ngIf="this.split">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Collection Date</label>
+      <input type="date" [(ngModel)]='this.jobAssignment.date' [class.is-invalid]='!this.jobAssignment.date' name='name' class="form-control" id="inputEmail4">
+    </div>
+  </div>
+
+  <div class="form-row" *ngIf="this.split">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Collection Time</label>
+      <input type="time" [(ngModel)]='this.jobAssignment.driverStartTime' [class.is-invalid]='!this.jobAssignment.driverStartTime' name='name' class="form-control" id="inputEmail4">
+    </div>
+  </div>
+
+  <!-- <div class="form-group" *ngIf="this.split">
+    <label for="inputEmail4">unit</label>
+    <ng-select [(ngModel)]='this.jobAssignment' (change)='this.jobAssignment = +$event;'>
+      <ng-option *ngFor='let assignment of this.jobAssignment' [value]='this.jobAssignment'>{{ assignment.date }} -  {{ assignment.id }}</ng-option>
+    </ng-select>
+  </div> -->
+
+  <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+</jw-modal>

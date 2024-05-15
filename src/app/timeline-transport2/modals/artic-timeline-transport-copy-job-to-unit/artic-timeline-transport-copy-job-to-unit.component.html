@@ -1,0 +1,23 @@
+<jw-modal id="ArtictransportCopyJobToUnitModal">
+    <h1 class='header'>Copy job to unit</h1>
+    <div class="form-row">
+      <!-- <div class="form-group col-md-4">
+        <label for="inputEmail4">Date *</label>
+        <input class="form-control" type='date' (ngModelChange)="this.onDateChanged()" [(ngModel)]="this.date"/>
+      </div> -->
+
+        <div class="form-group col-md-4">
+            <label for="inputEmail4">Unit *</label>
+            <select class='form-control' (change)='this.selectedUnit = +$event.target.value;'>
+                <option value='-1'>Select a Unit</option>
+                <ng-container *ngFor='let unit of this.assignments'>
+                    <option [value]='unit.id' *ngIf='unit.subcontractorId !== -1'>{{ unit.name }} - {{ unit.subcontractor.name }}</option>
+                    <option [value]='unit.id' *ngIf='unit.subcontractorId === -1'>{{ unit.name }} - {{ unit.vehicle.registration }} {{ unit.driver.firstName }} {{ unit.driver.lastName }}</option>
+                </ng-container>
+            </select>
+          </div>
+    </div>
+
+  <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+</jw-modal>

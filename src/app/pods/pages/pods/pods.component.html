@@ -1,0 +1,42 @@
+ 
+<app-email-pods [selectedPods]='this.selectedPods'></app-email-pods>
+<app-print-pods [selectedPods]='this.selectedPods'></app-print-pods>
+
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="podscompnent">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class='titleContainer'>
+                <h3 class='header'>All Proof Of Delivery</h3>
+              </div>
+            </div>
+            <div class="col-lg-6 my-auto text-end">
+              <div>
+                <button class='btn btn-sm btn-secondary' (click)='this.email()'><i class="fas fa-envelope"></i> Email
+                  PODs</button>&nbsp;
+                <button class='btn btn-sm btn-secondary' (click)='this.batchPrintPODs()'><i class="fas fa-print"></i> Print
+                  PODs</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <app-grid entity='driver-job-movement' [checkboxSelector]='true' [filters]='this.filters'
+                [columns]='this.columns' [buttons]='this.buttons' [searchFilters]='this.searchFilters'
+                [searchFields]='this.searchFields' [relationships]='["vehicle", "driver", "job","job.order"]'
+                (recordsUpdate)='this.recordUpdated($event)'
+                (checkboxSelected)='this.onCheckedSelected($event)'></app-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

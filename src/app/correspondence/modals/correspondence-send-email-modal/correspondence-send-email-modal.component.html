@@ -1,0 +1,23 @@
+<jw-modal id='correspondenceSendEmailModal'>
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <h1 class='header'>Send Email</h1>
+
+    <div class='form-row'>
+        <div class="col-md-12 form-group">
+            <label>Subject</label>
+            <input [class.is-invalid]='!this.emailLog.subject' class='form-control' type='text' [(ngModel)]="this.emailLog.subject" />
+        </div>
+        <div class="col-md-12 form-group">
+            <label>To</label>
+            <input [class.is-invalid]='!this.emailLog.to' class='form-control' type='text' [(ngModel)]="this.emailLog.to" />
+        </div>
+        <div class="col-md-12 form-group">
+            <label>Message</label>
+            <textarea [class.is-invalid]='!this.emailLog.content' class='form-control' type='text' [(ngModel)]="this.emailLog.content"></textarea>
+        </div>
+    </div>
+    <button type='button' class='btn btn-success' (click)='this.save()'>Send Email</button>&nbsp;
+    <button type='button' class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+
+</jw-modal>

@@ -1,0 +1,32 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-4 my-auto">
+              <div class='titleContainer my-auto'>
+                <h3 class='header my-auto'>All Drivers</h3>
+              </div>
+            </div>
+            <div class="col-lg-8 my-auto text-end">
+              <div>
+                <button class='btn btn-secondary' routerLink='/drivers/new'><i class="fas fa-plus"></i>
+                  New</button>&nbsp;
+                <button class='btn btn-secondary' routerLink='/drivers/bonus'><i class="fas fa-money-bill-wave"></i>
+                  Manage Bonus Levels</button>&nbsp;
+                <button class='btn btn-secondary' routerLink='/drivers/absence'><i class="fas fa-business-time"></i>
+                  Manage Absence</button>&nbsp;
+                <button class='btn btn-secondary' routerLink='/drivers/hours'><i class="fas fa-calendar"></i> Manage
+                  Hours</button>&nbsp;
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-grid entity='driver' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+            [searchFilters]='this.searchFilters' [searchFields]='this.searchFields'></app-grid>
+        </div>
+      </div>
+    </div>
+  </div>

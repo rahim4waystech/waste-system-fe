@@ -1,0 +1,14 @@
+<jw-modal id="skipResolveIssueModal">
+    <h1 class='header'>Resolve Issue</h1>
+  <hr />
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Comments (optional)</label>
+      <textarea [(ngModel)]='this.currentPod.tipIssueResolution'></textarea>
+    </div>
+</div>
+
+<button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+<button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+</jw-modal>

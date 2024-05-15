@@ -1,0 +1,124 @@
+<div class="fullcontainer ml-5">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <app-defect-modal [defect]='this.newDefect' [report]='this.selectedReport'></app-defect-modal>
+          <!-- <app-defect-doc-modal [report]='this.selectedReport'></app-defect-doc-modal> -->
+          <!-- <app-defect-reject-modal [report]='this.selectedReport'></app-defect-reject-modal> -->
+          <div class="p-3">
+            <app-tabs>
+              <app-tab title='Check Failures'>
+                <table class='table table-bordered'>
+                  <thead class='table-dark'>
+                    <tr>
+                      <th>#</th>
+                      <th>Date Submitted</th>
+                      <th>Check</th>
+                      <th>Description</th>
+                      <th>Vehicle</th>
+                      <th>Driver</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor='let item of this.driverDefects'>
+                      <td>{{item.id}}</td>
+                      <td>{{item.createdAt}}</td>
+                      <td>{{item.vehicleCheck.checkInformation}}</td>
+                      <td>{{item.description}}</td>
+                      <td>{{item.vehicle.registration}}</td>
+                      <td>{{item.driver.firstName}} {{item.driver.lastName}}</td>
+                      <td *ngIf='item.vehicleCheck.isVor' class='bg-danger text-light'>VOR</td>
+                      <td *ngIf='!item.vehicleCheck.isVor' class='bg-warning text-light'>Can Continue</td>
+                      <td>
+                        <span class='btn-group'>
+                          <button class='btn btn-info' (click)='showDocs(item)'>Docs</button>
+                          <button class='btn btn-success' (click)='approveDefect(item)'>Approve</button>
+                          <button class='btn btn-danger' (click)='rejectDefect(item)'>Reject</button>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </app-tab>
+
+              <app-tab title='Rejected Checks'>
+                <app-grid entity='driver-check-reports' [filters]='this.filters' [columns]='this.columns'
+                  [buttons]='this.buttons' [searchFilters]='this.searchFilters'
+                  [searchFields]='this.searchFields'></app-grid>
+              </app-tab>
+
+              <app-tab title='All Checks'>
+                <div class="row content-block-head">
+                  <div class="col-12 mt-2">
+                    <h4>Driver Checks for {{formatDate(this.date)}}</h4> 
+                  </div>
+                </div>
+
+                <div class="row my-3 datediv">
+                  <div class="col-lg-3 d-flex justify-content-between">
+                    <div>
+                      <button class='btn-lg btn-info  btn-block' (click)='this.lastDay()'><i
+                          class="fas fa-angle-double-left"></i></button>
+                    </div>
+                    <div class="w-100">
+                      <button class='btn-lg btn-secondary btn-block w-100'
+                        (click)='this.isDatePickerVisible = !this.isDatePickerVisible'>{{formatDate(this.date)}}</button>
+                      <bs-datepicker-inline *ngIf='this.isDatePickerVisible'
+                        (bsValueChange)='this.onDateSelected($event)' [bsValue]='this.date' class='datePicker'>
+                      </bs-datepicker-inline>
+                    </div>
+                    <div>
+                      <button class='btn-lg btn-info   btn-block' (click)='this.nextDay()'><i
+                        class="fas fa-angle-double-right"></i></button>
+                    </div>
+                  </div>
+ 
+                </div>
+
+                <div class="row ">
+                  <div class="col-12">
+                    <table class='table table-bordered'>
+                      <thead class='table-dark'>
+                        <tr>
+                          <th>Registration</th>
+                          <th>Driver</th>
+                          <th>Time</th>
+                          <th>Pass</th>
+                          <th>Fail</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf='this.reports.length === 0'>
+                          <td colspan='6'>No Reports completed for this date</td>
+                        </tr>
+
+                        <tr *ngFor='let row of this.reports'>
+                          <td>{{row.vehicle.registration}}</td>
+                          <td>{{row.driver.firstName}} {{row.driver.lastName}}</td>
+                          <td>{{row.createdAt}}</td>
+                          <td class='text-light font-weight-bold bg-success'>{{row.pass}}</td>
+                          <td class='text-light font-weight-bold bg-danger text-center'>{{row.fail}}</td>
+                          <td class='p-0'><button class='m-0 btn btn-block btn-info'
+                              routerLink='/4workshop/driver-report/{{row.id}}'><i class="fas fa-eye"></i></button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </app-tab>
+            </app-tabs>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

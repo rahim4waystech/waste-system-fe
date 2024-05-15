@@ -1,0 +1,27 @@
+// .timelineContainer {
+//   display: flex;
+//   flex-flow: row wrap;
+
+// }
+
+.orderContainer {
+  background-color:#bdc3c7;
+  width:100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.subright-div{
+  height: 68vh !important;
+  overflow: auto;
+  box-shadow: var(--box-shadow-1) inset;
+  padding: 10px;
+}
+.datePicker{
+  display: inline-block;
+  position: absolute;
+  z-index: 200 !important;
+  top: 7rem !important;
+  right: 0 !important;
+  background-color: #f3f6f9 !important;
+}

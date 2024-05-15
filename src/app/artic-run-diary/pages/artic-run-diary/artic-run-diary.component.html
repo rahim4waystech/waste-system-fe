@@ -1,0 +1,188 @@
+<bs-datepicker-inline *ngIf='this.isDatePickerVisible' (bsValueChange)='this.onDateSelected($event)' [bsValue]='this.date' class='datePicker'></bs-datepicker-inline>
+<app-artic-run-diary-set-allocation-modal [job]="this.currentJob"></app-artic-run-diary-set-allocation-modal>
+<app-artic-run-diary-set-status [job]="this.currentJob"></app-artic-run-diary-set-status>
+<div class="container">
+
+    <h1>Run Diary - {{ this.searchFilters['date'] | date: 'fullDate'}}</h1>
+
+
+    <button class='btn btn-primary' [routerLink]='"/artics/job/orders/" + this.searchFilters["date"]'>Add job</button>
+     <div class="sheet">
+        <div class='row'>
+            <div class='col-md-4'>
+               <label>Date</label>
+               <input [(ngModel)]="this.searchFilters.date" class='form-control' type='date' />
+            </div>
+            <div class='col-md-4'>
+              <label>Vehicle</label>
+              <ng-select [(ngModel)]="this.searchFilters.vehicle" (change)='this.searchFilters.vehicle= $event;'>
+                 <ng-option *ngFor='let item of this.vehicles' [value]='item.registration'>{{ item.registration }}</ng-option>
+              </ng-select>
+           </div>
+           <div class='col-md-4'>
+            <label>Trailer</label>
+            <ng-select [(ngModel)]="this.searchFilters.trailer" (change)='this.searchFilters.trailer= $event;'>
+               <ng-option *ngFor='let item of this.trailers' [value]='item.registration'>{{ item.registration }}</ng-option>
+            </ng-select>
+         </div>
+           <div class='col-md-4'>
+              <label>Driver</label>
+              <ng-select [(ngModel)]="this.searchFilters.driver" (change)='this.searchFilters.driver= $event;'>
+                 <ng-option *ngFor='let item of this.drivers' [value]='item.firstName'>{{ item.firstName }} {{ item.lastName }}</ng-option>
+              </ng-select>
+           </div>
+           <div class='col-md-4'>
+            <label>Subcontractor</label>
+            <ng-select [(ngModel)]="this.searchFilters.subcontractor" (change)='this.searchFilters.subcontractor= $event;'>
+               <ng-option *ngFor='let item of this.subcontractors' [value]='item.name'>{{ item.name }}</ng-option>
+            </ng-select>
+         </div>
+         <div class='col-md-4'>
+          <label>Customer</label>
+          <ng-select [(ngModel)]="this.searchFilters.customer" (change)='this.searchFilters.customer = +$event;'>
+             <ng-option *ngFor='let item of this.accounts' [value]='item.id'>{{ item.name }}</ng-option>
+          </ng-select>
+       </div>
+            <div class='col-md-4'>
+               <label>Order REF</label>
+               <input [(ngModel)]="this.searchFilters.orderRef"  class='form-control' type='text' />
+            </div>
+            <div class='col-md-4'>
+               <label>Job Number</label>
+               <input [(ngModel)]="this.searchFilters.jobNumber"  class='form-control' type='text' />
+            </div>
+            <div class='col-md-4'>
+              <label>Parent Job Id</label>
+              <input [(ngModel)]="this.searchFilters.parentJobId"  class='form-control' type='text' />
+           </div>
+           <div class='col-md-4'>
+            <label>Time</label>
+            <input [(ngModel)]="this.searchFilters.time"  class='form-control' type='text' />
+         </div>
+         </div>
+
+         <br />
+         <button class='btn btn-primary' (click)='this.getRecords()' type='button' (click)="this.getRecords()">Search</button>&nbsp;
+         <button class='btn btn-danger' type='button' (click)="this.searchFilters = {}">Clear</button>
+     </div>
+     <br />
+     <br />
+
+     <button  class='btn btn-danger' data-toggle="tooltip" data-placement="top"
+      title="Remove Job" (click)="this.onDeletedJobClicked()"><i class="fas fa-ban"></i></button> &nbsp;
+      <button class='btn btn-success' data-toggle="tooltip" data-placement="top"
+      title="Approve Job"><i class="fas fa-check-circle"></i></button>&nbsp;
+      <button class='btn btn-warning'  data-toggle="tooltip" data-placement="top"
+      title="Unapprove Job"><i class="fas fa-undo"></i></button>&nbsp;
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th><input type='checkbox' (click)='onAllCheckboxClicked($event)'/></th>
+                <th>#</th>
+                <!-- <th>Date</th> -->
+                <th>Parent Job ID</th>
+                <th>Time</th>
+                <th>Customer</th>
+                <th>Site</th>
+                <th>Tip Site</th>
+                <th>Driver</th>
+                <th>Vehicle</th>
+                <th>Trailer</th>
+                <th>Subcontractor</th>
+                <th>Rate</th>
+                <th>Unit</th>
+                <th>Qty</th>
+                <th>Status</th>
+                <th>Driver Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of this.records">
+              <td [style.background-color]="this.getColorCodeForJob(item)"><input (click)='onCheckboxSelected($event)' type='checkbox' [checked]='this.isChecked(item.id)'/></td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.id }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.order.id }}</td>
+                <!-- <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.date }}</td> -->
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.time }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.order.account.name }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.order.site.name }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.order.tipSite.name }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.jobAssignment.vehicle ? item.jobAssignment.vehicle.registration : 'Not set' }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.jobAssignment.driver ? item.jobAssignment.driver.firstName + ' ' + item.jobAssignment.driver.lastName : 'Not set' }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.jobAssignment.trailer ? item.jobAssignment.trailer.registration : 'No Trailer' }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.jobAssignment.subcontractor ? item.jobAssignment.subcontractor.name : 'Not Set' }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.order.orderLines[0].price }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ this.getUnitNameFromId(item.order.orderLines[0].unitId) }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.qty }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.jobStatus.name }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">{{ item.driverJobStatus ? item.driverJobStatus.name : 'Not Set' }}</td>
+                <td [style.background-color]="this.getColorCodeForJob(item)">
+                    <button class='btn btn-primary' (click)='this.currentJob = item;this.openModal("articSetAllocationModal")'>Set Allocation</button>
+                    <button class='btn btn-primary' (click)='this.currentJob = item;this.openModal("articSetStatusModal")'>Set Status</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    
+    <div class="gridPagination">
+    <ul>
+      <li *ngIf="this.isPrevActive()">
+        <button
+          class="btn btn-secondary"
+          type="button"
+          name="button"
+          (click)="onPaginationPageClicked(this.getCurrentPage() - 1)"
+        >
+          &lt;
+        </button>
+      </li>
+
+      <ng-container *ngIf='this.paginationService.getTotalPages() <= 30'>
+        <li *ngFor="let page of this.getPagesArray()">
+          <button
+            class="btn btn-secondary"
+            type="button"
+            name="button"
+            (click)="onPaginationPageClicked(page)"
+            [class.active]="page === this.getCurrentPage()"
+          >
+            {{ page }}
+          </button>
+        </li>
+      </ng-container>
+
+      <ng-container *ngIf='this.paginationService.getTotalPages() > 30'>
+
+        <ng-container *ngFor="let page of this.paginationService.getShortPagesRange(this.paginationService.getPage(), this.paginationService.getTotalPages())">
+          <li *ngIf='page !== "..."'>
+            <button
+              class="btn btn-secondary"
+              type="button"
+              name="button"
+              (click)="onPaginationPageClicked(page)"
+              [class.active]="page === this.getCurrentPage()"
+            >
+              {{ page }}
+            </button>
+          </li>
+          <span *ngIf='page === "..."'>...</span>
+        </ng-container>
+
+    </ng-container>
+      <li *ngIf="this.isNextActive()">
+        <button
+          class="btn btn-secondary"
+          type="button"
+          name="button"
+          (click)="onPaginationPageClicked(this.getCurrentPage() + 1)"
+        >
+          &gt;
+        </button>
+      </li>
+
+    </ul>
+  </div>
+
+</div>

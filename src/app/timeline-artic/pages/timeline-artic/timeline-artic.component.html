@@ -1,0 +1,641 @@
+<div class="fullcontainer">
+  <div class="row toolbar mr-3 mb-2">
+    <div class="col-md-2 custom-control custom-switch">
+
+      <input type="checkbox" class="custom-control-input" id="customSwitch1"
+        [(ngModel)]='this.timelineSettings.timelineOrientationArtic' (click)='changeOrientation()'>
+      <label *ngIf='!this.timelineSettings.timelineOrientationArtic' class="custom-control-label"
+        for="customSwitch1">Vertical</label>
+      <label *ngIf='this.timelineSettings.timelineOrientationArtic' class="custom-control-label"
+        for="customSwitch1">Horizontal</label>
+    </div>
+    <div class="col-10 dateSelectorContainer justify-content-center">
+      <bs-datepicker-inline *ngIf='this.isDatePickerVisible' (bsValueChange)='this.onDateSelected($event)'
+        [bsValue]='this.date' class='datePicker'></bs-datepicker-inline>
+      <button class="btn btn-info" (click)='this.prevDay()'>
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div class="dateSelectorBox p-1" (click)='this.isDatePickerVisible = !this.isDatePickerVisible'>
+        <span><i class="fas fa-calendar-alt" style='font-size: 0.8rem'></i>&nbsp;&nbsp; {{ getFormattedDate() }}</span>
+      </div>
+      <button class="btn btn-info" (click)='this.nextDay()'>
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <app-artic-new-round-modal [date]='this.date' [slotId]='this.routes.length'
+    [newRoute]='this.currentRoute'></app-artic-new-round-modal>
+  <app-artic-set-job-modal [job]='this.updatingJob'></app-artic-set-job-modal>
+
+  <div class="row">
+    <div class="col-2 mr-5 mb-3"></div>
+    <div class="col-2 ml-1 mb-3 position-fixed">
+      <div class="row mb-3 p-0">
+        <div class="col btn-group m-0 p-0">
+          <button class='btn btn-warning m-0' (click)='importDesignated()'>Add Preferred Routes</button>
+          <button class='btn btn-info m-0' (click)='openModal("createArticRoute");'>+ New Route</button>
+        </div>
+      </div>
+
+      <!-- <div class="row mb-3 p-0">
+        <div class="col">
+          <div class="input-group">
+            <input type='text' class='form-control' [(ngModel)]='this.searchString' (keyup)='runSearch()'/>
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <button class='btn btn-info'><i class="fas fa-search"></i></button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row mb-1">
+        <div class="col btn-group p-0">
+          <button class='btn' (click)='showOrders = !showOrders' [class.disabled]='!showOrders'
+            [class.btn-primary]='!showOrders' [class.btn-secondary]='showOrders'>Route Setup</button>
+          <button class='btn' (click)='showOrders = !showOrders' [class.disabled]='showOrders'
+            [class.btn-primary]='showOrders' [class.btn-secondary]='!showOrders'>Orders ({{this.orderTotal}})</button>
+        </div>
+      </div>
+
+      <ng-container *ngIf='!showOrders'>
+        <!-- Artics Bar -->
+        <div class="row mb-1">
+          <div class="col whiteBg">
+            <h4 class='text-center' (click)='toggleSidebar("artics")'>Artics ({{this.vehicleTotal}})</h4>
+            <div class='anim-collapse' *ngIf='toggleArtics'>
+              <div class="driverBlock my-1 p-1" [class.bg-warning]='this.checkAllocationStatus(vehicle.id,"vehicle")'
+                data-id='{{vehicle.id}}' data-type='vehicle' draggable="true"
+                (dragstart)='dragStart($event, vehicle, "vehicle")' (dragend)='dragEnd($event)'
+                *ngFor='let vehicle of vehicles'>
+                {{vehicle.registration}}
+              </div>
+              <div class="row">
+                <div class="col justify-content-center">
+                  <nav>
+                    <ul class="pagination">
+                      <li class="page-item" [class.disabled]='vehiclePage === 1'>
+                        <a class="page-link" (click)='switchPage("first","vehicle")'>
+                          <i class="fas fa-angle-double-left"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='vehiclePage === 1'>
+                        <a class="page-link" (click)='switchPage("previous","vehicle")'>
+                          <i class="fas fa-angle-left"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='vehiclePage === vehicleMax'>
+                        <a class="page-link" (click)='switchPage("next","vehicle")'>
+                          <i class="fas fa-angle-right"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='vehiclePage === vehicleMax'>
+                        <a class="page-link" (click)='switchPage("last","vehicle")'>
+                          <i class="fas fa-angle-double-right"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drivers Bar -->
+        <div class="row mb-1">
+          <div class="col whiteBg">
+            <h4 class='text-center' (click)='toggleSidebar("drivers")'>Drivers ({{this.driverTotal}})</h4>
+            <div class='anim-collapse' *ngIf='toggleDrivers'>
+              <div class="driverBlock my-1 p-1 col" [class.bg-warning]='this.checkAllocationStatus(driver.id,"driver")'
+                data-id='{{ driver.id }}' data-type='driver' draggable="true"
+                (dragstart)='dragStart($event, driver, "driver")' (dragend)='dragEnd($event)'
+                *ngFor='let driver of drivers'>
+                {{driver.firstName[0]}}.{{driver.lastName}}
+              </div>
+              <div class="row">
+                <div class="col justify-content-center">
+                  <nav>
+                    <ul class="pagination">
+                      <li class="page-item" [class.disabled]='driverPage === 1'>
+                        <a class="page-link" (click)='switchPage("first","driver")'>
+                          <i class="fas fa-angle-double-left"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='driverPage === 1'>
+                        <a class="page-link" (click)='switchPage("previous","driver")'>
+                          <i class="fas fa-angle-left"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='driverPage === driverMax'>
+                        <a class="page-link" (click)='switchPage("next","driver")'>
+                          <i class="fas fa-angle-right"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='driverPage === driverMax'>
+                        <a class="page-link" (click)='switchPage("last","driver")'>
+                          <i class="fas fa-angle-double-right"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trailers Bar -->
+        <div class="row mb-1">
+          <div class="col whiteBg">
+            <h4 class='text-center' (click)='toggleSidebar("trailers")'>Trailers ({{this.trailerTotal}})</h4>
+            <div class='anim-collapse' *ngIf='toggleTrailers'>
+              <div class="driverBlock my-1 p-1" data-id='0' data-type='trailer' draggable="true"
+                (dragstart)='dragStart($event, this.subTrailer, "trailer")' (dragend)='dragEnd($event)'>
+                3rd Party / Subcontractor
+              </div>
+              <div class="driverBlock my-1 p-1" [class.bg-warning]='this.checkAllocationStatus(trailer.id,"trailer")'
+                data-id='{{trailer.id}}' data-type='trailer' draggable="true"
+                (dragstart)='dragStart($event, trailer, "trailer")' (dragend)='dragEnd($event)'
+                *ngFor='let trailer of trailers'>
+                {{trailer.registration}}
+              </div>
+              <div class="row">
+                <div class="col">
+                  <nav>
+                    <ul class="pagination">
+                      <li class="page-item" [class.disabled]='trailerPage === 1'>
+                        <a class="page-link" (click)='switchPage("first","trailer")'>
+                          <i class="fas fa-angle-double-left"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='trailerPage === 1'>
+                        <a class="page-link" (click)='switchPage("previous","trailer")'>
+                          <i class="fas fa-angle-left"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='trailerPage === trailerMax'>
+                        <a class="page-link" (click)='switchPage("next","trailer")'>
+                          <i class="fas fa-angle-right"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='trailerPage === trailerMax'>
+                        <a class="page-link" (click)='switchPage("last","trailer")'>
+                          <i class="fas fa-angle-double-right"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subcontractors Bar -->
+        <div class="row mb-1">
+          <div class="col whiteBg">
+            <h4 class='text-center' (click)='toggleSidebar("subbies")'>Subcontractors ({{this.subbieTotal}})</h4>
+            <div class='anim-collapse' *ngIf='toggleSubbies'>
+              <div class="driverBlock my-1 p-1 col" data-id='{{ subcontractor.id }}' data-type='subcontractor'
+                draggable="true" (dragstart)='dragStart($event, subcontractor, "subcontractor")'
+                (dragend)='dragEnd($event)' *ngFor='let subcontractor of subcontractors'>
+                {{subcontractor.name}}
+              </div>
+              <div class="row">
+                <div class="col justify-content-center">
+                  <nav>
+                    <ul class="pagination">
+                      <li class="page-item" [class.disabled]='subbiePage === 1'>
+                        <a class="page-link" (click)='switchPage("first","subbie")'>
+                          <i class="fas fa-angle-double-left"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='subbiePage === 1'>
+                        <a class="page-link" (click)='switchPage("previous","subbie")'>
+                          <i class="fas fa-angle-left"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='subbiePage === subbieMax'>
+                        <a class="page-link" (click)='switchPage("next","subbie")'>
+                          <i class="fas fa-angle-right"></i>
+                        </a>
+                      </li>
+                      <li class="page-item" [class.disabled]='subbiePage === subbieMax'>
+                        <a class="page-link" (click)='switchPage("last","subbie")'>
+                          <i class="fas fa-angle-double-right"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unavailable Bar -->
+        <div class="row mb-1">
+          <div class="col whiteBg">
+            <h4 class='text-center' (click)='toggleSidebar("unavailables")'>Unavailables</h4>
+            <div class='anim-collapse' *ngIf='toggleUnavailables'>
+              <div class="unavailableBlock my-1 p-1" *ngFor='let driver of absentDrivers'>
+                {{driver.firstName[0]}}.{{driver.lastName}} - {{driver.absence.driverAbsenceType.name}}
+              </div>
+              <div class="unavailableBlock my-1 p-1" *ngFor='let vorVehicle of vorVehicles'>
+                {{vorVehicle.registration}}
+                <span data-toggle="tooltip" data-placement="right"
+                  title="{{ukDate(vorVehicle.vor.startDate)}} - {{ukDate(vorVehicle.vor.endDate)}}">[VOR]</span>
+              </div>
+              <div class="unavailableBlock my-1 p-1" *ngFor='let vorTrailer of vorTrailers'>
+                {{vorTrailer.registration}}
+                <span data-toggle="tooltip" data-placement="right"
+                  title="{{ukDate(vorTrailer.vor.startDate)}} - {{ukDate(vorTrailer.vor.endDate)}}">[VOR]</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="row" *ngIf='showOrders'>
+        <div class="col m-0 py-2 px-2 whiteBg">
+          <h4 class='text-center'>Orders</h4>
+          <div class="orderBlock my-1 p-1" data-id='{{ order.id }}' data-type='order' draggable="true"
+            (dragstart)='dragStart($event, order, "order")' (dragend)='dragEnd($event)' *ngFor='let order of orders'>
+            <ng-container *ngIf='order !== undefined'>
+              <app-artic-view-order-modal [order]='this.currentOrder'></app-artic-view-order-modal>
+              <div class="row m-0 p-0">
+                <div class="col-2 m-0 p-0">
+                  <span class="badge badge-pill badge-success p-2" [class.badge-secondary]='order.orderCount === 0'
+                    [class.badge-primary]='order.orderCount > 0 && order.orderCount < order.quotes.qty'
+                    [class.badge-success]='order.orderCount === order.quotes.qty'
+                    [class.badge-danger]='order.orderCount > order.quotes.qty' *ngIf='order.quotes !== undefined'>
+                    {{order.orderCount}} / {{order.quotes.qty}}
+                  </span>
+                  <span class="badge badge-pill badge-secondary p-2" *ngIf='order.quotes === undefined'>
+                    Counting...
+                  </span>
+                </div>
+                <div class="col-8 m-0 p-0">
+                  <div class="row m-0 p-0">
+                    <div class="col m-0">
+                      {{order.account.name}}
+                    </div>
+                  </div>
+                  <div class="row m-0 p-0">
+                    <div class="col m-0">
+                      <span>{{order.description}} ({{order.time}})</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col m-0 p-0">
+                  <button class='btn-sm btn-info m-0'
+                    (click)='this.currentOrder = order; this.openModal("articOrderInformationModal")'>?</button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div class="row">
+            <div class="col justify-content-center">
+              <nav>
+                <ul class="pagination">
+                  <li class="page-item" [class.disabled]='orderPage === 1'>
+                    <a class="page-link" (click)='switchPage("first","order")'>
+                      <i class="fas fa-angle-double-left"></i>
+                    </a>
+                  </li>
+                  <li class="page-item" [class.disabled]='orderPage === 1'>
+                    <a class="page-link" (click)='switchPage("previous","order")'>
+                      <i class="fas fa-angle-left"></i>
+                    </a>
+                  </li>
+                  <li class="page-item" [class.disabled]='orderPage === orderMax'>
+                    <a class="page-link" (click)='switchPage("next","order")'>
+                      <i class="fas fa-angle-right"></i>
+                    </a>
+                  </li>
+                  <li class="page-item" [class.disabled]='orderPage === orderMax'>
+                    <a class="page-link" (click)='switchPage("last","order")'>
+                      <i class="fas fa-angle-double-right"></i>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf='!this.timelineSettings.timelineOrientationArtic'>
+      <!-- Vertical Timeline -->
+      <div class="col mr-0 mb-0">
+        <div class="row mr-3 mb-3" *ngIf='this.routes.length === 0'>
+          <div class="col-12 p-1 unitHeader whiteBg">
+            No Routes Added for Today
+          </div>
+        </div>
+
+        <div class="row mr-3 mb-3" *ngIf='this.routes.length > 0'>
+          <div class="col-3 p-4" (dragenter)='this.dragEnter($event, item, unit)' (dragleave)='this.dragLeave($event)'
+            (drop)='this.onDrop($event)' (dragover)='$event.preventDefault();'
+            *ngFor='let unit of this.routes;let i=index'>
+            <div class="row" [attr.data-id]='i'>
+              <div class="col unitHeader whiteBg text-center font-weight-bold p-3"
+                [class.incompleteRoute]='(unit.driverId === -1 || unit.trailerId === -1 || unit.vehicleId === -1) || unit.subcontractorId === -1'
+                [class.completeRoute]='(unit.driverId !== -1 && unit.trailerId !== -1 && unit.vehicleId !== -1) || unit.subcontractorId !== -1'
+                [attr.data-id]='i'>
+                {{unit.name}}: {{unit.driverStartTime}}
+
+                <button class='btn btn-sm btn-info float-right mt-0' (click)='this.editRoute(unit)'><i
+                    class="fas fa-edit" [attr.data-id]='i'></i></button>
+                <button class='btn btn-sm btn-info float-right mt-0' (click)='this.deleteRoute(unit)'><i
+                    class="fas fa-trash" [attr.data-id]='i'></i></button><br />
+                <span *ngIf='unit.upcomingInspection !== undefined' class='text-danger'>Inspection Due:
+                  {{unit.upcomingInspection}}</span>
+
+              </div>
+            </div>
+            <div class="row whiteBg" [attr.data-id]='i'>
+              <!-- Block for Vehicle -->
+              <div class='px-3 py-1 m-1 col' (drop)='this.onDrop($event);$event.stopPropagation();' [attr.data-id]='i'
+                [class.driverBlock]='unit.vehicleId !== -1' [class.subbieBlock]='unit.subcontractorId !== -1'
+                [class.emptyBlock]='unit.vehicleId === -1'>
+                <span [attr.data-id]='i' *ngIf='unit.vehicleId === -1 && unit.subcontractorId === -1'>Vehicle</span>
+                <span [attr.data-id]='i' *ngIf='unit.subcontractorId !== -1'>Own Vehicle</span>
+                <span [attr.data-id]='i'
+                  *ngIf='unit.vehicleId !== -1 && unit.subcontractorId === -1'>{{unit.vehicle.registration}}</span>
+                <i [attr.data-id]='i' class="fas fa-truck-pickup float-right"></i>
+              </div>
+              <!-- Block for Trailer -->
+              <div class='px-3 py-1 m-1 col-6' (drop)='this.onDrop($event);$event.stopPropagation();' [attr.data-id]='i'
+                [class.driverBlock]='unit.trailerId !== -1' [class.subbieBlock]='unit.subcontractorId !== -1'
+                [class.emptyBlock]='unit.trailerId === -1'>
+                <span [attr.data-id]='i' *ngIf='unit.trailerId === -1 && unit.subcontractorId === -1'>Trailer</span>
+                <span [attr.data-id]='i' *ngIf='unit.subcontractorId !== -1'>Own Trailer</span>
+                <span [attr.data-id]='i'
+                  *ngIf='unit.trailerId > 0 && unit.subcontractorId === -1'>{{unit.trailer.registration}}</span>
+                <span [attr.data-id]='i' *ngIf='unit.trailerId === 0 && unit.subcontractorId === -1'>3rd Party</span>
+                <i [attr.data-id]='i' class="fas fa-trailer float-right"></i>
+              </div>
+            </div>
+            <div class="row whiteBg" [attr.data-id]='i'>
+              <!-- Block for Driver -->
+              <div
+                title='{{!unit.driver ? "n/a": unit.driver.firstName + " " + unit.driver.lastName}} | Phone: {{getContact(unit)}}'
+                class='px-3 py-1 m-1 col' (drop)='this.onDrop($event);$event.stopPropagation();' [attr.data-id]='i'
+                [class.driverBlock]='unit.driverId !== -1' [class.subbieBlock]='unit.subcontractorId !== -1'
+                [class.emptyBlock]='unit.driverId === -1'>
+                <span [attr.data-id]='i' *ngIf='unit.driverId === -1 && unit.subcontractorId === -1'>Driver</span>
+                <ng-container *ngIf='unit.subcontractor !== undefined'>
+                  <span [attr.data-id]='i' *ngIf='unit.subcontractorId !== -1'>{{unit.subcontractor.name}}</span>
+                </ng-container>
+                <span [attr.data-id]='i'
+                  *ngIf='unit.subcontractorId !== -1 && unit.subcontractor === undefined'>Driver</span>
+                <span [attr.data-id]='i'
+                  *ngIf='unit.driverId !== -1 && unit.subcontractorId === -1'>{{unit.driver.firstName[0]}}.
+                  {{unit.driver.lastName}}</span>
+                <i [attr.data-id]='i' class="fas fa-user float-right"></i>
+              </div>
+
+              <!-- Block for Start Time -->
+              <div class='px-3 py-1 m-1 col' [attr.data-id]='i' [class.timeBlock]='unit.driverStartTime !== ""'
+                [class.emptyBlock]='unit.driver === -1'>
+                <span [attr.data-id]='i' *ngIf='unit.driverStartTime === ""'>
+                  + Start Time
+                </span>
+                <span [attr.data-id]='i' *ngIf='unit.driverStartTime !== ""'>{{unit.driverStartTime}} Start</span>
+                <i [attr.data-id]='i' class="fas fa-clock float-right"></i>
+              </div>
+            </div>
+            <div class="row jobBg pb-3" [attr.data-id]='i'>
+              <div class="col-6 py-0 px-0 collapsedJobBlock " [class.collapsedJobBlockPending]='job.jobStatusId === 1'
+                [class.collapsedJobBlockSent]='job.jobStatusId === 2'
+                [class.collapsedJobBlockDeleted]='job.jobStatusId === 3'
+                [class.collapsedJobBlockSigned]='job.jobStatusId === 4' *ngFor='let job of unit.jobs'
+                [attr.data-id]='i'>
+                <div class="row m-0 p-0" [attr.data-id]='i'>
+                  <div class="col jobDetails" [attr.data-id]='i'>
+                    <span [attr.data-id]='i'>({{job.time}}) {{job.order.account.name}} | </span>
+                    {{job.order.description}}
+                  </div>
+                </div>
+                <div class="row m-0 p-0" [attr.data-id]='i'>
+                  <div class="col m-0" [attr.data-id]='i'>
+                    <i class="fas fa-caret-up" (click)='updateJob("qtyUp",job)' data-toggle="tooltip"
+                      data-placement="top" title="+" *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'></i>
+                    Qty: {{job.qty}}
+                    <i class="fas fa-caret-down" (click)='updateJob("qtyDown",job)' data-toggle="tooltip"
+                      data-placement="top" title="-" *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'></i>
+                    <i class="fas fa-check-circle ml-3" *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'
+                      (click)='updateJob("approve",job)' data-toggle="tooltip" data-placement="top"
+                      title="Approve Job"></i>
+                    <i class="fas fa-undo ml-3" *ngIf='job.jobStatusId === 2' (click)='updateJob("unapprove",job)'
+                      data-toggle="tooltip" data-placement="top" title="Unapprove Job"></i>
+                    <i class="fas fa-ban ml-3" *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'
+                      (click)='updateJob("remove",job)' data-toggle="tooltip" data-placement="top"
+                      title="Delete Job"></i>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf='this.timelineSettings.timelineOrientationArtic'>
+      <!-- Horizontal Timeline -->
+      <div class="col mr-0 mb-0">
+        <div class="row mr-3 mb-3" *ngIf='this.routes.length === 0'>
+          <div class="col-12 p-1 unitHeader whiteBg">
+            No Routes Added for Today
+          </div>
+        </div>
+        <div class="row mr-3 mb-3" (dragenter)='this.dragEnter($event, item, unit)' (dragleave)='this.dragLeave($event)'
+          (drop)='this.onDrop($event)' (dragover)='$event.preventDefault();'
+          *ngFor='let unit of this.routes;let i=index'>
+          <div class="col-12 p-1 unitHeader whiteBg"
+            [class.incompleteRoute]='(unit.driverId === -1 || unit.trailerId === -1 || unit.vehicleId === -1) || unit.subcontractorId === -1'
+            [class.completeRoute]='(unit.driverId !== -1 && unit.trailerId !== -1 && unit.vehicleId !== -1) || unit.subcontractorId !== -1'
+            [attr.data-id]='i'>
+            <div class=' row routeName'>
+              <div class="col" [attr.data-id]='i'>
+                {{unit.name}}
+
+                <button class='btn btn-sm btn-info ml-5' (click)='this.editRoute(unit)'><i class="fas fa-edit"
+                    [attr.data-id]='i'></i></button>
+                <button class='btn btn-sm btn-info' (click)='this.deleteRoute(unit)'><i class="fas fa-trash"
+                    [attr.data-id]='i'></i></button>
+                <br />
+                <span *ngIf='unit.upcomingInspection !== undefined' class='text-danger'>Inspection Due:
+                  {{unit.upcomingInspection}}</span>
+              </div>
+
+            </div>
+            <div class="row justify-content-between mx-2" [attr.data-id]='i' [class.my-0]='!unit.expand'>
+              <div class="col-9" [attr.data-id]='i'>
+                <div class="row" [attr.data-id]='i'>
+                  <!-- Block for Vehicle -->
+                  <div class='px-3 py-1 m-1 col' (drop)='this.onDrop($event);$event.stopPropagation();'
+                    [attr.data-id]='i' [class.driverBlock]='unit.vehicleId !== -1'
+                    [class.subbieBlock]='unit.subcontractorId !== -1' [class.emptyBlock]='unit.vehicleId === -1'>
+                    <span [attr.data-id]='i' *ngIf='unit.vehicleId === -1 && unit.subcontractorId === -1'>Vehicle</span>
+                    <span [attr.data-id]='i' *ngIf='unit.subcontractorId !== -1'>Own Vehicle</span>
+                    <span [attr.data-id]='i'
+                      *ngIf='unit.vehicleId !== -1 && unit.subcontractorId === -1'>{{unit.vehicle.registration}}</span>
+                    <i [attr.data-id]='i' class="fas fa-truck-pickup float-right"></i>
+                  </div>
+
+                  <!-- Block for Trailer -->
+                  <div class='px-3 py-1 m-1 col' (drop)='this.onDrop($event);$event.stopPropagation();'
+                    [attr.data-id]='i' [class.driverBlock]='unit.trailerId !== -1'
+                    [class.subbieBlock]='unit.subcontractorId !== -1' [class.emptyBlock]='unit.trailerId === -1'>
+                    <span [attr.data-id]='i' *ngIf='unit.trailerId === -1 && unit.subcontractorId === -1'>Trailer</span>
+                    <span [attr.data-id]='i' *ngIf='unit.subcontractorId !== -1'>Own Trailer</span>
+                    <span [attr.data-id]='i'
+                      *ngIf='unit.trailerId > 0 && unit.subcontractorId === -1'>{{unit.trailer.registration}}</span>
+                    <span [attr.data-id]='i' *ngIf='unit.trailerId === 0 && unit.subcontractorId === -1'>3rd
+                      Party</span>
+                    <i [attr.data-id]='i' class="fas fa-trailer float-right"></i>
+                  </div>
+
+                  <!-- Block for Driver -->
+                  <div title='Phone: {{getContact(unit)}}' class='px-3 py-1 m-1 col'
+                    (drop)='this.onDrop($event);$event.stopPropagation();' [attr.data-id]='i'
+                    [class.driverBlock]='unit.driverId !== -1' [class.subbieBlock]='unit.subcontractorId !== -1'
+                    [class.emptyBlock]='unit.driverId === -1'>
+                    <span [attr.data-id]='i' *ngIf='unit.driverId === -1 && unit.subcontractorId === -1'>Driver</span>
+                    <ng-container *ngIf='unit.subcontractor !== undefined'>
+                      <span [attr.data-id]='i' *ngIf='unit.subcontractorId !== -1'>{{unit.subcontractor.name}}</span>
+                    </ng-container>
+                    <span [attr.data-id]='i'
+                      *ngIf='unit.subcontractorId !== -1 && unit.subcontractor === undefined'>Driver</span>
+                    <span [attr.data-id]='i'
+                      *ngIf='unit.driverId !== -1 && unit.subcontractorId === -1'>{{unit.driver.firstName}}
+                      {{unit.driver.lastName}}</span>
+                    <i [attr.data-id]='i' class="fas fa-user float-right"></i>
+                  </div>
+
+                  <!-- Block for Start Time -->
+                  <div class='px-3 py-1 m-1 col' [attr.data-id]='i' [class.timeBlock]='unit.driverStartTime !== ""'
+                    [class.emptyBlock]='unit.driver === -1'>
+                    <span [attr.data-id]='i' *ngIf='unit.driverStartTime === ""'>
+                      + Start Time
+                    </span>
+                    <span [attr.data-id]='i' *ngIf='unit.driverStartTime !== ""'>{{unit.driverStartTime}} Start</span>
+                    <i [attr.data-id]='i' class="fas fa-clock float-right"></i>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-1 p-0 m-0" *ngIf='unit.jobs !== undefined'>
+                <button *ngIf='unit.expand && unit.jobs.length > 0' class='btn btn-sm btn-info float-right'
+                  (click)='unit.expand = !unit.expand'><i class="fas fa-caret-up"></i></button>
+                <button *ngIf='!unit.expand && unit.jobs.length > 0' class='btn btn-sm btn-info float-right'
+                  (click)='unit.expand = !unit.expand'><i class="fas fa-caret-down"></i></button>
+                <button *ngIf='unit.jobs.length === 0' class='btn btn-sm btn-info float-right'
+                  (click)='unit.expand = !unit.expand'><i class="fas fa-pause"></i></button>
+
+
+              </div>
+            </div>
+            <div class="row m-0 p-0" [attr.data-id]='i' *ngIf='!unit.expand'>
+              <div class="col py-0 px-2 collapsedJobBlock " [class.collapsedJobBlockPending]='job.jobStatusId === 1'
+                [class.collapsedJobBlockSent]='job.jobStatusId === 2'
+                [class.collapsedJobBlockDeleted]='job.jobStatusId === 3'
+                [class.collapsedJobBlockSigned]='job.jobStatusId === 4' *ngFor='let job of unit.jobs'
+                [attr.data-id]='i'>
+                <div class="row m-0 p-0" [attr.data-id]='i'>
+                  <div class="col jobDetails" [attr.data-id]='i'>
+                    <span [attr.data-id]='i'>{{job.order.account.name}} | </span> {{job.order.description}}
+                  </div>
+                </div>
+                <div class="row m-0 p-0" [attr.data-id]='i'>
+                  <div class="col m-0" [attr.data-id]='i'>
+                    <i class="fas fa-caret-up" (click)='updateJob("qtyUp",job)' data-toggle="tooltip"
+                      data-placement="top" title="+" *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'></i>
+                    Qty: {{job.qty}}
+                    <i class="fas fa-caret-down" (click)='updateJob("qtyDown",job)' data-toggle="tooltip"
+                      data-placement="top" title="-" *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'></i>
+                    <i class="fas fa-check-circle ml-3" *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'
+                      (click)='updateJob("approve",job)' data-toggle="tooltip" data-placement="top"
+                      title="Approve Job"></i>
+                    <i class="fas fa-undo ml-3" *ngIf='job.jobStatusId === 2' (click)='updateJob("unapprove",job)'
+                      data-toggle="tooltip" data-placement="top" title="Unapprove Job"></i>
+                    <i class="fas fa-ban ml-3" *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'
+                      (click)='updateJob("remove",job)' data-toggle="tooltip" data-placement="top"
+                      title="Delete Job"></i>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-12 p-0 unitTimeline" *ngIf='unit.expand'>
+            <div class="row m-0 p-0">
+              <div class="col jobBlock whiteBg p-0 mt-0" *ngFor='let job of unit.jobs'>
+                <div class="row p-0 m-0">
+                  <div class="col jobBlockTop">
+                    <span [attr.data-id]='i'>{{job.order.account.name}} | </span> {{job.order.description}}
+                  </div>
+                </div>
+
+                <div class="row p-0 m-0">
+                  <div class="col infoBlock">
+                    <span>Driver: </span>{{unit.driver.firstName}} {{unit.driver.lastName}} (<i
+                      class="fas fa-phone"></i> {{unit.driver.contact}})
+                  </div>
+                </div>
+                <div class="row p-0 m-0">
+                  <div class="col infoBlock">
+                    <span>Description </span>{{job.order.description}}
+                  </div>
+                  <div class="col infoBlock">
+                    <i class="fas fa-user-tie"></i> {{job.order.contactName}}
+                  </div>
+                </div>
+                <div class="row p-0 m-0">
+                  <div class="col infoBlock">
+                    <span>Driver Notes </span>{{job.order.driverNotes}}
+                  </div>
+                  <div class="col infoBlock">
+                    <i class="fas fa-phone"></i> {{job.order.contactTelephone}}
+                  </div>
+                </div>
+
+                <div class="row p-0 m-0">
+                  <div class="col infoBlock">
+                    Qty:
+                  </div>
+                  <div class="col infoBlock">
+                    <input class='form-control' type="number" [(ngModel)]='job.qty'
+                      (change)='this.updateJob("qtyChange",job)' *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'>
+                    <strong *ngIf='job.jobStatusId === 4'>{{job.qty}}</strong>
+                  </div>
+                  <div class="col infoBlock btn-group">
+                    <button class='btn btn-success ' *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'
+                      (click)='updateJob("approve",job)' data-toggle="tooltip" data-placement="top" title="Approve Job">
+                      <i class="fas fa-check-circle"></i>
+                    </button>
+                    <button class='btn btn-warning' *ngIf='job.jobStatusId === 2' (click)='updateJob("unapprove",job)'
+                      data-toggle="tooltip" data-placement="top" title="Unapprove Job">
+                      <i class="fas fa-undo"></i>
+                    </button>
+                    <button class='btn btn-danger' *ngIf='job.jobStatusId === 1 || job.jobStatusId === 2'
+                      (click)='updateJob("remove",job)' data-toggle="tooltip" data-placement="top" title="Delete Job">
+                      <i class="fas fa-ban"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

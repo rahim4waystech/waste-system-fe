@@ -1,0 +1,114 @@
+<div class="fullcontainer ml-5">
+  <app-workshop-nav></app-workshop-nav>
+  <div class="p-3">
+    <div class="row content-block mt-2">
+      <h4 *ngIf='this.vehicleId > 0'>New Defect for: {{this.vehicle.registration}}</h4>
+    </div>
+    <app-audit-line [data]='this.defect'></app-audit-line>
+    <div class="row">
+      <div class="col">
+        <app-tabs>
+          <app-tab title='Defect' class='pt-0'>
+            <app-defect-form
+              *ngIf='this.defect.id !== -1'
+              [defect]='this.defect'
+              [vehicle]='this.vehicle'
+              [editToggle]='this.editToggle'
+            ></app-defect-form>
+          </app-tab>
+          <app-tab title='Update Status'>
+            <div class="row">
+              <div class="col" *ngIf='this.defect.started !== null'>
+                <table class='table table-bordered'>
+                  <thead class='thead-dark'>
+                    <tr>
+                      <th>Fitter</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor='let fitter of this.fitters'>
+                      <td>{{fitter.fitter.firstName}} {{fitter.fitter.lastName}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col">
+                <button
+                  *ngIf='this.defect.started === null'
+                  class='btn btn-block btn-info'
+                  (click)='this.startDefect()'>
+                  Start Defect
+                </button>
+                <button
+                  *ngIf='this.defect.started !== null'
+                  disabled
+                  class='btn btn-block btn-success'>
+                  Defect Started - {{parseDateTime(this.defect.started)}}
+                </button>
+                <button
+                  *ngIf='this.defect.started !== null && this.defect.ended === null'
+                  (click)='this.endDefect()'
+                  class='btn btn-block btn-info'>
+                  End Defect
+                </button>
+                <button
+                  *ngIf='this.defect.started !== null && this.defect.ended !== null'
+                  class='btn btn-block btn-success' disabled>
+                  Defect Ended - {{parseDateTime(this.defect.ended)}}
+                </button>
+              </div>
+            </div>
+          </app-tab>
+
+          <app-parts-view [defectId]='this.defectId' [vehicleId]='-1' [allowLink]='true'></app-parts-view>
+
+          <app-tab title='Documents'>
+            <div class="row">
+              <div class="col">
+                <button class='btn btn-block btn-success' (click)='openModal("documentUploadModal")'>Upload Document</button>
+              </div>
+              <app-document-upload-modal [vehicleId]='this.defect.vehicleId'></app-document-upload-modal>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <app-grid
+                  entity='documents'
+                  [filters]='this.filters'
+                  [columns]='this.columns'
+                  [buttons]='this.buttons'
+                  [searchFilters]='this.searchFilters'
+                  [searchFields]='this.searchFields'
+                  >
+                </app-grid>
+              </div>
+            </div>
+          </app-tab>
+          <app-tab title='Sign Off' *ngIf='this.canSign'>
+            <p>
+              By clicking the Sign Off button, I verify that I have inspected the details of defect
+              rectification for {{this.defect.vehicle.registration }} and I am happy that all work has
+              been completed to a road-legal quality and it is safe to return to the road and revoke
+              its current Vehicle Off Road (VOR) status unless it has additional outstanding VOR defects.
+            </p>
+            <button class='btn btn-block btn-success' (click)='signOffDefect()'>Sign Off Defect</button>
+          </app-tab>
+          <app-tab title='Edit' *ngIf='this.defect.started === null && this.defect.ended === null && this.defect.finalSignoff === null'>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch1" [(ngModel)]='this.editToggle'>
+              <label *ngIf='!this.editToggle' class="custom-control-label" for="customSwitch1">Editing Disabled</label>
+              <label *ngIf='this.editToggle' class="custom-control-label" for="customSwitch1">Editing Enabled</label>
+            </div>
+          </app-tab>
+        </app-tabs>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col btn-group">
+        <button class='btn btn-success' *ngIf='editToggle' (click)='save()'>Save</button>
+        <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

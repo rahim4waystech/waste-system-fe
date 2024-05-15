@@ -1,0 +1,236 @@
+<div class="alert alert-success" *ngIf='saveSuccess'>
+  Saved Recurrence!
+</div>
+<div class="alert alert-danger" *ngIf='saveFail'>
+  Could not save
+</div>
+
+<ng-container *ngIf='!this.showRecurrence'>
+  <div class="row mb-3">
+    <div class="col">
+      <button class='btn btn-info btn-block' (click)='this.showRecurrence = !this.showRecurrence'>Add Recurrence</button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf='this.showRecurrence'>
+  <div class="row">
+    <div class="col">
+      <table class='table'>
+        <tr>
+          <td>
+            <div class='input-group'>
+              <div class='input-group-prepend'>
+                <div class="input-group-text">From:</div>
+              </div>
+              <input type="date" class='form-control' [(ngModel)]='this.recurrenceStartDate' [class.is-valid]='this.recurrenceStartDate !== ""' [class.is-invalid]='this.recurrenceStartDate === ""'/>
+            </div>
+          </td>
+          <td>
+            <div class='input-group'>
+              <div class='input-group-prepend'>
+                <div class="input-group-text">Until:</div>
+              </div>
+              <input type="date" class='form-control' [(ngModel)]='this.recurrenceEndDate' [class.is-valid]='this.recurrenceEndDate !== ""' [class.is-invalid]='this.recurrenceEndDate === ""'/>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <app-tabs>
+    <app-tab title='Days' *ngIf='this.recurrenceType === "daily" || this.recurrenceType === ""'>
+      <div class="row">
+        <div class='input-group'>
+          <div class='input-group-prepend'>
+            <div class="input-group-text">Repeat Every: </div>
+          </div>
+          <input type="number" class='form-control' [(ngModel)]='dailyValues.day'/>
+          <div class='input-group-append'>
+            <div class="input-group-text">Days</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <span class='btn-group'>
+            <button class='btn btn-success' (click)='this.saveDaily();$event.preventDefault();'>Update / Save Daily</button>
+          </span>
+        </div>
+      </div>
+    </app-tab>
+    <app-tab title='Weeks' *ngIf='this.recurrenceType === "weekly" || this.recurrenceType === ""'>
+      <div class="row">
+        <div class='input-group'>
+          <div class='input-group-prepend'>
+            <div class="input-group-text">Repeat Every: </div>
+          </div>
+          <input type="number" class='form-control' [(ngModel)]='weeklyValues.week'/>
+          <div class='input-group-append'>
+            <div class="input-group-text">Weeks on..</div>
+          </div>
+        </div>
+        <div class="col">
+          <input type='checkbox' [(ngModel)]="weeklyValues.days.monday" [ngModelOptions]="{standalone: true}" />&nbsp;Monday
+          <input type='checkbox' [(ngModel)]="weeklyValues.days.tuesday" [ngModelOptions]="{standalone: true}" />&nbsp;Tuesday
+          <input type='checkbox' [(ngModel)]="weeklyValues.days.wednesday" [ngModelOptions]="{standalone: true}" />&nbsp;Wednesday
+          <input type='checkbox' [(ngModel)]="weeklyValues.days.thursday" [ngModelOptions]="{standalone: true}" />&nbsp;Thursday
+          <input type='checkbox' [(ngModel)]="weeklyValues.days.friday" [ngModelOptions]="{standalone: true}" />&nbsp;Friday
+          <input type='checkbox' [(ngModel)]="weeklyValues.days.saturday" [ngModelOptions]="{standalone: true}" />&nbsp;Saturday
+          <input type='checkbox' [(ngModel)]="weeklyValues.days.sunday" [ngModelOptions]="{standalone: true}" />&nbsp;Sunday
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <span class='btn-group'>
+            <button class='btn btn-success' (click)='this.saveWeekly();$event.preventDefault();'>Update / Save Weekly</button>
+          </span>
+        </div>
+      </div>
+    </app-tab>
+    <app-tab title='Months (by day No)' *ngIf='this.recurrenceType === "monthByDayNo" || this.recurrenceType === ""'>
+      <div class="row">
+        <div class='input-group'>
+          <div class='input-group-prepend'>
+            <div class="input-group-text">Day </div>
+          </div>
+          <input type="number" class='form-control' [(ngModel)]='monthByDayNoValues.day'/>
+          <div class='input-group-append'>
+            <div class="input-group-text">of every</div>
+          </div>
+        </div>
+        <div class='input-group'>
+          <input type="number" class='form-control' [(ngModel)]='monthByDayNoValues.month'/>
+          <div class='input-group-append'>
+            <div class="input-group-text">month(s)</div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <span class='btn-group'>
+            <button class='btn btn-success' (click)='this.saveMonthlyByDayNo();$event.preventDefault();'>Update / Save Monthly By Day No.</button>
+          </span>
+        </div>
+      </div>
+    </app-tab>
+    <app-tab title='Months (by day)' *ngIf='this.recurrenceType === "monthByDay" || this.recurrenceType === ""'>
+      <div class="row">
+        <div class='input-group'>
+          <div class='input-group-prepend'>
+            <div class="input-group-text">The </div>
+          </div>
+          <select class='form-control' (change)='selectMonthByDayValuesInterval($event)'>
+            <option value='1' [selected]='monthByDayValues.interval === 1'>First</option>
+            <option value='2' [selected]='monthByDayValues.interval === 2'>Second</option>
+            <option value='3' [selected]='monthByDayValues.interval === 3'>Third</option>
+            <option value='4' [selected]='monthByDayValues.interval === 4'>Fourth</option>
+            <option value='5' [selected]='monthByDayValues.interval === 5'>Fifth</option>
+          </select>
+        </div>
+        <div class='input-group'>
+          <select class='form-control' (change)='selectMonthByDayDay($event)'>
+            <option *ngFor='let item of this.days' [value]='item.value' [selected]='this.monthByDayValues.day === item.value'>{{item.name}}</option>
+          </select>
+          <div class='input-group-append'>
+            <div class="input-group-text">of every</div>
+          </div>
+        </div>
+        <div class='input-group'>
+          <input type="number" class='form-control' [(ngModel)]='monthByDayValues.month'/>
+          <div class='input-group-append'>
+            <div class="input-group-text">month(s)</div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <span class='btn-group'>
+            <button class='btn btn-success' (click)='this.saveMonthlyByDay();$event.preventDefault();'>Update / Save Monthly By Day No.</button>
+          </span>
+        </div>
+      </div>
+    </app-tab>
+    <app-tab title='Years' *ngIf='this.recurrenceType === "year" || this.recurrenceType === ""'>
+      <div class="row">
+        <div class='input-group'>
+          <div class='input-group-prepend'>
+            <div class="input-group-text">Recur every</div>
+          </div>
+          <input type="number" class='form-control' [(ngModel)]='yearValues.year'/>
+          <div class='input-group-append'>
+            <div class="input-group-text">Year(s)</div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <span class='btn-group'>
+            <button class='btn btn-success' (click)='this.saveYearly();$event.preventDefault();'>Update / Save Yearly</button>
+          </span>
+        </div>
+      </div>
+    </app-tab>
+    <app-tab title='Years On Day No' *ngIf='this.recurrenceType === "yearByDayNo" || this.recurrenceType === ""'>
+      <div class="row">
+        <div class='input-group'>
+          <div class='input-group-append'>
+            <div class="input-group-text">On</div>
+          </div>
+          <select class='form-control' (change)='selectYearByDayNoInterval($event)'>
+            <option *ngFor='let item of this.months' [value]='item.value' [selected]='this.yearByDayNo.month === item.value'>{{item.name}}</option>
+          </select>
+        </div>
+        <div class='input-group'>
+          <input type="number" class='form-control' [(ngModel)]='yearByDayNo.day'/>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <span class='btn-group'>
+            <button class='btn btn-success' (click)='this.saveYearlyByDayNo();$event.preventDefault();'>Update / Save Yearly By Day No</button>
+          </span>
+        </div>
+      </div>
+    </app-tab>
+    <app-tab title='Years On Day' *ngIf='this.recurrenceType === "yearByDay" || this.recurrenceType === ""'>
+      <div class="row">
+        <div class='input-group'>
+          <div class='input-group-prepend'>
+            <div class="input-group-text">On the</div>
+          </div>
+          <select class='form-control' (change)='selectYearByDayInterval($event)'>
+            <option value='1' [selected]='this.yearByDay.interval === 1'>First</option>
+            <option value='2' [selected]='this.yearByDay.interval === 2'>Second</option>
+            <option value='3' [selected]='this.yearByDay.interval === 3'>Third</option>
+            <option value='4' [selected]='this.yearByDay.interval === 4'>Fourth</option>
+          </select>
+        </div>
+        <div class='input-group'>
+          <select class='form-control' (change)='selectYearByDayDay($event)'>
+            <option *ngFor='let item of this.days' [value]='item.value' [selected]='this.yearByDay.day === item.value'>{{item.name}}</option>
+          </select>
+          <div class='input-group-append'>
+            <div class="input-group-text">of</div>
+          </div>
+        </div>
+        <select class='form-control' (change)='selectYearByDayMonth($event)'>
+          <option *ngFor='let item of this.months' [value]='item.value' [selected]='this.yearByDay.month === item.value'>{{item.name}}</option>
+        </select>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <span class='btn-group'>
+            <button class='btn btn-success' (click)='this.saveYearlyByDay();$event.preventDefault();'>Update / Save Yearly By Day</button>
+          </span>
+        </div>
+      </div>
+    </app-tab>
+    <app-tab title='Change Recurrence' *ngIf='this.recurrenceType !== ""'>
+      <button class='btn btn-warning' (click)='this.clearRecurrence();$event.preventDefault();'>Clear Recurrence?</button>
+    </app-tab>
+  </app-tabs>
+</ng-container>

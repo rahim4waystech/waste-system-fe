@@ -1,0 +1,11 @@
+<jw-modal id='changeCustomerInvoiceModal'>
+  <h1 class='header'>Change Customer</h1>
+
+
+  <ng-select [(ngModel)]="this.customerId" (change)='this.customerId = +$event;'>
+    <ng-option *ngFor='let item of this.accounts' [selected]='this.customerId === item.id' [value]='item.id'>{{ item.name }}</ng-option>
+ </ng-select>
+
+    <button class='btn btn-success' (click)='save()'>Save</button>&nbsp;
+    <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+</jw-modal>

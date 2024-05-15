@@ -1,0 +1,4 @@
+<ul class='tabs'>
+  <li [class.active]='tab.active' [class.inverse]='this.inverse' [class.invalid]='tab.invalid' *ngFor="let tab of tabs" (click)="selectTab(tab)">{{ tab.title }}</li>
+</ul>
+<ng-content></ng-content>

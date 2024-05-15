@@ -1,0 +1,39 @@
+
+<div class="fullcontainer" >
+   <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class='titleContainer'>
+                <h3 class='header'>Shredder Job Sign off</h3> 
+                </div>
+            </div>
+            <div class="col-lg-6 my-auto">
+              
+    <div>
+      <!-- <button class='btn btn-secondary' routerLink='/quoting/new/accounts'><i class="fas fa-plus"></i> New</button>&nbsp;
+      <button class='btn btn-secondary' routerLink='/quoting/products'><i class="fas fa-boxes"></i> Manage Products</button> -->
+    </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-tabs [inverse]='true'>
+            <app-tab [active]='true' title='Transport Sign off'>
+              <app-job-signoff-shredder-transport></app-job-signoff-shredder-transport>
+            </app-tab>
+            <app-tab  title='Manager Sign off'>
+              <app-job-signoff-shredder-manager></app-job-signoff-shredder-manager>
+            </app-tab>
+          </app-tabs>
+        </div>
+      </div>
+    </div>
+   </div>
+  
+
+  
+  
+  

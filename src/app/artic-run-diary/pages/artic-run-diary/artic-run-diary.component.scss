@@ -1,0 +1,66 @@
+.dateSelectorContainer {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+  
+    button {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+  
+    i {
+      font-size: 2rem;
+  
+      &:hover {
+        color: #2196f3;
+        cursor: pointer;
+      }
+    }
+}  
+
+.datePicker {
+    display: inline-block;
+    position: absolute;
+    left: 42rem;
+    top: 7rem;
+  }
+
+.dateSelectorBox {
+    background-color: transparent;
+    padding: 0.3rem;
+    width: 20rem;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 0.7rem;
+    color: #34495e;
+    font-weight: bold;
+
+    &:hover {
+      color:#2196f3;
+      cursor: pointer;
+    }
+}
+
+.gridPagination {
+    width:100%;
+      ul {
+        display: table;
+        margin: 0 auto;
+          list-style-type: none;
+      }
+
+      li {
+          display: inline-block;
+
+          a.active {
+              text-decoration: underline;
+          }
+      }
+  }
+
+  table {
+    td {
+      color: white;
+    }
+  }

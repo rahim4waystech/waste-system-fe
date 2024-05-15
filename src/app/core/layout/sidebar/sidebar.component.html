@@ -1,0 +1,66 @@
+<div class="sidebar pl-4 card" *ngIf='this.getVisible()'>
+  <nav class="navbar bg-light navbar-light">
+      <a  href='/home' class="d-block navbar-brand mx-auto mb-2 text-center  w-100">
+         <img src="/assets/img/logo.png" height="100px">
+      </a>
+      <div class="d-flex align-items-center ms-4 mb-4">
+          <div class="position-relative">
+              <img class="rounded-circle" src="/assets/img/user.jpg" alt="" style="width: 40px; height: 40px;">
+              <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+          </div>
+          <div class="ms-3">
+              <h6 class="mb-0">{{ this.getUsername() }}</h6>
+          </div>
+      </div>
+      <div class="navbar-nav w-100"  *ngFor='let item of this.menuItems'>
+        <ng-container *ngIf='item.subItems.length === 0'>
+          <a
+            [class.active]='isActive(item.isActive)'
+            placement="right"
+            tooltip="{{item.title}}"
+            data-container='body'
+            routerLink='{{item.link}}'
+            (click)='goToLink(item.link)'
+            style='text-transform:uppercase'
+            class="nav-item nav-link"
+          >
+            <i class='{{item.icon}} fa-fa me-2'></i>{{ item.title }}
+          </a>
+        </ng-container>
+        <div class="nav-item dropdown">
+          <ng-container  *ngIf='item.subItems.length > 0 && this.isItemShown(item.subItems)'>
+            <a
+              [class.active]='isActive(item.isActive)'
+              placement="right"
+              tooltip="{{item.title}}"
+              routerLink='{{item.link}}'
+              (click)='item.display = !item.display'
+              style='text-transform:uppercase'
+              class="nav-link dropdown-toggle" 
+              data-bs-toggle="dropdown"
+            >
+              <i *ngIf='item.display' class='fas fa-caret-square-left fa-fa'></i>
+              <i *ngIf='!item.display' class='{{item.icon}} fa-fa'></i>
+              {{ item.title }}
+            </a>
+            <div class="dropdown-menu bg-transparent border-0">
+              <ng-container *ngFor='let subItem of item.subItems'>
+                <a class='subItemLink'
+                [class.active]='isActive(subItem.isActive)'
+                placement="right"
+                data-container='body'
+                tooltip="{{subItem.title}}"
+                routerLink='{{subItem.link}}'
+                (click)='goToLink(subItem.link)'
+                class="dropdown-item"
+              ><i class="{{subItem.icon}} fa-fa"></i>
+              {{ subItem.title }}
+              </a>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+
+      </div>
+  </nav>
+</div>

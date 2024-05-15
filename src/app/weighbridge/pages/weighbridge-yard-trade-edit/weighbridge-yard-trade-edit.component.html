@@ -1,0 +1,132 @@
+<app-yard-trade-pricing-add-modal></app-yard-trade-pricing-add-modal>
+<div class="fullcontainer">
+
+  <div class='sheet'>
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <div class="alert alert-success" *ngIf='this.isSuccess'>Order was updated successfully</div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class='header'>Create yard trade order</h3>
+          </div>
+          <div class="card-body">
+            <app-tabs>
+              <app-tab title='Main Details'>
+                <p><strong>Customer: {{ this.customer.name }}</strong></p>
+                <br />
+        
+                <div class='row'>
+                  <div class="form-group col-md-4">
+                    <label for="inputEmail4">Ticket Number</label>
+                    <input type="text" name='name' [(ngModel)]='this.yardTrade.ticketNumber' [class.is-invalid]='!this.yardTrade.ticketNumber' class="form-control" id="inputEmail4">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputEmail4">Date</label>
+                    <input type="date" name='name' [class.is-invalid]='!this.yardTrade.date'  [(ngModel)]='this.yardTrade.date' class="form-control" id="inputEmail4">
+                  </div>
+                  <div class="form-group col-md-4 mt-auto">
+                    <div class="row mt-auto">
+                      <div class="col-sm-6"><input type="radio" name='name' [(ngModel)]='this.yardTrade.typeofTrade' id="inputEmail4" [value]='0'> &nbsp; <label>Trade In</label></div>
+
+                      <div class="col-sm-6">
+                        <input type="radio" name='name' [(ngModel)]='this.yardTrade.typeofTrade' id="inputEmail4" [value]='1'> &nbsp; <label for="inputEmail4">Trade Out</label></div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputEmail4">Depot</label>
+                    <select class='form-select' [class.is-invalid]='this.yardTrade.depotId === -1' (change)='this.yardTrade.depotId = +$event.target.value; this.yardTrade.depot.id = this.yardTrade.depotId;'>
+                      <option value='-1'>Select a depot</option>
+                      <option *ngFor='let item of this.depots' [value]='item.id' [selected]='this.yardTrade.depotId === item.id'>{{ item.name }}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputEmail4">Grade</label>
+                    <select class='form-select' [class.is-invalid]='this.yardTrade.gradeId === -1' (change)='this.yardTrade.gradeId = +$event.target.value;'>
+                      <option value='-1'>Select a grade</option>
+                      <option *ngFor='let item of this.grades' [value]='item.id' [selected]='this.yardTrade.gradeId === item.id'>{{ item.name }}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputEmail4">Vehicle Registration</label>
+                    <input type="text" name='name' [(ngModel)]='this.yardTrade.vehicleReg' class="form-control" id="inputEmail4">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputEmail4">PO Number</label>
+                    <input type="text" name='name' [(ngModel)]='this.yardTrade.poNumber'  class="form-control" id="inputEmail4">
+                  </div>
+        
+                </div>
+        
+        
+                <br />
+                <br />
+        
+                <h2 class='header'>Weight details</h2>
+                <div class='row'>
+                  <div class='form-group col-md-4'>
+                    <label>Gross Weight</label>
+                    <input type='text' [class.is-invalid]='!this.yardTrade.grossWeight' class='form-control' [(ngModel)]='this.yardTrade.grossWeight'/>
+                  </div>
+               
+                  <div class='form-group col-md-4'>
+                    <label>Tare Weight</label>
+                    <input type='text' [class.is-invalid]='!this.yardTrade.tareWeight' class='form-control' [(ngModel)]='this.yardTrade.tareWeight'/>
+                  </div>
+                
+                  <div class='form-group col-md-4'>
+                    <label>Net Weight</label>
+                    <input type='text' class='form-control' [value]='(this.yardTrade.grossWeight - this.yardTrade.tareWeight).toFixed(2)' readonly/>
+                  </div>
+                </div>
+              </app-tab>
+              <app-tab title='Pricing Details'>
+                <button class='btn btn-secondary' (click)='this.openModal("yardtradeAddItemModal")'><i class="fas fa-plus"></i> Add Custom Item</button>
+                <table class="table table-bordered table-striped">
+                  <thead class="table-dark">
+                    <th>Name</th>
+                    <th>Qty</th>
+                    <th>Unit</th>
+                    <th>Base Price(&pound;)</th>
+                    <th>Total Price(&pound;)</th>
+                    <th></th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor='let item of this.yardTradePricing'>
+                      <td>{{ item.name }}</td>
+                      <td>
+                        <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.qty'>
+                      </td>
+                      <td>
+                        {{ this.getUnitFromUnitId(item.unitId).name }}(s)
+                      </td>
+                      <td>
+                        {{ item.price }}
+                      </td>
+                      <td>
+                        {{ getTotalPrice(item).toFixed(2) }}
+                      </td>
+                    </tr>
+                  </tbody>
+        
+                </table>
+              </app-tab>
+            </app-tabs>
+        <div class="row mt-3">
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-success" (click)='save()'>Save</button>&nbsp;
+            <button type="button" class="btn btn-danger" routerLink='/weighbridge'>Cancel</button>
+          </div>
+        </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+   
+  </div>
+
+
+</div>

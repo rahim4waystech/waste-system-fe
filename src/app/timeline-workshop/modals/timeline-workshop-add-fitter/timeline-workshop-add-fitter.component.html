@@ -1,0 +1,69 @@
+<jw-modal id='workshopAddFitterModal'>
+  <div class="card">
+    <div class="card-body">
+      <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+      <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+      <h3 class='header'>Assign Fitter</h3>
+      <div class="row">
+    
+        <div class="col-lg-4 form-group">
+          <input type="radio" [checked]='this.type === "own"' name='group[]' (change)="this.onOptionSelect($event, 'own')">
+          <label for="inputEmail4">&nbsp;&nbsp;Own Fitter</label>
+        </div>
+        <div class="col-lg-4 form-group">
+          &nbsp;&nbsp;<input type="radio" name='group[]' [checked]='this.type === "sub"' (change)="this.onOptionSelect($event, 'sub')" />
+          <label for="inputEmail4">&nbsp;&nbsp;Subcontractor</label>
+        </div>
+      </div>
+    <hr>
+
+      <div class='row'>
+        <div class="form-group col-md-6">
+          <label for="inputEmail4">Name</label>
+          <input type="text" [(ngModel)]='this.assignment.name' [class.is-invalid]='!this.assignment.name' name='name' class="form-control" id="inputEmail4">
+        </div>
+        <div class="form-group col-md-6" *ngIf='this.type === "own"'>
+          <label for="inputEmail4">Depot</label>
+          <select class='form-control' [class.is-invalid]='this.assignment.depotId === -1' (change)='onDepotChanged($event)'>
+            <option value='-1'>Select a depot</option>
+            <option *ngFor='let depot of this.depots' [selected]='this.assignment.depotId === depot.id' [value]='this.depot.id'>{{ depot.name }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6" *ngIf='this.type === "own"'>
+          <label for="inputEmail4">Fitter</label>
+          <select class='form-control' [class.is-invalid]='this.assignment.fitterId === -1' (change)='this.assignment.fitterId = +$event.target.value; this.assignment.fitter = {id: this.assignment.fitterId };'>
+            <option value='-1'>Select a fitter</option>
+            <option *ngFor='let fitter of this.fitters' [selected]='this.assignment.fitterId === fitter.id' [value]='this.fitter.id'>{{ fitter.firstName }} {{ fitter.lastName }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputEmail4">Fitter Start Time</label>
+          <input type="time" [(ngModel)]='this.assignment.fitterStartTime' [class.is-invalid]='!this.assignment.fitterStartTime' name='name' class="form-control" id="inputEmail4">
+        </div>
+    
+        <div class="form-group col-md-6" *ngIf='this.type === "sub"'>
+          <label for="inputEmail4">Subcontractors</label>
+          <select class='form-control' [class.is-invalid]='this.assignment.subcontractorId === -1' (change)='this.assignment.subcontractorId = +$event.target.value;this.assignment.subcontractor = {id: this.assignment.subcontractorId};this.loadSubcontractorDepots()'>
+            <option value='-1'>Select a subcontractor</option>
+            <option *ngFor='let subcontractor of this.subcontractors' [selected]='this.assignment.subcontractorId === subcontractor.id' [value]='this.subcontractor.id'>{{ this.subcontractor.name }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6" *ngIf='this.type === "sub"'>
+          <label for="inputEmail4">Subcontractor Depots</label>
+          <select class='form-control' [class.is-invalid]='this.assignment.subcontractorDepotId === -1' (change)='this.assignment.subcontractorDepotId = +$event.target.value;this.assignment.subcontractorDepot= {id: this.assignment.subcontractorDepotId};'>
+            <option value='-1'>Select a subcontractor</option>
+            <option *ngFor='let subcontractor of this.subcontractorDepots' [selected]='this.assignment.subcontractorId === subcontractor.id' [value]='this.subcontractor.id'>{{ this.subcontractor.name }}</option>
+          </select>
+        </div>
+      </div>
+    <div class="row">
+      <div class="col-12 text-end mt-2">
+        <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+        <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+      </div>
+    </div>
+      
+    </div>
+  </div>
+ 
+</jw-modal>

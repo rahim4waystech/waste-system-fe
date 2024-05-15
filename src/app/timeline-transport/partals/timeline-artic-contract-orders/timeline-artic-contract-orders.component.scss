@@ -1,0 +1,77 @@
+.header {
+    background-color: white;
+    color: white;
+    // border-top: 3px solid #27ae60;
+    padding: 0.5rem;
+    padding: 0;
+    background: #34495e;
+  }
+  
+  .bodyContainer {
+    // margin-top: 0.5rem;
+    background-color: white;
+    height: 95%;
+    min-height: 50rem;
+  }
+  
+  .acceptedOrdersContainer {
+    position: fixed;
+    width: 17rem;
+    font-size: 0.65rem;
+    min-height: 50rem;
+    // left: 16.2%;
+    // top: 6.2%;
+    z-index: 99;
+    border: 3px solid #27ae60;
+  
+    .btn-small {
+      width:2rem;
+    }
+  }
+  
+  .orderContainer {
+    background-color:#bdc3c7;
+  
+    &.old {
+      background-color: pink;
+    }
+    width:100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: grab;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    z-index:  -1;
+  }
+  
+  
+  .dragging {
+    opacity: .5;
+    transform: scale(.8);
+  }
+  
+  .gridPagination {
+    width:100%;
+      ul {
+        display: table;
+        margin: 0 auto;
+          list-style-type: none;
+      }
+  
+      li {
+          display: inline-block;
+  
+          a.active {
+              text-decoration: underline;
+          }
+      }
+  }
+  
+  .changed {
+    background-color: #c0392b;
+    color: white;
+  }
+  
+  .clone {
+    width: 1rem;
+  }
+  

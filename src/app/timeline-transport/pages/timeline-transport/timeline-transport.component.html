@@ -1,0 +1,52 @@
+
+<app-timeline-artic-contract-orders *ngIf='this.orderTypeId === 4'></app-timeline-artic-contract-orders>
+<div class='fullcontainer'>
+ 
+ <div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-3">
+                                <!-- modal comennt by shujat -->
+        <app-timeline-transport-add-row-modal [orderTypeId]='this.orderTypeId' [date]='this.date'></app-timeline-transport-add-row-modal> 
+        <app-timeline-transport-vor-and-absence [data]='this.absenceAndVors'></app-timeline-transport-vor-and-absence> 
+        <app-timeline-transport-accepted-orders></app-timeline-transport-accepted-orders>
+      </div>
+      <div class="col-lg-9">
+        
+        <app-timeline-transport-toolbar></app-timeline-transport-toolbar>
+        <div class="subright-div">
+        <div class='timelineLineContainer w-100'>
+          <div class='timelineMainContainer w-100'>
+             
+              <app-timeline-transport-main></app-timeline-transport-main>
+            
+            <!-- <app-timeline-transport-main></app-timeline-transport-main> -->
+      
+      
+            <!-- <ng-container *ngIf='this.orderTypeId === 3'>
+              <app-timeline-transport-main></app-timeline-transport-main>
+            </ng-container>
+            <ng-container *ngIf='this.orderTypeId === 5'>
+              <app-timeline-transport-main></app-timeline-transport-main>
+            </ng-container>
+            <ng-container *ngIf='this.orderTypeId === 6'>
+              <app-timeline-transport-main></app-timeline-transport-main>
+            </ng-container>
+            <ng-container *ngIf='this.orderTypeId === 7'>
+              <app-timeline-transport-main></app-timeline-transport-main>
+            </ng-container>
+            <ng-container *ngIf='this.orderTypeId === 8'> -->
+             
+              <!-- <app-timeline-transport-main-vertical *ngIf='!this.timelineSettings.timelineOrientationShredder'></app-timeline-transport-main-vertical> -->
+            <!-- </ng-container> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+ </div>
+ 
+ 
+</div>
+ 

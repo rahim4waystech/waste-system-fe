@@ -1,0 +1,5 @@
+<app-add-callback-modal [entity]='this.currentAccount'></app-add-callback-modal>
+<button class='btn btn-secondary mb-2' (click)='updateToAccount()'>Update Prospects to Customer</button>
+<app-grid entity='account' [checkboxSelector]='true' (checkboxSelected)='this.onCheckboxSelected($event)'
+    [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons' [searchFilters]='this.searchFilters'
+    [searchFields]='this.searchFields' [backgroundSetter]='this.getColorFromType' [textColor]='"white"'></app-grid>

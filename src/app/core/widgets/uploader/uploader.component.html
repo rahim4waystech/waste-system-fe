@@ -1,0 +1,9 @@
+<div class='uploaderContainer'>
+  <input #upload id='upload' type='file' style='display:none' (change)='this.onFileInputChange($event);' /> <!-- hide browser upload input-->
+
+  <button class='btn btn-primary' (click)='this.clickInput()'>Select File</button>&nbsp;&nbsp;
+  <button class='btn btn-primary' *ngIf='this.isSelected' (click)='this.uploadFile()'>Upload File</button>
+  <div class='fileInformationContainer' *ngIf='this.isSelected'>
+   Filename: <strong><span>{{ this.filename }}</span></strong>
+  </div>
+</div>

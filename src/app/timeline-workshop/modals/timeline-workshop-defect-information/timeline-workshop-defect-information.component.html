@@ -1,0 +1,45 @@
+<jw-modal id="defectInformationModal">
+  <h1 class='header'>Defect Information</h1>
+<hr />
+
+<div>
+  <label><strong>Booked for: </strong> {{ !this.defect.bookedFor || this.defect.bookedFor === '' ? 'N/A' : this.defect.bookedFor }}</label>
+</div>
+
+<div>
+  <label><strong>Vehicle: </strong> {{ this.defect.vehicle.registration }}</label>
+</div>
+
+<div>
+  <label><strong>Vehicle type: </strong>  {{ this.defect.vehicle.vehicleType.name }}</label>
+</div>
+
+<div>
+  <label><strong>Check Area: </strong> {{ this.defect.vehicleCheckArea.name }}</label>
+</div>
+
+<div>
+  <label><strong>Type: </strong> {{ !this.defect.inspectionInterval ? 'N/A' : this.defect.inspectionInterval.name}}</label>
+</div>
+
+<div>
+  <label><strong>Severity</strong>: {{ this.defect.vehicleSeverity.severity }} - {{ this.defect.vehicleSeverity.notes }}</label>
+</div>
+
+<div>
+  <label><strong>Is VOR: </strong>  {{ this.defect.vehicleSeverity.isVor ? 'Yes' : 'No' }}</label>
+</div>
+
+
+<div>
+  <label><strong>Description: </strong></label><br />
+  {{ this.defect.description }}
+</div>
+
+
+
+
+<button class='btn btn-primary' (click)='this.close()'>Close</button> &nbsp;&nbsp;
+<a href='/4workshop/defect/{{ this.defect.id }}' target='_blank' class='btn btn-warning'>View defect</a>&nbsp;
+<a href='/vehicles/edit/{{ this.defect.vehicle.id }}' target='_blank' class='btn btn-warning'>View vehicle</a>&nbsp;
+</jw-modal>

@@ -1,0 +1,180 @@
+<!-- modal comment by shujat -->
+   <app-print-invoice-modal [email]='this.customerEmail' [selectedInvoices]='this.selectedInvoices'></app-print-invoice-modal> 
+  <app-email-invoice-modal [email]='this.customerEmail' [selectedInvoices]='this.selectedInvoices'></app-email-invoice-modal> 
+  <app-add-credit-note-invoice [email]='this.customerEmail'></app-add-credit-note-invoice>
+<app-change-customer-modal [selectedInvoices]='this.selectedInvoices'></app-change-customer-modal>   
+
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-4 my-auto">
+              <div class='titleContainer'>
+                <h3 class='header'>All Invoices</h3>
+              </div>
+            </div>
+            <div class="col-lg-8 my-auto text-end my-auto">
+              <div>
+                <!-- <button class='btn btn-secondary'><i class="fas fa-paper-plane"></i> Post Invoices</button>&nbsp; -->
+                <button class='btn btn-sm btn-secondary' (click)='email()'><i class="fas fa-envelope"></i> Email
+                  Invoices</button>&nbsp;
+                  <!-- <button class='btn btn-sm btn-secondary' data-bs-toggle="modal" data-bs-target="#emailModal"><i class="fas fa-envelope"></i> Email
+                    Invoices</button>&nbsp; -->
+                <button class='btn btn-sm btn-secondary' (click)='print()'><i class="fas fa-print"></i> Print
+                  Invoices</button>&nbsp;
+                  <!-- <button class='btn btn-sm btn-secondary' data-bs-toggle="modal" data-bs-target="#printInvoiceModal"><i class="fas fa-print"></i> Print
+                    Invoices</button>&nbsp; -->
+                <button class='btn btn-sm btn-secondary' (click)='export()'><i class="fas fa-file-invoice-dollar"></i>
+                  Financial Export</button>&nbsp;
+                <button class='btn btn-sm btn-secondary' [routerLink]='"/invoices/email-history"'><i
+                    class="fas fa-history"></i> Email History</button>&nbsp;
+                <button class='btn btn-sm btn-secondary' (click)="changeCustomer()"><i class="fas fa-user"></i> Change
+                  Customer</button>&nbsp;
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body invoice-div">
+          <div class="row">
+            <div class="col-12">
+              <div>
+                <button class='btn btn-sm greenHover' (click)='this.setInvoiceStatus("Open")'
+                  [class.btn-success]='this.currentInvoiceStatus === "Open"'
+                  [class.btn-secondary]='this.currentInvoiceStatus !== "Accepted"'><i class="fas fa-check-circle"></i>
+                  Open Invoices</button>&nbsp;
+                <button class='btn btn-sm redHover' (click)='this.setInvoiceStatus("Close")'
+                  [class.btn-danger]='this.currentInvoiceStatus === "Close"'
+                  [class.btn-secondary]='this.currentInvoiceStatus !== "Declined"'><i class="fas fa-times-circle"></i>
+                  Closed Invoices</button>&nbsp;
+                <button class='btn btn-sm blueHover' (click)='this.setInvoiceStatus("")'
+                  [class.btn-primary]='this.currentInvoiceStatus === ""'
+                  [class.btn-secondary]='this.currentInvoiceStatus !== ""'><i class="fas fa-money-check"></i> All
+                  Invoices</button>&nbsp;
+              </div>
+            </div>
+          </div>
+
+
+          <app-grid entity='invoice' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+            [searchFilters]='this.searchFilters' [searchFields]='this.searchFields' [checkboxSelector]='true'
+            (checkboxSelected)='this.onCheckedSelected($event)'></app-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="printInvoiceModal" tabindex="-1" aria-labelledby="printInvoiceModalModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="printInvoiceModalModalLabel">Print Invoice</h5>
+        <!-- <h1 class='header'>Print Invoice</h1> -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+  <div class="row">
+    <div class="form-group col-md-3">
+      <label for="inputEmail4">Invoice type</label>
+      <select name='depot' class='form-control' (change)='this.invoiceType === +$event.target.value'>
+        <option selected value='1'>Headed</option>
+        <option value='2'>Non-headed</option>
+      </select>
+    </div>
+  
+  <div class='form-group col-md-3 mt-auto'>
+   
+    <input type='checkbox'
+    [(ngModel)]="this.pods"
+    [ngModelOptions]="{standalone: true}"/> &nbsp;
+    <label>Print PODs?</label>
+  </div>
+
+  <div class='form-group col-md-3 mt-auto'>
+   
+    <input type='checkbox'
+    [(ngModel)]="this.posted"
+    [ngModelOptions]="{standalone: true}"/> &nbsp;
+    <label>Post Invoices?</label>
+  </div> 
+  <div class='form-group col-md-3 mt-auto'>
+    
+    <input type='checkbox'
+    [(ngModel)]="this.sendEmail"
+    [ngModelOptions]="{standalone: true}"/> &nbsp;
+    <label>Send email?</label>
+  </div> 
+  <div class='form-group col-md-3 mt-auto'>
+   
+    <input type='checkbox'
+    [(ngModel)]="this.showTipCheck"
+    [ngModelOptions]="{standalone: true}"/> &nbsp;
+    <label>Show tip checks?</label>
+  </div> 
+  <div class="form-group col-md-3" *ngIf='this.sendEmail'>
+    <label>Message</label>
+    <textarea [(ngModel)]='this.message' style='height: 10rem' class='form-control'>Hi,
+Please find attached your requested invoices.
+
+Regards,
+The Management team
+    </textarea>
+  </div>
+
+<div class="row" *ngIf='this.sendEmail'>
+  <div class="form-group col-md-4">
+    <label>Send to</label>
+    <input type='text' class='form-control' [(ngModel)]='this.email.email'/>
+  </div>
+</div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button class='btn btn-success' (click)='this.print()'>Save</button>&nbsp;
+        <button class='btn btn-danger' (click)='cancel()' data-bs-dismiss="modal">Cancel</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="emailModalModalLabel">Email invoices</h5>
+        <!-- <h1 class='header'>Print Invoice</h1> -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label>Message</label>
+            <textarea [(ngModel)]='this.message' rows="1"  class='form-control'>Hi,
+      Please find attached your requested invoices.
+      
+      Regards,
+      The Management team
+            </textarea>
+          </div>
+       
+          <div class="form-group col-md-6">
+            <label>Send to</label>
+            <input type='text' class='form-control' [(ngModel)]='this.email.email'/>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class='btn btn-success' (click)='send()'>Save</button>&nbsp;
+        <button class='btn btn-danger' (click)='cancel()' data-bs-dismiss="modal">Cancel</button>
+       
+      </div>
+    </div>
+  </div>
+</div>

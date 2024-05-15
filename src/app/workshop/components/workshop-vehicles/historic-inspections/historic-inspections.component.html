@@ -1,0 +1,53 @@
+<div class="fullcontainer ml-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <div class="" *ngIf='this.vehicleId !== -1'>
+            <div class="row mt-0 content-block-head mb-3">
+              <div class="col-12">
+                <h4>Historic Inspections for {{this.vehicle.registration}}</h4>
+              </div>
+            </div>
+        
+            <div class="col-12">
+              <table class='table table-bordered'>
+                <thead class='table-dark'>
+                  <tr>
+                    <th>Inspection</th>
+                    <th>Date</th>
+                    <th>Next Date</th>
+                    <th>Defect</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor='let row of this.inspections'>
+                    <td>{{row.inspectionInterval.name}}</td>
+                    <td>{{showDate(row.date)}}</td>
+                    <td>{{nextDate(row.date,row.inspectionInterval.number,row.inspectionInterval.unitAbbrev)}}</td>
+                    <ng-container *ngIf='row.defect !== null'>
+                      <td>{{row.defect.description}}</td>
+                      <td>
+                        <button class='btn btn-info' routerLink='/4workshop/defect/{{row.defectId}}'><i class="fas fa-eye"></i></button>
+                      </td>
+                    </ng-container>
+                    <ng-container *ngIf='row.defect === null'>
+                      <td>n/a</td>
+                      <td></td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+</div>

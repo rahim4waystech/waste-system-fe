@@ -1,0 +1,31 @@
+<div class="fullcontainer">
+    <div class="sheet">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class='header'>Uninvoice NO: {{ this.invoice.id }}</h3>
+            </div>
+            <div class="card-body">
+              <p class="text-primary"><b> Are you sure you wish to uninvoice all jobs under this invoice? 
+                This action cannot be undone. When the invoice is deleted it will be gone forever. 
+              </b>
+            </p>
+        
+              <div class="row">
+                <div class="col-12 text-end">
+                  <button type="submit" class="btn btn-danger" (click)='this.onCancelClicked()'>Yes! I'm Sure!</button> &nbsp;
+                  <button type="button" class="btn btn-primary" routerLink='/invoices'>No! Take me back!</button>
+                </div>
+              </div>
+       
+            </div>
+          </div>
+        </div>
+      </div>
+      
+  
+      
+    </div>
+  </div>
+  

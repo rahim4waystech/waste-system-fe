@@ -1,0 +1,30 @@
+<app-order-add-account></app-order-add-account>
+<div class="fullcontainer" >
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class='titleContainer'>
+            <h2 class='header' >Select a Company</h2> 
+          </div>
+        </div>
+        <div class="col-lg-6 text-end">
+          <div>
+            <button class='btn btn-secondary' routerLink='/orders'><i class="fas fa-arrow-left"></i> Back</button> &nbsp;
+            <button class='btn btn-secondary' (click)='openAddAccount()'>+ Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <br />
+  <br />
+  <app-grid
+entity='account'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+></app-grid>

@@ -1,0 +1,123 @@
+<div class="fullcontainer ml-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header p-0">
+          <div class="row">
+            <div class="col-12">
+              <app-workshop-nav></app-workshop-nav>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+
+          <div class="row ">
+            <div class="col-12 text-end my-auto mb-2">
+              <button class='btn btn-block btn-success' routerLink='/vehicles/new'><i class="fas fa-plus"></i></button>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-9 vehiclcompnent">
+              <!-- <button *ngIf='this.unsetCount > 0' class='btn btn-info btn-block mb-3' (click)='showIncomplete=true'>Show {{this.unsetCount}} Vehicles without Workshop Details</button> -->
+              <!-- <app-grid
+                  entity='vehicle'
+                  [filters]='this.filters'
+                  [columns]='this.columns'
+                  [buttons]='this.buttons'
+                  [searchFilters]='this.searchFilters'
+                  [searchFields]='this.searchFields'
+                  >
+                </app-grid>
+              </div>
+              <div class="col" *ngIf='showIncomplete'>
+                <button class='btn btn-info btn-block mb-3' (click)='showIncomplete=false'>Show Vehicles set up for Workshop</button> -->
+              <app-grid entity='vehicle' [filters]='this.vehicleFilters' [columns]='this.vehicleColumns'
+                [buttons]='this.vehicleButtons' [searchFilters]='this.vehicleSearchFilters'
+                [searchFields]='this.vehicleSearchFields'>
+              </app-grid>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="row">
+                <div class="col-12 my-auto text-end">
+                  <button class='btn  btn-block btn-info text-white' routerLink='/4workshop/driver-report'>Driver Reports</button>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-12 content-block ">
+                  <div class="tbl-div">
+                  <div class="table-responsive">
+                  <table class='table table-bordered mb-0'>
+                    <thead class='table-dark'>
+                      <tr>
+                        <th colspan='3' class="align-middle text-center">Vehicle Statistics</th>
+                      </tr>
+                      <tr>
+                        <th></th>
+                        <th>% of Fleet</th>
+                        <th>No.</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>No Defects</td>
+                        <td>{{this.noIssuePercent.toFixed(2)}}%</td>
+                        <td>{{this.noIssue}}</td>
+                      </tr>
+                      <tr>
+                        <td>Non-VOR Defects</td>
+                        <td>{{this.notBadIssuesPercent.toFixed(2)}}%</td>
+                        <td>{{this.notBadIssues}}</td>
+                      </tr>
+                      <tr>
+                        <td>VOR</td>
+                        <td>{{this.vorIssuePercent.toFixed(2)}}%</td>
+                        <td>{{this.vorIssue}}</td>
+                      </tr>
+                      <tr>
+                        <td colspan='2'>Total Fleet</td>
+                        <td>{{this.totalVehicles}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              </div>
+            </div>
+              <!-- <div class="row pr-3">
+                  <div class="col content-block p-0">
+                    <table class='table table-bordered mb-0'>
+                      <thead class='thead-dark'>
+                        <tr>
+                          <th colspan='4'>Upcoming Inspections</th>
+                        </tr>
+                        <tr>
+                          <th>Registration</th>
+                          <th>Inspection</th>
+                          <th>Due On/By</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor='let insp of this.upcoming'>
+                          <td>{{insp.registration}}</td>
+                          <td>{{insp.type}}</td>
+                          <td>{{insp.dueDate}}</td>
+                          <td>
+                            <button class='btn btn-block btn-info'>View</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

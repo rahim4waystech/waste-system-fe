@@ -1,0 +1,117 @@
+<div class="fullcontainer">
+   <div class="row">
+      <div class="col-12">
+         <div class="card">
+            <div class="card-header">
+               <div class="row">
+                  <div class="col-lg-6 my-auto">
+                     <div class='titleContainer'>
+                        <h3 class='header'>Material Uplift Signoff</h3>
+                     </div>
+                  </div>
+                  <div class="col-lg-6 my-auto text-end">
+                     <div>
+                        <button class='btn btn-sm btn-secondary' routerLink='/job-signoff/material-uplift/new'><i
+                              class="fas fa-plus"></i> New</button>&nbsp;
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="card-body">
+               <form action="">
+                  <div class="row">
+                     <div class="col-lg-4 form-group">
+                        <label><strong>Supplier Invoice Number</strong></label>&nbsp;&nbsp;
+                        <input class='form-control' type='text' [(ngModel)]="this.supplierInvoiceNumber" />
+                     </div>
+                     <div class="col-lg-2 my-auto">
+                        <button class='btn btn-primary' (click)='this.onSignOffButtonClicked()'>Sign off Selected</button>
+                     </div>
+                  </div>
+               </form>
+               <div class='sheet' style='padding: 0.5rem;'>
+                  <div class='row'>
+                     <div class='col-md-4'>
+                        <label>Start Date</label>
+                        <input [(ngModel)]="this.searchFilters.startDate" class='form-control' type='date' />
+                     </div>
+                     <div class='col-md-4'>
+                        <label>End Date</label>
+                        <input [(ngModel)]="this.searchFilters.endDate" class='form-control' type='date' />
+                     </div>
+                     <div class='col-md-4'>
+                        <label>Vehicle</label>
+                        <ng-select class='form-select' [(ngModel)]="this.searchFilters.vehicle" (change)='this.searchFilters.vehicle= $event;'>
+                           <ng-option *ngFor='let item of this.vehicles' [value]='item.registration'>{{ item.registration
+                              }}</ng-option>
+                        </ng-select>
+                     </div>
+                     <div class='col-md-4'>
+                        <label>Customer</label>
+                        <ng-select class='form-select'  [(ngModel)]="this.searchFilters.customer" (change)='this.searchFilters.customer = $event;'>
+                           <ng-option *ngFor='let item of this.accounts' [value]='item.name'>{{ item.name }}</ng-option>
+                        </ng-select>
+                     </div>
+                     <div class='col-md-4'>
+                        <label>Subcontractor</label>
+                        <ng-select class='form-select'  [(ngModel)]="this.searchFilters.subcontractor"
+                           (change)='this.searchFilters.subcontractor = $event;'>
+                           <ng-option *ngFor='let item of this.subcontractors' [value]='item.name'>{{ item.name }}</ng-option>
+                        </ng-select>
+                     </div>
+                     <div class='col-md-4'>
+                        <label>Job Number</label>
+                        <input [(ngModel)]="this.searchFilters.jobNumber" class='form-control' type='text' />
+                     </div>
+                     <div class='col-md-4'>
+                        <label>Tip Site</label>
+                        <ng-select class='form-select'  [(ngModel)]="this.searchFilters.tipSite" (change)='this.searchFilters.tipSite = $event;'>
+                           <ng-option *ngFor='let item of this.tips' [value]='item.name'>{{ item.name }}</ng-option>
+                        </ng-select>
+                     </div>
+                     <div class='col-md-4'>
+                        <label>Collection Ticket Number</label>
+                        <input [(ngModel)]="this.searchFilters.ticketNumber" class='form-control' type='text' />
+                     </div>
+                     <div class='col-md-4'>
+                        <label>Supplier Invoice Number</label>
+                        <input [(ngModel)]="this.searchFilters.supplierInvoiceNumber" class='form-control' type='text' />
+                     </div>
+                     <div class='col-md-4'>
+                        <label>Status</label>
+                        <select class='form-select' (change)='this.searchFilters.status = $event.target.value'>
+                           <option value=''>All Tickets</option>
+                           <option value='not'>Not Signed off</option>
+                           <option value='signed'>Signed off</option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="row mt-2">
+                     <div class="col-12 text-end">
+                        <button class='btn btn-primary' type='button' (click)='this.search()'>Search</button>&nbsp;
+                        <button class='btn btn-danger' type='button' (click)='this.clear()'>Clear</button>
+                     </div>
+                  </div>
+               
+               </div>
+            
+            
+               <!-- <button class='btn btn-primary' (click)='this.onSignOffButtonClicked()'>Sign off Selected</button> -->
+            
+               <p style='font-size:2rem' *ngIf='this.selectedTickets.length > 0'>
+                  <strong>Total Selected: {{ this.getSelectedDetails().total }} Total Qty: {{ this.getSelectedDetails().qty }} Total
+                     Price: {{this.getSelectedDetails().price }}</strong>
+               </p>
+            
+               <button class='btn btn-danger' (click)='this.clearSelected()'>Deselect All</button>
+            
+               <app-grid entity='material-uplift-ticket' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+                  [backgroundSetter]='this.getRowColor' [checkboxSelector]='true'
+                  (checkboxSelected)='this.onCheckboxSelected($event)' [customDataSource]='this.getRecords.bind(this)'
+                  [showSearch]='false'></app-grid>
+            </div>
+         </div>
+      </div>
+   </div>
+
+  

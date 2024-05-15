@@ -1,0 +1,15 @@
+<jw-modal id="ArtictransportNoteCreationModal">
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <h1 class='header'>Add Note</h1>
+  
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Note</label>
+        <textarea [(ngModel)]='this.note' class='form-control'></textarea>
+      </div>
+    </div>
+  
+    <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+    <!-- <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button> -->
+  </jw-modal>
+  

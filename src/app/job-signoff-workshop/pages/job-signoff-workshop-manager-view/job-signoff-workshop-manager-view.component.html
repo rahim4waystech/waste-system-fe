@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="sheet">
+      <h1 class='header'>Manager Defect Signoff</h1>
+
+      <div class='alert alert-danger'>
+          Warning! This will close all open defect jobs sitting with fitters
+      </div>
+    <div class='form-row'>
+    <div class="form-group col-md-4">
+        <label for="inputEmail4">Started</label>
+        <input type="text" name='name' [value]='this.defect.started' readonly  class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+        <label for="inputEmail4">Ended</label>
+        <input type="text" name='name' [value]='this.defect.ended' readonly  class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+        <label for="inputEmail4">Check Area</label>
+        <input type="text" name='name' [value]='this.defect.vehicleCheckArea.name' readonly  class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+        <label for="inputEmail4">PO Number</label>
+        <input type="text" name='name' [value]='this.defect.poNumber' readonly  class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+        <label for="inputEmail4">Booked For</label>
+        <input type="text" name='name' [value]='this.defect.bookedFor' readonly  class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+        <label for="inputEmail4">Vehicle</label>
+        <input type="text" name='name' [value]='this.defect.vehicle.registration' readonly  class="form-control" id="inputEmail4">
+    </div>
+    </div>
+
+    <div class='form-row'>
+        <div class="form-group col-md-12">
+            <label for="inputEmail4">Defect Description</label>
+            <textarea class='form-control' [value]='this.defect.description' readonly  class="form-control" id="inputEmail4"></textarea>
+        </div>
+</div>
+
+<p>
+    <strong>    By clicking the Sign Off button, I verify that I have inspected the details of defect
+        rectification for {{this.defect.vehicle.registration }} and I am happy that all work has
+        been completed to a road-legal quality and it is safe to return to the road and revoke
+        its current Vehicle Off Road (VOR) status unless it has additional outstanding VOR defects.</strong>
+</p>
+
+<div class='form-row'>
+    <div class='form-group col-md-4'>
+        <label>Notes for Signoff</label>
+        <textarea class='form-control' [(ngModel)]="this.defect.signoffNotes"></textarea>
+    </div>
+</div>
+
+<button type="submit" class="btn btn-success" (click)='save()'>Sign off</button>&nbsp;
+<button type="button" class="btn btn-danger" routerLink='/4workshop/signoff'>Cancel</button>
+</div>

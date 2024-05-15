@@ -1,0 +1,57 @@
+<div class="fullcontainer">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class="alert alert-danger" *ngIf='this.warningForCreditLimit'>Warning credit limit for customer passed 80%.</div>
+  <div class='sheet'>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class='header'>Create a new order</h3>
+      </div>
+      <div class="card-body">
+          <!-- check for existing orders and prompt -->
+
+      <ng-container *ngIf="this.existingOrders.length > 0">
+        <span style="color:red;font-weight:bold">Please note existing accepted orders exist on the system for this account and site</span><br /><br />
+        <table class="table">
+         <thead class="table-dark">
+          <tr>
+            <th>Order Number</th>
+            <th>Account</th>
+            <th>Site</th>
+            <th>Tip Site</th>
+            <th>Description</th>
+            <th></th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr *ngFor="let order of this.existingOrders">
+            <td>{{ order.id }}</td>
+            <td>{{ order.account.name }}</td>
+            <td>{{ order.site.name }}</td>
+            <td>{{ order.tipSite.name}}</td>
+            <td>{{ order.description }}</td>
+            <td><button class='btn btn-warning' [routerLink]="'/orders/edit/' + order.id">View Order</button></td>
+          </tr>
+         </tbody>
+        </table>
+      </ng-container>
+
+    <app-order-form [materialUplifts]='this.materialUplifts' [account]='this.account' [site]='this.site' [order]='this.order' [orderLines]='this.orderLines'></app-order-form>
+   
+      </div>
+      <div class="card-footer">
+        <div class="row">
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-success" (click)='onSubmit()'>Save</button>&nbsp;
+            <button type="button" class="btn btn-danger" routerLink='/orders'>Cancel</button>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+</div> 
+  </div>
+</div>

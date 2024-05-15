@@ -1,0 +1,83 @@
+<div class="row mt-2">
+  <div class="col-4">
+    <label>Subcontractor</label>
+    <input type="text" *ngIf='this.tempName !== "" && this.showDepots' readOnly [(ngModel)]='this.tempName' class='form-control'>
+    <select
+      class='form-control'
+      (change)='this.changeSubcontractor($event)'
+      *ngIf='!this.showDepots'
+    >
+      <option value='select'>Select...</option>
+      <option value='new'>New Subcontractor</option>
+      <option value='own'>{{this.company}} Workshop/Depot</option>
+      <option
+        *ngFor='let item of this.subcontractors'
+        [value]='item.id'
+        [selected]='item.id === this.tempId'
+      >{{item.name}}</option>
+    </select>
+  </div>
+  <ng-container *ngIf='showDepots'>
+    <div class="col-4">
+      <label *ngIf='this.isNewSub'>Subcontractor Name</label>
+      <label *ngIf='!this.isNewSub'>Depot Name</label>
+      <input
+        type="text"
+        class='form-control'
+        required
+        [readOnly]='!this.editable'
+        [class.is-valid]='this.workshopSubcontractor.name !== ""'
+        [class.is-invalid]='this.workshopSubcontractor.name === ""'
+        [(ngModel)]='this.workshopSubcontractor.name'>
+    </div>
+    <div class="col-4">
+      <label>Contact Name</label>
+      <input type="text" class='form-control' [readOnly]='!this.editable' [(ngModel)]='this.workshopSubcontractor.contact'>
+    </div>
+  </ng-container>
+</div>
+<div *ngIf='showDepots' class="row">
+  <div class="col-4">
+    <label>Address 1</label>
+    <input type="text" class='form-control' [readOnly]='!this.editable' [(ngModel)]='this.workshopSubcontractor.address1'>
+  </div>
+  <div class="col-4">
+    <label>Address 2</label>
+    <input type="text" class='form-control' [readOnly]='!this.editable' [(ngModel)]='this.workshopSubcontractor.address2'>
+  </div>
+  <div class="col-4">
+    <label>Town / City</label>
+    <input
+      type="text"
+      class='form-control'
+      required
+      [readOnly]='!this.editable'
+      [class.is-valid]='this.workshopSubcontractor.city !== ""'
+      [class.is-invalid]='this.workshopSubcontractor.city === ""'
+      [(ngModel)]='this.workshopSubcontractor.city'>
+  </div>
+  <div class="col-4">
+    <label>Postcode</label>
+    <input
+      type="text"
+      class='form-control'
+      required
+      [readOnly]='!this.editable'
+      [class.is-valid]='this.workshopSubcontractor.postcode !== ""'
+      [class.is-invalid]='this.workshopSubcontractor.postcode === ""'
+      [(ngModel)]='this.workshopSubcontractor.postcode'>
+      <app-address-picker [postcode]='this.workshopSubcontractor.postcode' (onAddressFound)='this.foundBillingAddress($event)'></app-address-picker>
+  </div>
+  <div class="col-4">
+    <label>Phone</label>
+    <input type="text" class='form-control' [readOnly]='!this.editable' [(ngModel)]='this.workshopSubcontractor.phone'>
+  </div>
+  <div class="col-4">
+    <label>Email</label>
+    <input type="email" class='form-control' [readOnly]='!this.editable' [(ngModel)]='this.workshopSubcontractor.email'>
+  </div>
+  <div class="col-12">
+    <label>Notes</label>
+    <textarea class='form-control' [readOnly]='!this.editable' [(ngModel)]='this.workshopSubcontractor.notes'></textarea>
+  </div>
+</div>

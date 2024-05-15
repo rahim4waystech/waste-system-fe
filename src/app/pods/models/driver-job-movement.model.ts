@@ -1,0 +1,29 @@
+export class DriverJobMovement {
+    id: number = -1;
+    driverId: number = -1;
+    vehicleId: number = -1;
+    jobId: number = -1;
+    qty: number = 0;
+    comments: string = '';
+    siteStartTime: string = '';
+    siteEndTime: string = '';
+    travelTime: number = 0;
+    waitTime: number = 0;
+    upliftTicketNumber: string = '';
+    collectionTicketNumber: string = '';
+    tippedTicketNumber: string = '';
+    signature: string = '';
+    customerName: string = '';
+    tippedSignatureName: string = '';
+    ticketNumber: string = '';
+    reportTipIssueId: number = -1;
+    tipIssueResolved:Boolean = false;
+    tipIssueResolution: String = '';
+    createdBy: number = -1;
+    siteCheckDone:Boolean = false;
+    driverBreakTime: string = '';
+    chargeableTime: string = '';
+    active: boolean = true;
+    createdAt: string = '';
+    updatedAt: string = '';
+}

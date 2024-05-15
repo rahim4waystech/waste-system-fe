@@ -1,0 +1,92 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <div class="p-3">
+            <div class="row mt-0 content-block-head">
+              <div class="col p-2">
+                <div class="row px-3">
+                  <h4>Vehicle Check Areas</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="row content-block">
+              <div class="col">
+                <table class='table table-bordered table-hover'>
+                  <thead class='thead-dark'>
+                    <tr>
+                      <th>Name</th>
+                      <th>Vehicle Type</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor='let cat of this.categories'>
+                      <!-- <ng-container *ngIf='!this.addToggle'> -->
+                      <td>{{cat.name}}</td>
+                      <td colspan='2' *ngIf='cat.vehicleTypeId === 0'>All Types</td>
+                      <td colspan='2' *ngIf='cat.vehicleTypeId > 0'>{{cat.vehicleType.name}}</td>
+                      <!-- <td class='p-0 text-center'>
+                  <button
+                    *ngIf='!this.disableButtons'
+                    class='btn btn-warning m-0 btn-block'
+                    (click)='this.editCategory(cat.id)'>
+                    <i class="far fa-edit"></i>
+                  </button>
+                  <button
+                    *ngIf='this.disableButtons'
+                    class='btn btn-warning m-0 btn-block disabled'>
+                    <i class="far fa-edit"></i>
+                  </button>
+                </td> -->
+                      <!-- </ng-container> -->
+                    </tr>
+                    <tr>
+                      <ng-container *ngIf='this.addToggle'>
+                        <td>
+                          <label>Name</label>
+                          <input type='text' [(ngModel)]='this.newRow.name' class='form-control' />
+                        </td>
+                        <td>
+                          <label>Vehicle Type</label>
+                          <select class='form-control' [class.is-invalid]='this.newRow.vehicleTypeId === -1'
+                            [class.is-valid]='this.newRow.vehicleTypeId >= 0'
+                            (change)='this.newRow.vehicleTypeId = +$event.target.value;'>
+                            <option value='0'>All Types</option>
+                            <option *ngFor='let item of this.vehicleTypes' [value]='item.id'
+                              [selected]='this.newRow.vehicleTypeId === item.id'>
+                              {{ item.name }}
+                            </option>
+                          </select>
+                        </td>
+                        <td align="center">
+                          <button class='btn btn-block btn-success mt-auto' (click)='saveRow()'>Save</button>
+                        </td>
+                      </ng-container>
+                    </tr>
+                    <tr >
+                      <td colspan='3'>
+                        <button *ngIf='!disableButtons' class='btn btn-success btn-block' (click)='addRow()'>
+                          <i class="far fa-plus-square"></i>
+                        </button>
+                        <button *ngIf='disableButtons' class='btn btn-secondary btn-block' disabled>
+                          <i class="far fa-plus-square"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

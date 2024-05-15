@@ -1,0 +1,41 @@
+<div class="row m-0">
+  <div class="col text-center">
+    <b>Upcoming Contracts Ending</b>
+    <hr>
+  </div>
+</div>
+
+<!-- <span class='home-title'>Upcoming Contracts Ending</span> -->
+<div class="table-resposive">
+<table class='table table-bordered m-0' *ngIf='!errorReport'>
+  <thead class='table-dark'>
+    <tr>
+      <th>Company</th>
+      <th>Contract</th>
+      <th>Contract No.</th>
+      <th>Start</th>
+      <th>Ending</th>
+      <th>View</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let row of this.contractEnding'>
+      <td>{{row.account.name}}</td>
+      <td>{{row.name}}</td>
+      <td>{{row.contractNumber}}</td>
+      <td>{{this.parseDate(row.startDate)}}</td>
+      <td>{{this.parseDate(row.endDate)}}</td>
+      <td>
+        <button class='btn btn-block btn-info' (click)='this.clickedLink(row.id)'>
+          <i class="fas fa-eye"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="alert alert-danger" role="alert" *ngIf='this.errorReport'>
+  There was a problem loading Ending Contracts
+  <hr>
+  {{this.errorMessage.error.statusCode}}: {{this.errorMessage.error.message}}
+</div>

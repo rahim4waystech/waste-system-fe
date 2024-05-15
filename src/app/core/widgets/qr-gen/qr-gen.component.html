@@ -1,0 +1,25 @@
+<span id='canvas-area'>
+  <ngx-kjua class='m-0 p-0'
+  [text]="this.input"
+  [fontname]="'sans'"
+  [crisp]='true'
+  [fontcolor]="'#333'"
+  [size]="200"
+  [ecLevel]="'H'"
+  [fill]="this.getQRFill()"
+  [image]='this.getQRImage()'
+  [render]='"canvas"'
+  [mSize]="30"
+  [mPosX]="50"
+  [mPosY]="50"
+  [label]='"Hello world"'
+  [mode]='"image"'
+></ngx-kjua>
+
+
+</span>
+<hr>
+
+<img [attr.src]='this.getQRImageSrc()' id="img-buffer" style='display:none'/>
+<p class='text-center'>S/N: {{this.input}}</p>
+<button class='btn btn-info btn-block' type="button" (click)='saveCanvas()'>Download QR</button>

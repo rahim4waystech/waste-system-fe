@@ -1,0 +1,105 @@
+<app-order-artic-assign-loads [orders]="this.selectedOrders"></app-order-artic-assign-loads>
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class='titleContainer  my-auto'>
+                <h3 class='header my-auto'>All Artics Orders</h3>
+
+              </div>
+            </div>
+            <div class="col-lg-6 text-end my-auto">
+              <div>
+                <button class='btn btn-sm btn-secondary' routerLink='/orders/new/accounts'><i class="fas fa-plus"></i>
+                  New</button>&nbsp;
+                <button class='btn btn-sm btn-secondary' (click)='simpleOrder()'><i class="fas fa-file-signature"></i>
+                  Simplified order</button>&nbsp;
+                <button class='btn btn-sm btn-secondary' routerLink="/dataupload"><i class="fas fa-file-signature"></i> Import
+                  From Sheet</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class='sheet'>
+            <h3>Filters</h3>
+            <div class='row'>
+              <div class='col-md-4 form-group'>
+                <label>Order ID</label>
+                <input [(ngModel)]="this.searchFilters.orderId" class='form-control' type='text' />
+              </div>
+              <div class='col-md-4 form-group'>
+                <label>Customer</label>
+                <ng-select class='form-select' [(ngModel)]="this.searchFilters.customer"
+                  (change)='this.searchFilters.customer = $event;'>
+                  <ng-option *ngFor='let item of this.accounts' [value]='item.name'>{{ item.name }}</ng-option>
+                </ng-select>
+              </div>
+              <div class='col-md-4 form-group'>
+                <label>Tip Site</label>
+                <ng-select class='form-select' [(ngModel)]="this.searchFilters.tipSite"
+                  (change)='this.searchFilters.tipSite = $event;'>
+                  <ng-option *ngFor='let item of this.tips' [value]='item.name'>{{ item.name }}</ng-option>
+                </ng-select>
+              </div>
+              <div class='col-md-4 form-group'>
+                <label>Date</label>
+                <input [(ngModel)]="this.searchFilters.date" class='form-control' type='date' />
+              </div>
+              <div class='col-md-4 form-group'>
+                <label>Po Number</label>
+                <input [(ngModel)]="this.searchFilters.poNumber" class='form-control' type='text' />
+              </div>
+              <div class='col-md-4 form-groups'>
+                <label>Status</label>
+                <ng-select class='form-select' [(ngModel)]="this.searchFilters.status"
+                  (change)='this.searchFilters.status = +$event;'>
+                  <ng-option *ngFor='let item of this.statuses' [value]='item.id'>{{ item.name }}</ng-option>
+                </ng-select>
+              </div>
+              <div class="col-lg-4 mt-3 ms-auto text-end">
+                <button class='btn btn-primary' type='button' (click)='search()'>Search</button>&nbsp;
+                <button class='btn btn-danger' type='button' (click)='clear()'>Clear</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div>
+      <button class='btn blueHover' (click)='this.setOrderStatus("")' [class.btn-primary]='this.orderStatusCurrent === ""' [class.btn-secondary]='this.orderStatusCurrent !== ""'><i class="fas fa-truck-loading"></i> All Orders</button>&nbsp;
+      <button class='btn purpleHover' (click)='this.setOrderStatus("Pending")'  [class.btn-info]='this.orderStatusCurrent === "Pending"' [class.btn-secondary]='this.orderStatusCurrent !== "Pending"'><i class="fas fa-question-circle"></i> Pending</button>&nbsp;
+      <button class='btn greenHover' (click)='this.setOrderStatus("Accepted")'  [class.btn-success]='this.orderStatusCurrent === "Accepted"' [class.btn-secondary]='this.orderStatusCurrent !== "Accepted"'><i class="fas fa-check-circle"></i> Accepted</button>&nbsp;
+      <button class='btn redHover' (click)='this.setOrderStatus("Declined")'  [class.btn-danger]='this.orderStatusCurrent === "Declined"' [class.btn-secondary]='this.orderStatusCurrent !== "Declined"'><i class="fas fa-times-circle"></i> Declined</button>&nbsp;
+    </div> -->
+  <div class="orderarticaltable">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12 my-1">
+              <button class='btn btn-secondary' type='button' (click)="assignLoads()">Assign Loads</button>
+            </div>
+          </div>
+            <hr>
+            <div class="row">
+            <div class="col-12">
+              <app-grid entity='order' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+                [searchFilters]='this.searchFiltersGrid' [searchFields]='this.searchFields'
+                [relationships]='this.relationships' [checkboxSelector]="true"
+                (checkboxSelected)="onCheckboxSelected($event)"></app-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

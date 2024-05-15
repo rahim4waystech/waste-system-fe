@@ -1,0 +1,54 @@
+import { AccountType } from './account-type.model';
+import { Industry } from './industry.model';
+import { AccountRating } from './account-rating.model';
+import { Sepa } from 'src/app/account/models/sepa.model';
+import { DepotDetails } from 'src/app/account/models/depot-details.model';
+
+export class Account {
+  id: number = -1;
+  parentId: number = -1;
+  organisationId: number = -1;
+  name: string = '';
+  accountRef: string = '';
+  description: string = '';
+  type: AccountType = new AccountType();
+  type_id: number = -1;
+  source: string = '';
+  notes: string = '';
+  annualRevenue: number = 0;
+  employees: number = 0;
+  industryId: number = -1;
+  industry: Industry = new Industry();
+  rating: AccountRating = new AccountRating();
+  rating_id: number = -1;
+  sepaId:number = -1;
+  sepa: Sepa = new Sepa();
+  isOwn: boolean = false;
+  depot: DepotDetails = new DepotDetails();
+  contact: string = '';
+  email: string = '';
+  website: string = '';
+  phoneNumber: string = '';
+  billingAddress1: string = '';
+  billingAddress2: string = '';
+  billingCity: string = '';
+  billingCountry: string = 'UK';
+  billingPostCode: string = '';
+  shippingAddress1: string = '';
+  shippingAddress2: string = '';
+  shippingCity: string = '';
+  shippingCountry: string = 'UK';
+  shippingPostCode: string = '';
+  sicId: number = -1;
+  onStop: boolean = false;
+  limitEnabled: boolean = false;
+  isactive:boolean = true;
+  poNumber: string = '';
+  isTip: boolean = false;
+  isDepot: boolean = false;
+  logo: string = '';
+  createdBy: number = -1;
+
+  createdAt: string = '';
+  updatedAt: string = '';
+}

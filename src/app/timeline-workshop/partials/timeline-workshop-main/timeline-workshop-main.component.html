@@ -1,0 +1,76 @@
+               <!-- comment by shujat -->
+<app-timeline-workshop-edit-fitter [assignment]='this.currentAssignment'></app-timeline-workshop-edit-fitter>
+
+<br />
+<br />
+<!-- <button class='btn btn-secondary' (click)='this.onPDFDownload()'><i class="fas fa-file-pdf"></i> Download sheet</button> -->
+<br />
+<br />
+  <div class='alert alert-primary'  *ngIf='this.defectAssignments.length === 0'>
+    No fitters assigned for this date. Please assign a fitter to start.
+  </div>
+  <table class='defectAllocationTable' *ngIf='this.defectAssignments.length > 0'>
+    <thead>
+      <tr>
+        <th>Unit</th>
+        <th style='padding-right: 4rem;'>&nbsp;</th>
+        <th>Assigned Defects</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor='let item of this.defectAssignments'>
+        <td>
+          <div class='roundHeader' [class.sub]='item.subcontractorId !== -1'>
+            {{ item.name }}
+
+            <div class='mainContent' style='float:left'>
+              <ng-container *ngIf='item.fitterId !== -1'>
+                <span class="far fa-fw fa-id-card"></span> {{ item.fitter.firstName + ' ' + item.fitter.lastName }} ({{ item.fitterStartTime }})
+              </ng-container>
+
+              <ng-container *ngIf='item.subcontractorId !== -1 && item.subcontractorId !== 0'>
+                <span class="far fa-fw fa-id-card"></span> {{ item.subcontractorDepot.name }} ({{ item.subcontractor.name }}) ({{ item.fitterStartTime }})
+              </ng-container>
+            </div>
+            <div style='float:right;'>
+              <button class='btn btn-primary btn-small' (click)='this.currentAssignment = item; this.openModal("workshopEditFitterModal")'><i class="fas fa-pencil-alt" style='font-size: 0.8rem'></i></button>&nbsp;
+              <button class='btn btn-danger btn-small' (click)='deleteDefectAssignment(item.id)'><i class="fas fa-trash" style='font-size: 0.8rem'></i></button>
+            </div>
+          </div>
+        </td>
+        <td>&nbsp;</td>
+        <td>
+					<div class='allocationContainer'>
+            <ng-container *ngFor='let blocki of this.getEmptySlotAsArray()'>
+                <div *ngIf='!this.getJobByDefectssignmentIdAndBlockId(item.id, blocki)' class='blockContainer'><input type='checkbox' disabled='disabled' /><div class='timelineBlock' (drop)='this.onDefectDrop($event, blocki, item.id)' [class.drop]='this.currentHoveredEmptySlot === blocki' [attr.data-id]='blocki' (dragenter)='this.dragEnter($event, item)' (dragleave)='this.dragLeave($event)' (dragover)='$event.preventDefault();'></div></div>
+                <div
+                  *ngIf='this.getJobByDefectssignmentIdAndBlockId(item.id, blocki)'
+                  class='blockContainer'
+                >
+                  <input
+                    type='checkbox'
+                    [disabled]='!this.isCheckboxActive(this.getJobByDefectssignmentIdAndBlockId(item.id, blocki))'
+                    [checked]='this.isBoxChecked(this.getJobByDefectssignmentIdAndBlockId(item.id, blocki))'
+                    (click)='onSelectedCheckbox($event,this.getJobByDefectssignmentIdAndBlockId(item.id, blocki))'
+                  />
+                  <div
+                      class='timelineBlock allocated'
+                      [class.started]='this.getJobByDefectssignmentIdAndBlockId(item.id, blocki).defectStatusId === 3'
+                      [class.hold]='this.getJobByDefectssignmentIdAndBlockId(item.id, blocki).defectStatusId === 4'
+                      [class.ended]='this.getJobByDefectssignmentIdAndBlockId(item.id, blocki).defectStatusId === 5'
+                      [class.signedOff]='this.getJobByDefectssignmentIdAndBlockId(item.id, blocki).defectStatusId === 6 && this.getJobByDefectssignmentIdAndBlockId(item.id, blocki).defect.finalSignoff !== null'
+
+                      (dragover)='$event.preventDefault();'
+                      draggable='true'
+                    ><strong>{{ this.getJobByDefectssignmentIdAndBlockId(item.id, blocki).defect.vehicle.registration  }} </strong>{{ this.getJobByDefectssignmentIdAndBlockId(item.id, blocki).defect.vehicleCheckArea.name }} - {{ this.getJobByDefectssignmentIdAndBlockId(item.id, blocki).defect.description }}
+                </div></div>
+              </ng-container>
+					</div>
+        </td>
+        <td>
+          <i class="fas fa-plus-square" (click)='addEmptySlot()'></i>
+        </td>
+        </tr>
+    </tbody>
+  </table>

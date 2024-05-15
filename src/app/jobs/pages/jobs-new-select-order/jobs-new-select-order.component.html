@@ -1,0 +1,20 @@
+<div class="fullcontainer" >
+  <br />
+  <br />
+
+  <div class='titleContainer'>
+    <h2 class='header'  >Select an accepted order</h2>
+    <div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <br />
+  <app-grid
+entity='order'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+></app-grid>

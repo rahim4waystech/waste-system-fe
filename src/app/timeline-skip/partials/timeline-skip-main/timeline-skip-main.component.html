@@ -1,0 +1,100 @@
+
+<div class="row my-1">
+  <div class="col-lg-6">
+    <button id='leftArrow' (click)='scrollLeft()' class='btn btn-secondary' ><i class="fas fa-arrow-circle-left"></i></button>
+
+  </div>
+  <div class="col-lg-6 text-end">
+    <button id='rightArrow' (click)='scrollRight()' class='btn btn-secondary' ><i class="fas fa-arrow-circle-right"></i></button>
+
+  </div>
+</div>
+
+
+<div id='timelineskipmain' class='timelineRoundsContainer'>
+ 
+  <!-- comment by shujat --> 
+  <app-skip-resolve-issue [currentPod]='this.currentPod'></app-skip-resolve-issue>
+  <app-skip-round-edit-modal [round]='this.currentSkipRound'
+    [assignment]='this.currentJobAssignment'></app-skip-round-edit-modal>
+
+  <ng-container *ngIf='this.skipRounds.length > 0'>
+    <div class='timelineRound ' *ngFor='let item of this.skipRounds;let i=index'>
+      <div class="roundHeader" [class.sub]='item.subcontractorId !== -1'>
+        <div>
+          {{ item.name }} (Count: {{ getCountForSkipRound(item.id) }})<br />
+
+          <ng-container *ngIf='item.vehicleId !== -1'>
+            <span class="fas fa-fw fa-truck"></span> {{ item.vehicle.registration }}
+            <span class="far fa-fw fa-id-card"></span> {{ item.driver.firstName + ' ' + item.driver.lastName }} ({{
+            item.driverStartTime }})
+            <br />
+            <span class="fas fa-fw fa-phone" *ngIf='getContact(item) !== "" && getContact(item)'></span>
+            {{getContact(item)}}
+            <br />
+            <span *ngIf='item.upcomingInspection !== undefined' class='text-danger'>Inspection Due:
+              {{item.upcomingInspection}}</span>
+          </ng-container>
+
+          <ng-container *ngIf='item.subcontractorId !== -1 && item.subcontractorId !== 0'>
+            <span class="far fa-fw fa-id-card"></span> {{ item.subcontractor.name }} ({{ item.driverStartTime }})
+          </ng-container>
+        </div>
+        <button class='btn btn-primary btn-small' (click)='openEditRoundModal(item)'><i
+            class="fas fa-pencil-alt"></i></button>
+      </div>
+      <div class="roundContainer" [class.drop]='this.currentHoveringRoundId === item.id' [attr.data-id]='item.id'
+        (dragenter)='this.dragEnter($event, item)' (dragleave)='this.dragLeave($event)'
+        (drop)='this.onOrderDrop($event)' (dragover)='$event.preventDefault();'>
+        <ng-container *ngFor='let job of getJobsForSkipRound(item.id) ; let i = index'>
+
+          <div class='orderContainer droptarget' [class.dragging]='this.draggingId == job.id'
+            [class.drop]='this.currentHoveringJob === i' [attr.data-skipRoundId]='item.id' data-id='{{ i }}'
+            [attr.data-jobId]='job.id' draggable="true" (dragover)="this.blockDragOver($event, i)"
+            (dragstart)="dragStart($event, job)" [class.tipIssue]='this.hasTipIssue(job.id)'
+            [style.background-color]='this.getColourForJobStatus(job)' *ngIf='this.job.jobStatusId !== 3'>
+
+            <input type='checkbox' [checked]='this.isCheckBoxSelected(job.id)'
+              (click)='onJobCheckboxClicked($event, job)' *ngIf='job.jobStatusId !== 4 && job.jobStatusId !== 5' />
+            <strong>{{ job.order.account.name }}</strong> {{ this.getAddressForOrder(job.order) }}<br />
+            <strong>{{ job.order.skipOrderType.name }}</strong> {{ this.getTypeOfSkip(job.order) }} ({{
+            job.order.containerSizeType.size }} {{ this.getUnitById(job.order.containerSizeType.unitId).name }}) {{
+            this.getGrade(job.order) }}
+
+            <br />
+            <ng-container *ngIf='this.hasTipIssue(job.id)'>
+              <ng-container *ngIf='this.getTipDetails(job.id).resolved'>
+                Resolved Issue: {{ this.getTipDetails(job.id).resolution }}
+              </ng-container>
+              <ng-container *ngIf='!this.getTipDetails(job.id).resolved'>
+                Job Issue: {{ this.getTipDetails(job.id).issue }}
+                <button class='btn btn-secondary' type='button' (click)='onIssueResolvedClicked(job)'>Issue
+                  Resolved</button>
+              </ng-container>
+            </ng-container>
+            <!-- <div class='jobStatusName'>Driver Status: {{ this.getDriverStatus(this.getJobById(job.id).driverJobStatusId) }}</div>  -->
+            <ng-container>
+              <!-- Move up /  Move down -->
+              <!--
+              <ng-container *ngIf='job.order.collectionNumber >= 1'>
+              <a id="up" title="Move Up" href="" onclick="this.moveUp().preventDefault;">Move Up</a>/
+              </ng-container>
+              <ng-container *ngIf='job.order.collectionNumber != this.skipRounds.length()'>
+              <a id="down" title="Move Up" href="" onclick="this.moveUp(); return false;">Move Down</a>
+              </ng-container>
+              -->
+              <i class="fas fa-pencil-alt"></i>
+            </ng-container>
+
+
+
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+  </ng-container>
+  <ng-container *ngIf='this.skipRounds.length === 0'>
+    <div class='alert alert-danger'>No skip rounds found. Please create one to start.</div>
+  </ng-container>
+</div>

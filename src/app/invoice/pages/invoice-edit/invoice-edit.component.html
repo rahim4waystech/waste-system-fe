@@ -1,0 +1,156 @@
+<app-add-invoice-item></app-add-invoice-item>
+<div class="fullcontainer">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.invoice.posted'>You cannot edit this invoice it has been posted.</div>
+  <div class="alert alert-success" *ngIf='this.isSuccess'>Invoice was updated successfully</div>
+  <div class="sheet">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class='header'>Edit Invoice - {{this.invoicingPrefix}}{{ this.invoice.id }}</h3>
+
+          </div>
+          <div class="card-body">
+            <div class='row'>
+              <div class="form-group col-md-4">
+                <label>Account</label>
+                <input class='form-control' type='text' readonly [value]='this.invoice.account.name' />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Invoice Number</label>
+                <input class='form-control' type='text' readonly
+                  [value]='this.getPrefix() + this.invoice.id.toString()' />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Invoice Period</label>
+                <input class='form-control' type='text' readonly [value]='this.invoice.invoicePeriod.name' />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Order ref</label>
+                <input class='form-control' type='text' [(ngModel)]='this.invoice.poNumber' />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Load Ex</label>
+                <input class='form-control' type='text' [(ngModel)]='this.invoice.loadEx' />
+              </div>
+
+              <div class="form-group col-md-4">
+                <label>Tax Type</label>
+                <select class='form-control'
+                  (change)='this.invoice.taxTypeId = +$event.target.value; this.invoice.taxType = {id: this.invoice.taxTypeId}'>
+                  <option *ngFor='let type of this.taxTypes' [value]='type.id'
+                    [selected]='this.invoice.taxTypeId === type.id'>{{ type.name }}({{type.rate}}%)</option>
+                </select>
+              </div>
+            </div>
+            <hr>
+            <div class="row mb-2">
+
+              <div class="col-md-6 my-auto">
+                <h4 class='header' style='color:black !important'>Invoice Items</h4>
+              </div>
+              <div class="col-md-6 text-end my-auto">
+                <button class='btn btn-secondary' type='button' (click)='this.openModal("addInvoiceItemModal")'>Add
+                  item</button>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <table class="table table-bordered" *ngIf='this.items.length > 0'>
+                  <thead class="table-dark">
+                    <th>Date</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <!-- <th>Nominal Code</th> -->
+                    <th>Description</th>
+                    <th></th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor='let item of this.items; let i = index;'>
+                      <td>{{ item.date }}</td>
+                      <td>
+                        <input type="number" min='0' name='name' class="form-control" id="inputEmail4"
+                          [(ngModel)]='item.qty'>
+                      </td>
+                      <td>
+                        <input type="number" name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.price'>
+                      </td>
+                      <!-- <td>
+                    <input type="text" name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.nominalCode'>
+                  </td> -->
+                      <td>
+                        <textarea rows="1" class='form-control' [(ngModel)]='item.longDescription'></textarea>
+                      </td>
+                      <td>
+                        <button class='btn btn-danger' type="button" (click)='this.onDeleteClickedForItem(i)'><i
+                            class="fas fa-trash"></i></button> &nbsp;
+                        <button class='btn btn-warning' type='button'
+                          [routerLink]='"/job-signoff/land/view/"+ item.jobId +"/manager"'
+                          *ngIf='item.jobId !== -1'>View Job {{ item.jobId }}</button> &nbsp;
+
+                        <ng-container *ngIf='this.getCreditNoteForInvoiceItem(item.id)'>
+                          <button class='btn btn-secondary'
+                            (click)='this.createCNPDFFile(getCreditNoteForInvoiceItem(item.id).id)'>View Credit note:
+                            CR- {{ getCreditNoteForInvoiceItem(item.id).id}}</button>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+
+
+            <ng-container *ngIf='this.creditNotes.length > 0'>
+              <div class="row">
+                <div class="col-12">
+                  <h4 class='header' style='color:black !important'>Credit Notes</h4>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <table class="table table-bordered" *ngIf='this.creditNotes.length > 0'>
+                    <thead class="table-dark">
+                      <th>Number</th>
+                      <th>Date</th>
+                      <th>Value</th>
+                      <th>Description</th>
+                      <th></th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor='let item of this.creditNotes'>
+                        <td>CN-{{ item.id }}</td>
+                        <td>{{ item.date }}</td>
+                        <td>-{{ item.value }}</td>
+                        <td>{{ item.description }}</td>
+                        <td><button type='button' class='btn btn-warning' (click)='this.createCNPDFFile(item.id)'>View
+                            PDF</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </ng-container>
+            <div class="row mt-3">
+              <div class="col-12 text-end">
+                <button type="submit" class="btn btn-success" (click)='save()'
+                  *ngIf='!this.invoice.posted'>Save</button>&nbsp;
+                <button type="button" class="btn btn-danger" routerLink='/invoices'>Cancel</button>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

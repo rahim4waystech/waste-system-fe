@@ -1,0 +1,12 @@
+<app-assign-stock [defect]='this.defect' [vehicle]='this.vehicle' [allowLink]='true'></app-assign-stock>
+
+<app-grid
+entity='defects'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+[relationships]='[]'
+[backgroundSetter]='this.getRowColor'
+></app-grid>

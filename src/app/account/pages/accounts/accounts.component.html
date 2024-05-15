@@ -1,0 +1,69 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class='titleContainer'>
+                <h3 class='header'>All Accounts </h3>
+              </div>
+            </div>
+            <div class="col-lg-6"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-lg-3">
+              <button class='btn btn-secondary w-100' (click)='onGenerateLink($event)'> Generate new customer
+                link</button>
+            </div>
+            <div class="col-lg-3">
+              <button class='btn btn-secondary w-100' routerLink='/accounts/new'> New</button>
+            </div>
+            <div class="col-lg-3">
+              <button class='btn btn-secondary w-100 accountHover' (click)='this.accountTypeFilter = "all"'
+                [class.accountHoverActive]='this.accountTypeFilter === "all"'>All Accounts</button>
+            </div>
+            <div class="col-lg-3">
+              <button class='btn btn-secondary w-100 customerHover' (click)='this.accountTypeFilter = "customer"'
+                [class.customerHoverActive]='this.accountTypeFilter === "customer"'>All Customers</button> 
+                <!-- <button class='btn btn-secondary w-100 customerHover'
+                   data-bs-toggle="modal" data-bs-target="#exampleModal">All Customers</button> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+              <button class='btn btn-secondary w-100 prospectHover' (click)='this.accountTypeFilter = "prospect"'
+                [class.prospectHoverActive]='this.accountTypeFilter === "prospect"'>All Prospects</button>
+            </div>
+            <div class="col-lg-3">
+              <button class='btn btn-secondary w-100 depotHover' (click)='this.accountTypeFilter = "depot"'
+                [class.depotHoverActive]='this.accountTypeFilter === "depot"'>All Depots</button>
+            </div>
+            <div class="col-lg-3">
+              <button class='btn btn-secondary w-100 tipHover' (click)='this.accountTypeFilter = "tip"'
+                [class.tipHoverActive]='this.accountTypeFilter === "tip"'>All Tips</button>
+            </div>
+            <div class="col-lg-3">
+              <button class='btn btn-secondary w-100 inactiveHover' (click)='this.accountTypeFilter = "inactive"'
+                [class.inactiveHoverActive]='this.accountTypeFilter === "inactive"'>Inactive Accounts</button>
+            </div>
+          </div>
+          <hr>
+          <div class="accountcomponent">
+          <app-all-accounts-section *ngIf='this.accountTypeFilter === "all"'></app-all-accounts-section>
+           <app-active-accounts *ngIf='this.accountTypeFilter === "customer"'></app-active-accounts> 
+          <app-prospects *ngIf='this.accountTypeFilter === "prospect"'></app-prospects>
+          <app-depot-section *ngIf='this.accountTypeFilter === "depot"'></app-depot-section>
+          <app-tips-section *ngIf='this.accountTypeFilter === "tip"'></app-tips-section>
+          <app-inactive-accounts *ngIf='this.accountTypeFilter === "inactive"'></app-inactive-accounts>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

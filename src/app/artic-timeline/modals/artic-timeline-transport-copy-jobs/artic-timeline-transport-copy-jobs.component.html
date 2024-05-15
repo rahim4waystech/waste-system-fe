@@ -1,0 +1,14 @@
+<jw-modal id="ArtictransportCopyJobsModal">
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <h1 class='header'>Copy jobs</h1>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="inputEmail4">Date</label>
+            <input type="date" [(ngModel)]='this.date' [class.is-invalid]='!this.date' name='name' class="form-control" id="inputEmail4">
+          </div>
+    </div>
+
+  <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+</jw-modal>

@@ -1,0 +1,50 @@
+<app-timeline-artic-contract-orders *ngIf='this.orderTypeId === 4'></app-timeline-artic-contract-orders>
+<div class='fullcontainer'>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-3">
+              <!-- modal comment shujats -->
+              <app-artic-timeline-transport-new-job [orderTypeId]='this.orderTypeId' [date]='this.date'></app-artic-timeline-transport-new-job> 
+              <app-artic-timeline-transport-add-row-modal [orderTypeId]='this.orderTypeId'
+                [date]='this.date'></app-artic-timeline-transport-add-row-modal> 
+             <app-artic-timeline-transport-vor-and-absence
+                [data]='this.absenceAndVors'></app-artic-timeline-transport-vor-and-absence>
+              <app-artic-timeline-transport-accepted-orders></app-artic-timeline-transport-accepted-orders>
+            </div>
+            <div class="col-lg-9">
+          
+              <app-artic-timeline-transport-toolbar></app-artic-timeline-transport-toolbar>
+              <div class="subright-div">
+              <div class='timelineLineContainer'>
+                <div class='timelineMainContainer'>
+                  <app-artic-timeline-transport-main></app-artic-timeline-transport-main>
+                  <!-- <ng-container *ngIf='this.orderTypeId === 3'>
+                <app-timeline-transport-main></app-timeline-transport-main>
+              </ng-container>
+              <ng-container *ngIf='this.orderTypeId === 5'>
+                <app-timeline-transport-main></app-timeline-transport-main>
+              </ng-container>
+              <ng-container *ngIf='this.orderTypeId === 6'>
+                <app-timeline-transport-main></app-timeline-transport-main>
+              </ng-container>
+              <ng-container *ngIf='this.orderTypeId === 7'>
+                <app-timeline-transport-main></app-timeline-transport-main>
+              </ng-container>
+              <ng-container *ngIf='this.orderTypeId === 8'> -->
+                 
+                  <!-- <app-timeline-transport-main-vertical *ngIf='!this.timelineSettings.timelineOrientationShredder'></app-timeline-transport-main-vertical> -->
+                  <!-- </ng-container> -->
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

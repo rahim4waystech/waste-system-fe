@@ -1,0 +1,19 @@
+<div class="row workshop-toolbar">
+  <div class="col" *ngFor='let navItem of this.navItems'>
+    <div class=" workshop-nav" [class.active]='isActive(navItem.name)' *ngIf='navItem.subscribed'
+      routerLink='/4workshop{{navItem.link}}'>
+      <i class=" {{navItem.icon}} "></i>
+     
+      <div class="navtext">
+      {{navItem.name}}
+    </div>
+    </div>
+    <div class=" workshop-nav-inactive" *ngIf='!navItem.subscribed'>
+      <i class=" {{navItem.icon}} "></i>
+     
+      <div class="navtext">
+      {{navItem.name}}
+    </div>
+    </div>
+  </div>
+</div>

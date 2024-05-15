@@ -1,0 +1,34 @@
+
+<div class="fullcontainer" >
+ <div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class='titleContainer'>
+          <h2 class='header' >Job Sign off</h2> 
+          <div>
+            <!-- <button class='btn btn-secondary' routerLink='/quoting/new/accounts'><i class="fas fa-plus"></i> New</button>&nbsp;
+            <button class='btn btn-secondary' routerLink='/quoting/products'><i class="fas fa-boxes"></i> Manage Products</button> -->
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <app-tabs [inverse]='true'>
+          <app-tab [active]='true' title='Transport Sign off'>
+            <app-job-signoff-transport></app-job-signoff-transport>
+          </app-tab>
+          <app-tab  title='Manager Sign off'>
+            <app-job-signoff-manager></app-job-signoff-manager>
+          </app-tab>
+        </app-tabs>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+ 
+
+
+
+
+

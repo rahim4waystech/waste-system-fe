@@ -1,0 +1,17 @@
+.card{
+    margin-top: 15px;
+}
+.card-header{
+    padding:10px;
+}
+.form-group{
+    margin-bottom: 5px;
+}
+.tabs[_ngcontent-jgw-c656] li.active[_ngcontent-jgw-c656],
+.tabs[_ngcontent-jgw-c656] li[_ngcontent-jgw-c656]:hover {
+    border-bottom: 2px solid var(--primary) !important;
+    color: var(--primary) !important;
+    background-color: transparent;
+    transition: color 500ms linear;
+    font-weight: bold;
+}

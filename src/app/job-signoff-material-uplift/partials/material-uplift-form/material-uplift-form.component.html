@@ -1,0 +1,32 @@
+
+<div class="row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Job ID</label>
+      <input type="text" name='name' [(ngModel)]='this.materialUpliftTicket.jobId' [class.is-invalid]='!this.materialUpliftTicket.jobId' class="form-control" id="inputEmail4">
+    </div>
+    <div class='col-md-4'>
+      <label>Customer</label>
+      <ng-select class='form-select' [(ngModel)]="this.materialUpliftTicket.accountId" (change)='this.materialUpliftTicket.accountId= +$event; this.materialUpliftTicket.account = {id: this.materialUpliftTicket.accountId}'>
+         <ng-option *ngFor='let item of this.tips' [value]='item.id'>{{ item.name }}</ng-option>
+      </ng-select>
+   </div>
+   <div class="form-group col-md-4">
+    <label for="inputEmail4">Name</label>
+    <input type="text" name='name' [(ngModel)]='this.materialUpliftTicket.name' [class.is-invalid]='!this.materialUpliftTicket.jobId' class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Unit</label>
+    <select class='form-select' (change)='this.materialUpliftTicket.unitId= +$event.target.value; this.materialUpliftTicket.unit = {id: this.materialUpliftTicket.unitId}'>
+      <option *ngFor='let item of this.units' [value]='item.id' [selected]='this.materialUpliftTicket.unitId === item.id'>{{ item.name }}</option>
+    </select>
+  </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Price</label>
+      <input type="number" name='registration' [(ngModel)]='this.materialUpliftTicket.price'  class="form-control" id="inputPassword4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Qty</label>
+      <input type="number" name='vinNumber' [(ngModel)]='this.materialUpliftTicket.qty' class="form-control" id="inputPassword4">
+    </div>
+  
+  </div>

@@ -1,0 +1,11 @@
+<jw-modal id='assignStockModal'>
+  <app-tabs>
+    <app-parts-view [defectId]='this.defect.id' [vehicleId]='this.vehicle.id' [allowLink]='this.allowLink'></app-parts-view>
+  </app-tabs>
+
+  <div class="row">
+    <div class="col btn-group">
+      <button class='btn btn-danger' (click)='this.cancel()'>Close</button>
+    </div>
+  </div>
+</jw-modal>

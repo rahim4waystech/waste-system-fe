@@ -1,0 +1,145 @@
+<div class="fullcontainer">
+    <div class="sheet">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class='header'>View POD - POD ID: {{ this.pod.id }}</h3>
+            </div>
+            <div class="card-body">
+              <app-tabs>
+                <app-tab title='Details'>
+                  <h3>Main Details</h3>
+                  <div class='row form-group'>
+                    <div class='col form-row col-md-4'>
+                      <label>Pod Number</label>
+                      <input class='form-control' type='text' [value]='this.pod.id' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Order Type</label>
+                      <input class='form-control' type='text' [value]='this.order.orderType.name' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Vehicle</label>
+                      <input class='form-control' type='text'  readonly/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Vehicle</label>
+                      <input class='form-control' type='text' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Driver</label>
+                      <input class='form-control' type='text' [value]='this.pod.driver.firstName + " " + this.pod.driver.lastName' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Account</label>
+                      <input class='form-control' type='text' [value]='this.order.account.name' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Service</label>
+                      <input class='form-control' type='text' [value]='this.getService()' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Unit</label>
+                      <input class='form-control' type='text' [value]='this.getUnit()' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Site</label>
+                      <input class='form-control' type='text' [value]='this.order.site.name' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Qty</label>
+                      <input class='form-control' type='text' [(ngModel)]='this.pod.qty'/>
+                    </div>
+                    <div class='col form-row col-md-4'>
+                      <label>Tip site</label>
+                      <input class='form-control' type='text' [value]='this.order.tipSite.name' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4' *ngIf='this.pod.siteStartTime !== "" && this.pod.siteStartTime'>
+                      <label>Site Start Time</label>
+                      <input class='form-control' type='text' [value]='this.pod.siteStartTime' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4' *ngIf='this.pod.siteEndTime !== "" && this.pod.siteEndTime'>
+                      <label>Site End Time</label>
+                      <input class='form-control' type='text' [value]='this.pod.siteEndTime' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4' *ngIf='this.pod.travelTime > 0'>
+                      <label>Travel Time</label>
+                      <input class='form-control' type='text' [value]='this.pod.travelTime' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4' *ngIf='this.pod.waitTime > 0'>
+                      <label>Wait Time</label>
+                      <input class='form-control' type='text' [value]='this.pod.waitTime' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4' *ngIf='this.pod.driverBreakTime && this.pod.driverBreakTime !== ""'>
+                      <label>Driver Break Time</label>
+                      <input class='form-control' type='text' [value]='this.pod.driverBreakTime' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4' *ngIf='this.pod.chargeableTime && this.pod.chargeableTime !== ""'>
+                      <label>Chargable Time</label>
+                      <input class='form-control' type='text' [value]='this.pod.chargeableTime' readonly/>
+                    </div>
+                    <div class='col form-row col-md-4' *ngIf='this.pod.ticketNumber !== "" && this.pod.ticketNumber'>
+                      <label>Ticket Number</label>
+                      <input class='form-control' type='text' [value]='this.pod.ticketNumber' readonly/>
+                    </div>
+                    <div class="col-md-12 mt-3 ms-auto text-end">
+                      <button class='btn btn-primary' (click)='this.createPDFFile()'>Download POD</button>
+                    </div>
+                  </div>
+      
+                 
+                  <hr />
+      
+                  <h3>Customer signature</h3>
+                  
+                  <small>{{ this.pod.customerName }}</small> <br /> <br />
+                  <small>Notes 123: {{ this.pod.comments }}</small><br /><br />
+                  
+                 <img [src] = 'this.pod.signature' />
+                  <hr />
+      
+      
+                </app-tab>
+      
+                <app-tab title='Evidence'>
+                  <img *ngFor='let image of this.images' style="height:12rem" src='data:{{this.image.filetype}};base64,{{this.image.data}}'/>
+                </app-tab>
+                <app-tab title='Job History'>
+                  <table class='table table-bordered '>
+                    <thead class="table-dark">
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>GPS</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let status of this.history'>
+                          <td>{{ status.date }}</td>
+                          <td>{{ status.time }}</td>
+                          <td>{{ getStatusFromId(status.driverJobStatusId).name }}</td>
+                          <td>{{ status.gpsLat }}.{{status.gpsLong }}</td>
+                          <td><a target='_blank' [href]='getMapUrl(status)' class='btn btn-primary'>View Map</a></td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </app-tab>
+            </app-tabs>
+            <div class="row mt-3">
+              <div class="col-12 text-end">
+                <button type='button' class="btn btn-success" (click)='save()'>Save</button>&nbsp;
+                <button type="button" class="btn btn-danger" routerLink='/pods'>Cancel</button>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+     
+
+     
+    </div>
+</div>
+  

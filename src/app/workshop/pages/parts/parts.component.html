@@ -1,0 +1,47 @@
+<div class="fullcontainer">
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header"> 
+        <app-workshop-nav></app-workshop-nav>
+
+      </div>
+      <div class="card-body">
+        <div class="partsdiv">
+          <div class="row ">
+            <div class="col-lg-9 content-block">
+              <app-grid
+                entity='parts'
+                [filters]='this.filters'
+                [columns]='this.columns'
+                [buttons]='this.buttons'
+                [searchFilters]='this.searchFilters'
+                [searchFields]='this.searchFields'
+                [inverse]='true'
+                >
+              </app-grid>
+            </div>
+            <div class="col-lg-3 content-block">
+            
+                <div class="row my-1">
+                  <div class="col-12  text-end">
+                    <button class='btn btn-success btn-block' (click)='this.openModal("stockAddModal",this.targetItem)'>New Item</button>
+               </div>
+              </div>
+              <hr>
+              <div class="right-div"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+                   <!-- modal comment by shujat -->
+  <app-add-stock-modal [part]='this.targetItem'></app-add-stock-modal>
+  <app-edit-stock-modal [part]='this.targetItem'></app-edit-stock-modal>
+  <app-view-stock-modal [part]='this.targetItem'></app-view-stock-modal>
+  <app-change-stock-modal [part]='this.targetItem'></app-change-stock-modal>
+
+ 
+</div>

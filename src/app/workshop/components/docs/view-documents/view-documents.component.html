@@ -1,0 +1,51 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class="content-block-head"> 
+                  <h3>Documents for {{this.vehicle.registration}}</h3> 
+              </div>
+            </div>
+            <div class="col-lg-6 my-auto text-end">
+              <div class="">
+                <button class='btn btn-sm btn-block btn-secondary' (click)='openModal("documentUploadModal")'>Upload Document</button>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="">
+    
+            <div class="row">
+              <div class="col-12">
+              <app-image-view-modal [image]='this.image'></app-image-view-modal>
+              <app-document-upload-modal [vehicleId]='this.vehicleId'></app-document-upload-modal>
+            </div>
+          </div>
+            <div class="row">
+              <div class="col">
+                <app-grid
+                  entity='documents'
+                  [filters]='this.filters'
+                  [columns]='this.columns'
+                  [buttons]='this.buttons'
+                  [searchFilters]='this.searchFilters'
+                  [searchFields]='this.searchFields'
+                  >
+                </app-grid>
+              </div>
+            </div>
+          </div>
+         </div>
+      </div>
+    </div>
+  </div>
+  
+  
+</div>

@@ -1,0 +1,73 @@
+
+<div class="fullcontainer" >
+  <br />
+  <br />
+<div class='titleContainer'>
+  <h2 class='header' >All Skip Jobs</h2>
+  <div>
+     <button class='btn btn-secondary' routerLink='/jobs/new/order'><i class="fas fa-plus"></i> New</button>&nbsp;
+  </div>
+
+</div>
+<br />
+<br />
+<div class='' style='background-color:white;padding: 2rem;'>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="accountName">Start Date</label>
+      <input class='form-control' type="date" name='name' [(ngModel)]='this.customFilters.startDate'>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="accountName">End Date</label>
+      <input class='form-control' type="date" name='name' [(ngModel)]='this.customFilters.endDate'>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="accountName">Site Address</label>
+      <input class='form-control' type="text" name='name' [(ngModel)]='this.customFilters.siteAddress'>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="accountName">Customer Name</label>
+      <input class='form-control' type="text" name='name' [(ngModel)]='this.customFilters.customerName'>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="accountName">Job Type</label>
+      <select class='form-control' (change)='this.customFilters.skipOrderTypeId = +$event.target.value'>
+        <option [value]='-1'>All Jobs</option>
+        <option *ngFor='let item of this.skipOrderTypes' [value]='item.id'>{{ item.name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="accountName">Size</label>
+      <select class='form-control' (change)='this.customFilters.containerSizeTypeId = +$event.target.value'>
+        <option value='-1'>All Sizes</option>
+        <option [value]='item.id' *ngFor='let item of this.containerSizeTypes'>{{ item.size }} Yards</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="accountName">Driver</label>
+      <select class='form-control' (change)='this.customFilters.driverId = +$event.target.value'>
+        <option value='-1'>All drivers</option>
+        <option *ngFor='let item of this.drivers' [value]='item.id'>{{ item.firstName }} {{ item.lastName }}</option>
+      </select>
+    </div>
+  </div>
+
+  <button class='btn btn-primary' (click)='search()'>Search</button>
+</div>
+
+<br />
+<br />
+
+<app-grid
+entity='job'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+[relationships]='["jobAssignment", "jobAssignment.driver", "jobAssignment.vehicle", "jobAssignment.subcontractor"]'
+[backgroundSetter]='this.getRowColor'
+[showSearch]='false'
+></app-grid>
+
+</div>

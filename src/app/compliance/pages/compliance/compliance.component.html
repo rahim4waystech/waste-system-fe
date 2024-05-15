@@ -1,0 +1,32 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col content-header">
+      <h3>{{this.folder.folderName}}</h3>
+    </div>
+  </div>
+  <app-filesystem-bar [currentFolder]='this.folder'></app-filesystem-bar>
+  <app-image-view-modal [image]='this.image'></app-image-view-modal>
+
+  <div class="row">
+    <!-- <div class="col-3">
+      <app-filesystem-browser></app-filesystem-browser>
+    </div> -->
+    <div class="col content-block">
+      <div class="row p-2">
+        <div class="col-1 text-center file-block p-1 m-1" *ngIf='this.pageId !== 1 && this.parentFolder !== undefined' routerLink='/compliance/{{this.parentFolder.id}}'>
+          <i class="far fa-3x fa-caret-square-up"></i><br/>
+          {{this.parentFolder.folderName}}
+        </div>
+        <div class="col-1 text-center file-block p-1 m-1" *ngFor='let folder of this.containedFolders' routerLink='/compliance/{{folder.id}}'>
+          <i class="far fa-3x fa-folder"></i><br/>
+          {{folder.folderName}}
+        </div>
+        <div class="col-1 text-center file-block p-1 m-1" *ngFor='let doc of this.items' (click)='this.openDocument(doc)'>
+          <i class="far fa-3x" [class]='doc.fileicon'></i>
+           <br/>
+          {{doc.originalFilename}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,208 @@
+<div class="fullcontainer ml-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <div class="p-3" *ngIf='this.vehicle !== undefined'>
+            <div class="row content-block-head">
+              <!-- <div class="col p-2">
+                 <h4>{{this.vehicle.registration}}</h4>
+                 <b>Status:</b> Working |
+                 <b>Driver:</b> Brian Onions |
+                 <b>Job:</b> Clark Contracts (skip)
+              </div> -->
+              <div class="col-12 mb-2">
+                <button class='btn btn-sm btn-secondary' routerLink='/4workshop/docs/{{this.vehicle.id}}'><i
+                    class="far fa-file"></i> Vehicle Documents</button> &nbsp;
+                <button class='btn btn-sm btn-info' routerLink='/4workshop/historicinspections/{{this.vehicle.id}}'><i
+                    class="fas fa-house-damage"></i> Historic Inspections</button>
+                <!-- <button class='btn btn-info' disabled><i class="fas fa-tools"></i> Parts History</button> -->
+              </div>
+            </div>
+            <app-audit-line [data]='this.vehicle'></app-audit-line>
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="content-block">
+                  <table class='table table-bordered'>
+                    <thead class='table-dark'>
+                      <tr>
+                        <th colspan='4' class='py-1'>Recent Driver Reports</th>
+                      </tr>
+                      <tr>
+                        <th class='py-1'>Date/Time</th>
+                        <th class='py-1'>Pass/Fail</th>
+                        <th class='py-1'>Driver</th>
+                        <th class='py-1'>View</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf='this.recentVehicleChecks.length === 0'>
+                        <tr>
+                          <td colspan='4'>No Driver Reports</td>
+                        </tr>
+                      </ng-container>
+                      <ng-container *ngIf='this.recentVehicleChecks.length > 0'>
+                        <tr *ngFor='let check of this.recentVehicleChecks'>
+                          <td class='py-1'>{{check.dateTime}}</td>
+                          <td class='py-1'>
+                            <span class='text-success font-weight-bold'>{{check.passed}}</span>/
+                            <span class='text-danger font-weight-bold'>{{check.failed}}</span>
+                          </td>
+                          <td class='py-1'>{{check.driver.firstName}} {{check.driver.lastName}}</td>
+                          <td class='py-1'><button class='btn-sm btn-info btn-block m-0'
+                              routerLink='/4workshop/driver-report/{{check.id}}'><i class="fas fa-eye"></i></button>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row content-block mb-3">
+                  <div class="col-12">
+                    <table class='table table-bordered'>
+                      <thead class='table-dark'>
+                        <tr>
+                          <th colspan='4' class='py-1'>Recent Vehicle Defects</th>
+                        </tr>
+                        <tr>
+                          <th class='py-1'>Defect</th>
+                          <th class='py-1'>Reported</th>
+                          <th class='py-1'>Signed Off</th>
+                          <th class='py-1'>View</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor='let defect of this.recentDefects'>
+                          <td class='py-1 text-light' [class.bg-success]='defect.status === 3'
+                            [class.bg-danger]='defect.status === 1' [class.bg-warning]='defect.status === 2'>
+                            {{defect.description}}</td>
+                          <td class='py-1'>{{this.formatDate(defect.createdAt)}}</td>
+                          <td class='py-1'>{{defect.finalSignOff}}</td>
+                          <td class='py-1'>
+                            <button class='btn-sm btn-info btn-block m-0' routerLink='/4workshop/defect/{{defect.id}}'>
+                              <i class="fas fa-eye"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- <div class="row content-block pb-0 mb-3">
+                  <div class="col p-0">
+                    <table class='table table-bordered mb-0'>
+                      <thead class='thead-dark'>
+                        <tr>
+                          <th colspan='3' class='py-1'>Recent Drivers</th>
+                        </tr>
+                        <tr>
+                          <th class='py-1'>Name</th>
+                          <th class='py-1'>Date</th>
+                          <th class='py-1'>View</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor='let driver of this.recentDrivers'
+                        >
+                          <td class='py-1'>{{driver.firstName}} {{driver.lastName}}</td>
+                          <td class='py-1'>{{this.formatDate(driver.date)}}</td>
+                          <td class='py-1'>
+                            <button
+                              class='btn-sm btn-info btn-block m-0'
+                              (click)='this.openLinkInNewTab("drivers/edit/" + driver.id)'
+                            >
+                              <i class="fas fa-eye"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> -->
+
+                <div class="row content-block">
+                  <div class="col-12">
+                    <table class='table table-bordered mb-0'>
+                      <thead class='table-dark'>
+                        <tr>
+                          <th colspan='4' class='py-1'>Due Dates</th>
+                        </tr>
+                        <tr>
+                          <th class='py-1'>Name</th>
+                          <th class='py-1'>Previous</th>
+                          <th class='py-1'>Next</th>
+                          <th class='py-1'></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <ng-container *ngIf='this.dueDates.length === 0'>
+                          <tr>
+                            <td colspan='4'>No Dates Set</td>
+                          </tr>
+                        </ng-container>
+                        <ng-container *ngIf='this.dueDates.length > 0'>
+                          <tr *ngFor='let due of this.dueDates'>
+                            <td class='py-1'>{{due.inspectionInterval.name}}</td>
+                            <td class='py-1'>{{due.dateFancy}}</td>
+                            <td class='py-1 font-weight-bold' [class.bg-danger]='due.nextColour === 0'
+                              [class.text-white]='due.nextColour === 0' [class.bg-warning]='due.nextColour === 1'
+                              [class.text-white]='due.nextColour === 1' [class.bg-success]='due.nextColour === 2'>
+                              <span class='font-weight-bold'
+                                [class.text-white]='due.nextColour === 0 || due.nextColour === 1'
+                                [class.text-dark]='due.nextColour === 2'>
+                                {{due.nextDateFancy}}
+                              </span>
+                            </td>
+                            <td class='py-1'>
+                              <button class='btn-sm btn-info btn-block m-0' *ngIf='due.nextColour !== 2'
+                                routerLink='/4workshop/defect/new/{{this.vehicleId}}'>
+                                <i class="fas fa-plus"></i>
+                              </button>
+                              <button class='btn-sm btn-info btn-block m-0' disabled *ngIf='due.nextColour === 2'>
+                                <i class="fas fa-ban"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-8">
+               
+                <div class="DefectHistory">
+                  <h5>Defect History</h5>
+                  <hr>
+                  <app-grid entity='defects' [filters]='this.defectFilters' [columns]='this.defectColumns'
+                    [buttons]='this.defectButtons' [searchFilters]='this.defectSearchFilters'
+                    [searchFields]='this.defectSearchFields'>
+                  </app-grid>
+                </div>
+              </div>
+
+              <!-- <div class="col mr-3 pt-3 content-block">
+                <div class="row">
+                  <div class="col btn-group">
+                    <button class='btn btn-success' (click)='saveVehicle()'>Save</button>
+                    <button class='btn btn-danger' (click)='cancelVehicle()'>Cancel</button>
+                  </div>
+                </div>
+                <app-dvla-reg [registration]='this.vehicleDetails.vehicle.registration'  [vin]='this.vehicleDetails.vehicle.vinNumber'></app-dvla-reg>
+                <app-vehicledetail-form *ngIf='this.vehicleDetails.id !== -1' [vehicleDetails]='this.vehicle' [edit]='true'></app-vehicledetail-form>
+                <app-audit-line [data]='this.vehicleDetails'></app-audit-line>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

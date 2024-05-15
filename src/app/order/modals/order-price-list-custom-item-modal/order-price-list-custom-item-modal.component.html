@@ -1,0 +1,39 @@
+
+    <jw-modal id='orderCustomItemModal'>
+      <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+      <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+      <h1 class='header'>Add Price</h1>
+      <hr />
+    
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="inputEmail4">Name</label>
+          <input type="text" name='name' [(ngModel)]='this.orderLine.name' [class.is-invalid]='!this.orderLine.name' class="form-control" id="inputEmail4">
+        </div>
+    
+          <div class="form-group col-md-4">
+            <label for="inputEmail4">Qty</label>
+            <input type="number" name='name' [(ngModel)]='this.orderLine.qty' [class.is-invalid]='!this.orderLine.qty' class="form-control" id="inputEmail4">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputEmail4">Unit</label>
+            <select [class.is-invalid]='this.orderLine.unitId === -1'  class='form-control' (change)='this.orderLine.unitId = +$event.target.value'>
+              <option value='-1'>Select a unit</option>
+              <option *ngFor='let item of this.units' [value]='item.id'>{{ item.name }}</option>
+            </select>
+          </div>
+    
+          <div class="form-group col-md-4">
+            <label for="inputEmail4">Price</label>
+            <input type="number" name='name' [(ngModel)]='this.orderLine.price' [class.is-invalid]='!this.orderLine.price' class="form-control" id="inputEmail4">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-success" (click)='this.onSubmit()'>Save</button>&nbsp;
+            <button type="button" class="btn btn-danger" (click)='this.cancel()'>Cancel</button>
+          </div>
+        </div>
+     
+  </jw-modal>
+  

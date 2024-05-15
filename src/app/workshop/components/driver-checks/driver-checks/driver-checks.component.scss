@@ -1,0 +1,15 @@
+.tabs li { 
+    margin-right: .7em !important; 
+}
+.tabs  li.active, .tabs li:hover {
+    border-bottom: 2px solid #ffffff;
+    color: #ffffff;
+    padding: 4px 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: var(--primary);
+    transition: color 500ms linear;
+    font-weight: bold;
+}

@@ -1,0 +1,94 @@
+
+<jw-modal id='setWeightModal'>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <h1 class='header'>Set Weight</h1>
+  <hr />
+
+  <div class='row'>
+    <div class='col-md-8'>
+      <ng-container *ngIf='this.job.jobAssignment !== undefined'>
+        <div class='form-row'>
+          <div class="form-group col-md-4" *ngIf='this.job.order.orderTypeId === 1'>
+            <label for="inputEmail4">Grade</label>
+            <select class='form-control' [class.is-invalid]='this.job.order.gradeId === -1'
+              (change)='this.job.order.gradeId = +$event.target.value; this.job.order.grade.id = this.job.order.gradeId;'>
+              <option value='-1'>Select a grade</option>
+              <option *ngFor='let item of this.grades' [value]='item.id'
+                [selected]='this.job.order.gradeId === item.id'>{{ item.name }}({{ item.ewcCodes }})</option>
+            </select>
+          </div>
+        </div>
+        <div class='form-row'>
+          <div class='form-group col-md-4'>
+            <label>Gross Weight</label>
+            <input [class.is-invalid]='!this.job.weight' (keyup)='this.findAndSetPriceListOverweightCharge()'
+              type='text' class='form-control' [(ngModel)]='this.job.weight' />
+          </div>
+        </div>
+        <div class='form-row'>
+          <div class='form-group col-md-4'>
+            <label>Tare Weight</label>
+            <input type='text' class='form-control' [(ngModel)]='this.job.tareWeight' />
+          </div>
+        </div>
+        <div class='form-row'>
+          <label>Net Weight</label>
+          <div class='form-group col-md-4' *ngIf='this.job.jobAssignment.vehicleId !== -1'>
+
+            <input type='text' class='form-control' [value]='(this.job.weight - this.job.tareWeight).toFixed(2)'
+              readonly />
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+
+
+    <div class='col-md-4'>
+      <h2 class='header'>Order items</h2>
+
+      <table class="table" *ngIf='this.orderLines.length > 0'>
+        <thead>
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Unit</th>
+          <th>Base Price(&pound;)</th>
+          <th>Total Price(&pound;)</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor='let item of this.orderLines'>
+            <td>{{ item.quoteLine ? item.quoteLine.product.name : item.name }}</td>
+            <td>
+              <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.qty'
+                [readOnly]='item.isPrimaryCharge'>
+            </td>
+            <td>
+              {{ item.quoteLine ? getUnitFromId(item.quoteLine.product.unitId) : getUnitFromId(item.unitId) }}(s)
+            </td>
+            <td>
+              <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.price'>
+            </td>
+            <td>
+              {{ getTotalPriceForOrderLine(item).toFixed(2) }}
+            </td>
+            <td>
+              <input type='checkbox' [(ngModel)]="item.isPrimaryCharge" [ngModelOptions]="{standalone: true}" />&nbsp;
+              Is Primary Charge?
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+
+      <div>
+        <label>Overweight Notes</label>
+        <textarea class='form-control' [(ngModel)]="this.job.complianceNotes"></textarea>
+      </div>
+    </div>
+  </div>
+  <button class='btn btn-success' (click)='save()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='close()'>Cancel</button>
+
+</jw-modal>

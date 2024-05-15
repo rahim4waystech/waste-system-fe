@@ -1,0 +1,18 @@
+<br />
+<br />
+<button type='button' class='btn btn-primary' (click)='this.onSignOffClicked()'>Sign off selected</button>
+<br />
+<br />
+
+<app-grid
+entity='job'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+[relationships]='["order.orderLines","jobAssignment", "jobAssignment.driver", "jobAssignment.vehicle", "jobAssignment.subcontractor"]'
+[backgroundSetter]='this.getRowColor'
+[checkboxSelector]='true'
+(checkboxSelected)='this.onCheckboxSelected($event)'
+></app-grid>

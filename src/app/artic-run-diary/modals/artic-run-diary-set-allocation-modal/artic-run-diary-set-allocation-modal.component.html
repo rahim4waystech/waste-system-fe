@@ -1,0 +1,47 @@
+<jw-modal id="articSetAllocationModal">
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <h1 class='header'>Set Allocation for Job</h1>  
+    <div class="form-row">
+      <div class="form-group">
+        <input type="radio" checked name='group[]' (change)="this.onOptionSelect($event, 'own')"/>
+        <label for="inputEmail4">&nbsp;&nbsp;Own Vehicle</label>
+      </div>
+      <div class="form-group">
+        &nbsp;&nbsp;<input type="radio" name='group[]' (change)="this.onOptionSelect($event, 'sub')"/>
+        <label for="inputEmail4">&nbsp;&nbsp;Subcontractor</label>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Depot</label>
+      <ng-select name='depot' [(ngModel)]="this.job.jobAssignment.depotId" [class.is-invalid]='this.job.jobAssignment.depotId === -1' (change)='onDepotChanged($event)'>
+        <ng-option *ngFor='let depot of this.depots' [value]='this.depot.id'>{{ depot.name }}</ng-option>
+      </ng-select>
+    </div>
+  <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.depotId !== -1 && this.roundOption === "own"'>
+    <label for="inputEmail4">Driver</label>
+    <ng-select [(ngModel)]='this.job.jobAssignment.driverId' name='driver' [class.is-invalid]='this.job.jobAssignment.driverId === -1' (change)='this.job.jobAssignment.driverId = +$event; this.job.jobAssignment.driver.id = this.job.jobAssignment.driverId'>
+      <ng-option *ngFor='let driver of this.drivers' [value]='this.driver.id'>{{ driver.firstName + ' ' + driver.lastName }}</ng-option>
+    </ng-select> 
+  </div>
+  <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.depotId !== -1 && this.roundOption === "own"'>
+    <label for="inputEmail4">Vehicle</label>
+    <ng-select name='vehicle' [(ngModel)]='this.job.jobAssignment.vehicleId' [class.is-invalid]='this.job.jobAssignment.vehicleId === -1' (change)='this.job.jobAssignment.vehicleId = +$event; this.job.jobAssignment.vehicle.id = this.job.jobAssignment.vehicleId'>
+      <ng-option *ngFor='let vehicle of this.vehicles' [value]='this.vehicle.id' [selected]='this.vehicle.id === this.job.jobAssignment.vehicleId'>{{ vehicle.registration }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.depotId !== -1 && this.roundOption === "own"'>
+    <label for="inputEmail4">Trailers</label>
+    <ng-select [(ngModel)]='this.job.jobAssignment.trailerId' [class.is-invalid]='this.job.jobAssignment.trailerId === -1' (change)='this.job.jobAssignment.trailerId = +$event; this.job.jobAssignment.trailer = {id: this.job.jobAssignment.trailerId}'>
+      <ng-option *ngFor='let vehicle of this.trailers' [value]='vehicle.id'>{{ vehicle.registration }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="form-group col-md-4" *ngIf='this.roundOption === "sub"'>
+    <label for="inputEmail4">Subcontractor</label>
+    <ng-select [(ngModel)]="this.job.jobAssignment.subcontractorId"  [class.is-invalid]='this.job.jobAssignment.subcontractorId === -1' (change)='this.job.jobAssignment.subcontractorId = +$event; this.job.jobAssignment.subcontractor.id = this.job.jobAssignment.subcontractorId'>
+      <ng-option *ngFor='let sub of this.subcontractors' [value]='this.sub.id'>{{ sub.name }}</ng-option>
+    </ng-select>
+  </div>
+  <button class='btn btn-success' (click)="save()">Save</button>&nbsp;
+  <button class='btn btn-danger' (click)="cancel()">Cancel</button>
+</jw-modal>

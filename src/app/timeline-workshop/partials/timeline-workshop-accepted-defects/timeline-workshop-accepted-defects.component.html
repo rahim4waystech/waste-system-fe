@@ -1,0 +1,56 @@
+
+             <!-- modal comment by shujat -->
+ <app-timeline-workshop-defect-information [defect]='this.currentDefect'>
+</app-timeline-workshop-defect-information> 
+<div class='acceptedDefectsContainer'>
+ 
+  <div class='header'>
+    <div class="row">
+      <div class="col-lg-3 my-auto"> <i class="fa-exclamation-triangle fas"></i></div>
+      <div class="col-lg-5 my-auto text-center"><b>Defects</b></div>
+      <div class="col-lg-4 my-auto text-end">
+        <button class='btn  btn-primary btn-sm' (click)='this.loadDefects()'><i class="fas fa-sync-alt"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bodyContainer">
+    <div class="row">
+      <div class="col-lg-11 mx-auto mb-1">
+        <div class="form-group">
+          <input type='text' placeholder='🔍 Search...' class='form-control' [(ngModel)]="this.search" (keyup)='this.loadDefects()'/>
+        </div>
+      </div>
+      <div class="col-lg-11 mx-auto mb-1">
+        <div class="form-group">
+          <label for="inputPassword4">Sort by</label>
+          <select class='form-select' (change)='this.sortBy = $event.target.value; this.loadDefects()'>
+            <option value='bookingFor'>Booked For</option>
+            <option value='vehicleCheckArea'>Vehicle check area</option>
+            <option value='inspectionType'>Inspection type</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-11 mx-auto mb-1">
+        <ng-container *ngIf='this.defects.length > 0'>
+          <div
+            [class.dragging]='this.draggingId == defect.id'
+            data-id='{{ defect.id }}'
+            draggable="true"
+            (dragstart)='dragStart($event, defect)'
+            (dragend)='dragEnd($event)'
+            [class.isVOR]='defect.vehicleSeverity.isVor'
+            class='defectContainer'
+            *ngFor='let defect of this.defects'
+            data-id='{{ defect.id }}'
+            draggable="true">
+            <button class='btn btn-secondary btn-small' (click)='this.currentDefect = defect; openModal("defectInformationModal")'><i class="fas fa-info-circle"></i></button>&nbsp;&nbsp;<strong>{{ defect.vehicle.registration }}</strong>/{{ defect.vehicleCheckArea.name }}/{{ defect.description }}<br />
+          </div>
+        </ng-container>
+        <ng-container *ngIf='this.defects.length === 0'>
+          <div style='color:red;font-weight:bold'>No results found</div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

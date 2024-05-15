@@ -1,0 +1,27 @@
+<jw-modal id='emailPODModal'>
+    <h1 class='header'>Email PODs</h1>
+  
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label>Message</label>
+        <textarea [(ngModel)]='this.message' style='height: 10rem' class='form-control'>Hi,
+  Please find attached your requested PODs.
+  
+  Regards,
+  The Management team
+        </textarea>
+      </div>
+    </div>
+  
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label>Send to</label>
+        <input type='text' class='form-control' [(ngModel)]='this.email'/>
+      </div>
+    </div>
+  
+  
+    <button class='btn btn-success' (click)='send()'>Save</button>&nbsp;
+    <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+  </jw-modal>
+  

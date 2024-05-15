@@ -1,0 +1,11 @@
+<div class="fullcontainer">
+    <div class="sheet">
+      <h1 class='header'>Delete all jobs {{ this.jobIds.join(',') }}</h1>
+  
+      <p>Are you sure you wish to delete this job? This will remove the job from any timelines. If you wish for this to be restored. Please contact support..</p>
+  
+        
+      <button type="submit" class="btn btn-danger" (click)='this.delete()'>Yes! I'm Sure!</button>&nbsp;
+      <button type="button" class="btn btn-primary" (click)='this.cancel()'>No! Take me back!</button>
+    </div>
+  </div>

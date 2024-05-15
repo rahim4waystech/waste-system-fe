@@ -1,0 +1,44 @@
+<jw-modal id="ArticvorModal">
+  <h1 class='header'>Vehicle VORs and Driver Absence</h1>
+
+  Below lists all today's VORs and driver absence
+  <hr>
+  <div class='' style='display:flex; flex-flow: row wrap;'>
+    <div>
+      <h2>Vehicle VORs</h2>
+
+      <ul>
+        <ng-container *ngIf='this.data.vor.length > 0'>
+          <li *ngFor='let item of this.data.vor'>
+            {{ item.vehicle.registration }} - {{ item.notes }} - (<span style='color:red;font-weight: bold;'>Back on road {{ getAbsenceEnd(item.endDate) }}</span>)
+          </li>
+        </ng-container>
+        <ng-container *ngIf='this.data.vor.length === 0'>
+          <li>No VORs for today</li>
+        </ng-container>
+      </ul>
+
+    </div>
+
+    <div style='margin-left: 3rem;'>
+      <h2>Driver Absence</h2>
+      <ul>
+        <ng-container *ngIf='this.data.absence.length === 0'>
+          <li>No absence for today</li>
+        </ng-container>
+        <ng-container *ngIf='this.data.absence.length > 0'>
+          <li *ngFor='let item of this.data.absence'>
+            {{ item.driver.firstName }} {{ item.driver.lastName }} - {{ item.notes }}  (<span style='color:red;font-weight: bold;'>Returns {{ getAbsenceEnd(item.endDate) }}</span>)
+          </li>
+        </ng-container>
+      </ul>
+
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-end">
+  <button class='btn btn-primary' (click)='this.close()'>Close</button> 
+  </div>
+</div>
+</jw-modal>

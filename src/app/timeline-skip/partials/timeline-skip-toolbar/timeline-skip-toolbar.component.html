@@ -1,0 +1,55 @@
+
+        <!-- comment by shujat -->
+<app-skip-round-new-modal [date]='this.date'></app-skip-round-new-modal>
+<bs-datepicker-inline *ngIf='this.isDatePickerVisible' (bsValueChange)='this.onDateSelected($event)'
+  [bsValue]='this.date' class='datePicker'></bs-datepicker-inline>
+<div class='timelineToolbarContainer'>
+  <div class="row">
+    <div class="col-lg-8 my-auto d-lg-flex justify-content-start">
+      <button class='btn btn-sm btn-secondary' (click)='openModal("skipRoundCreationModal");'><i class="fas fa-plus"></i> New
+        Round</button>
+   
+      <button (click)='this.onDeletedJobClicked()' class='btn btn-sm  btn-danger mx-1' data-toggle="tooltip" data-placement="top"
+      title="Remove Job"><i class="fas fa-ban"></i></button>
+    
+      <button (click)='onApproveJobClicked()' class='btn btn-sm  btn-success' data-toggle="tooltip" data-placement="top"
+      title="Approve Job"><i class="fas fa-check-circle"></i></button>
+    
+      <button class='btn btn-sm  btn-warning mx-1' (click)='onUnapproveJobClicked()' data-toggle="tooltip" data-placement="top"
+      title="Unapprove Job"><i class="fas fa-undo"></i></button>
+    </div>
+    <div class="col-lg-4 my-auto  ms-auto text-end">
+      <div style='z-index:-1' id='dateSelector'>
+        <div class="dateSelectorContainer">
+          <button class="btn btn-sm  btn-primary" (click)='this.prevDay()'><i class="fas fa-chevron-left"></i></button>
+          <div class="dateSelectorBox" (click)='this.isDatePickerVisible = !this.isDatePickerVisible'>
+            <span><i class="fas fa-calendar-alt" style='font-size: 0.8rem'></i>&nbsp;&nbsp; {{ getFormattedDate() }}</span>
+          </div>
+          <button class="btn btn-sm  btn-primary" (click)='this.nextDay()'><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div> 
+</div>
+<hr>
+
+  <div class="row my-2">
+    <div class="col-lg-4">
+      <div class="form-group" id='vehicleSelector'>
+        <select class='form-select vehicleTypeSelector' (change)='this.onVehicleTypeChanged($event)'>
+          <option value='-1'>All Vehicles</option>
+          <option value='1'>Hook Lift</option>
+          <option value='2'>Chain Lift</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-4 text-end ms-auto">
+      <div class="row">
+        <div class="col-lg-9 my-auto"><label class="my-auto" for="">Show Subcontractors?</label></div>
+        <div class="col-lg-3">
+          <ui-switch labelOn='' labelOff='' [(ngModel)]='this.isSubcontractorsVisible'
+          (change)='this.onSubToggleChanged($event)'></ui-switch>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>

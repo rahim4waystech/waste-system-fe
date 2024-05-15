@@ -1,0 +1,48 @@
+<!-- <div [class.fullcontainer]='!this.isPopup'>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class="alert alert-success" *ngIf='this.isSuccess'>Order was updated successfully</div>
+  <div class='sheet'>
+    <h1 class='header'>Edit Order - {{ this.order.account.name }}/{{ this.order.site.name }}</h1>
+    <app-audit-line [data]='this.order'></app-audit-line>
+    <form method='post' (ngSubmit)='this.onSubmit()'>
+      <app-order-form [priceListType]="'pricelist'" [materialUplifts]='this.materialUplifts' [account]='this.order.account' [site]='this.order.site' [order]='this.order' [orderLines]='this.orderLines' [fromTime]='this.fromTime' [toTime]='this.toTime'></app-order-form>
+      <button type="submit" class="btn btn-success" *ngIf="this.canEdit">Save</button>&nbsp;
+      <button type="button" class="btn btn-danger" (click)='cancel()'>Cancel</button>
+    </form>
+  </div>
+</div> -->
+<div [class.fullcontainer]='!this.isPopup'>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class="alert alert-success" *ngIf='this.isSuccess'>Order was updated successfully</div>
+  <div class='sheet'>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class='header'>Edit Order - {{ this.order.account.name }}/{{ this.order.site.name }}</h4>
+          </div>
+
+          <div class="card-body">
+            <app-audit-line [data]='this.order'></app-audit-line>
+            <form method='post' (ngSubmit)='this.onSubmit()'>
+
+              <app-order-form [priceListType]="'pricelist'" [materialUplifts]='this.materialUplifts' [account]='this.order.account' [site]='this.order.site' [order]='this.order' [orderLines]='this.orderLines' [fromTime]='this.fromTime' [toTime]='this.toTime'></app-order-form>
+              <div class="row mt-3">
+                <div class="col-12 text-end">
+                  <button type="submit" class="btn btn-success" *ngIf="this.canEdit">Save</button>&nbsp;
+              <button type="button" class="btn btn-danger" (click)='cancel()'>Cancel</button>
+                </div>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

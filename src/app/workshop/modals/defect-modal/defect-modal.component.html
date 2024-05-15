@@ -1,0 +1,10 @@
+<jw-modal id='defect-modal'>
+  <app-defect-form [defect]='this.defect' [vehicle]='this.vehicle'></app-defect-form>
+
+  <div class="row">
+    <div class="col btn-group">
+      <button class='btn btn-success' (click)='this.save()'>Save</button>
+      <button class='btn btn-danger' (click)='this.cancel()'>Close</button>
+    </div>
+  </div>
+</jw-modal>

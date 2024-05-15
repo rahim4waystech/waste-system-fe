@@ -1,0 +1,17 @@
+<jw-modal id="jobTimeSet">
+  <!-- <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div> -->
+  <div class="form-row">
+    <div class="form-group col">
+      <label>Job Start Time</label>
+      <input
+        type="time"
+        [(ngModel)]='this.job.time'
+        class="form-control"
+      >
+    </div>
+  </div>
+
+  <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+</jw-modal>

@@ -1,0 +1,32 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-12">
+              <h3 class='header'>
+                Environment Settings
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+        
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later or contact support.</div>
+  <div class="alert alert-success" *ngIf='this.isSuccess'>Environment was updated successfully</div>
+
+  <app-environment-form [environment]='this.environment'></app-environment-form>
+
+  <div class="row mt-3">
+    <div class="col-12 text-end">
+      <button class='btn btn-success' (click)='save();'>Save</button> &nb
+      <button class='btn btn-danger' routerLink='/settings'>Cancel</button>
+    </div>
+  </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

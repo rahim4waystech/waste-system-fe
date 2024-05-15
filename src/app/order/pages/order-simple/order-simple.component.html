@@ -1,0 +1,11 @@
+<div class="fullcontainer">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class="alert alert-danger" *ngIf='this.warningForCreditLimit'>Warning credit limit for customer passed 80%.</div>
+  <div class='sheet'>
+    <h1 class='header'>Create a new Simple order</h1>
+    <app-order-simple-form [materialUplifts]='this.materialUplifts' [account]='this.account' [site]='this.site' [order]='this.order' [orderLines]='this.orderLines'></app-order-simple-form>
+    <button type="submit" class="btn btn-success" (click)='onSubmit()'>Save</button>&nbsp;
+    <button type="button" class="btn btn-danger" routerLink='/orders'>Cancel</button>
+  </div>
+</div>

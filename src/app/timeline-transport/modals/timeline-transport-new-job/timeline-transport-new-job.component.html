@@ -1,0 +1,23 @@
+<jw-modal id="transportJobCreationModal">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <h1 class='header'>Add job</h1>
+<hr>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Qty ({{ this.getUnitForJob()  }})</label>
+      <input type="number" [(ngModel)]='this.job.qty' [class.is-invalid]='this.job.qty <= 0' name='name' class="form-control" id="inputEmail4">
+    </div> 
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Time</label>
+      <input type="time" [(ngModel)]='this.job.time' [class.is-invalid]='!this.job.time' name='name' class="form-control" id="inputEmail4">
+    </div>
+  </div>
+<div class="row">
+  <div class="col-12 text-end">
+    <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+    <!-- <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button> -->
+  </div>
+</div>
+
+</jw-modal>

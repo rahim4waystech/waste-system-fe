@@ -1,0 +1,81 @@
+<jw-modal id='addCreditNoteModal'>
+    <h1 class='header'>Add a credit note</h1>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Date</label>
+          <input [class.is-invalid]='this.creditNote.date === "" || !this.creditNote.date' type='date' class='form-control' [(ngModel)]='this.creditNote.date'/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Value</label>
+          <input [class.is-invalid]='this.creditNote.value === 0 || !this.creditNote.value' type='number' class='form-control' [(ngModel)]='this.creditNote.value'/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Description</label>
+          <textarea [class.is-invalid]='this.creditNote.description === "" || !this.creditNote.description' class='form-control' [(ngModel)]='this.creditNote.description'></textarea>
+        </div>
+      </div>
+
+      <!-- <h2>Select a charge</h2>
+      <hr />
+      <div class="form-row">
+          <table class='table'>
+              <thead>
+                  <th></th>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Tickets</th>
+                  <th>Vehicle</th>
+                  <th>Value</th>
+                  <th>Type</th>
+                  <th>Price</th>
+                  <th>Qty</th>
+              </thead>
+              <tbody>
+                  <tr *ngFor='let item of this.items'>
+                    <td><input name='invoiceItem[]' (change)='this.onChargeSelected($event)' type='radio' [value]='item.id'/></td>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.orderLine.name }}</td>
+                    <td>{{ item.longDescription }}</td>
+                    <td>{{ this.getJobAssignmentById(item.job.jobAssignmentId).vehicle ? this.getJobAssignmentById(item.job.jobAssignmentId).vehicle.registration : item.job.subcontractorReg }}</td>
+                    <td>{{ item.price * item.qty }}</td>
+                    <td>{{ this.getUnitbyId(item.orderLine.unitId) ? this.getUnitbyId(item.orderLine.unitId).name : 'N/A' }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.qty }}</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div> -->
+
+      <div class='form-group'>
+        <label>Send email?</label>
+        <input type='checkbox'
+        [(ngModel)]="this.sendEmail"
+        [ngModelOptions]="{standalone: true}"/>
+      </div>
+
+      <div class="form-group col-md-4" *ngIf='this.sendEmail'>
+        <label>Message</label>
+        <textarea [(ngModel)]='this.message' style='height: 10rem' class='form-control'>Hi,
+    Please find attached your requested credit note.
+    
+    Regards,
+    The Management team
+        </textarea>
+      </div>
+    
+    <div class="form-row" *ngIf='this.sendEmail'>
+      <div class="form-group col-md-4">
+        <label>Send to</label>
+        <input type='text' class='form-control' [(ngModel)]='this.email.email'/>
+      </div>
+    </div>
+
+      <button class='btn btn-success' (click)='save()'>Save</button>&nbsp;
+      <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+</jw-modal> 

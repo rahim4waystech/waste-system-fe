@@ -1,0 +1,119 @@
+
+<div class="fullcontainer">
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <div class="alert alert-success" *ngIf='this.isSuccess'>Thanks your new account has been submitted.</div>
+
+    <div class='sheet'>
+        <h1 class='header'>Sign up as a new customer</h1>
+
+        <p>Please fill out the details below to signup for a new account @ {{ this.getCompanyName() }} </p>
+        
+        <input type='radio' name='group[]' value='0' (change)='onCustomerTypeSelected($event)' checked/><label>Cash Customer</label>&nbsp;&nbsp;
+        <input type='radio' name='group[]' value='1' (change)='onCustomerTypeSelected($event)'><label>Credit Account</label>
+        <br />
+        <br />
+        <app-tabs>
+            <app-tab title='Main details'>
+                <div class='form-row'>
+                    <div class="form-group col-md-4">
+                        <label>Name</label>
+                        <input [(ngModel)]="this.account.name" [class.is-invalid]='!this.account.name' class='form-control' type='text' />
+                    </div>
+                </div>
+                <div class='form-row'>
+                    <div class="form-group col-md-4">
+                        <label>Contact</label>
+                        <input class='form-control' type='text' [(ngModel)]="this.account.contact"/>
+                    </div>
+                </div>
+                <div class='form-row'>
+                    <div class="form-group col-md-4">
+                        <label>Email</label>
+                        <input class='form-control' type='text' [(ngModel)]="this.account.email"/>
+                    </div>
+                </div>
+                <div class='form-row'>
+                    <div class="form-group col-md-4">
+                        <label>Website</label>
+                        <input class='form-control' type='text' [(ngModel)]="this.account.website"/>
+                    </div>
+                </div>
+                <div class='form-row'>
+                    <div class="form-group col-md-4">
+                        <label>Phone Number</label>
+                        <input class='form-control' type='text' [(ngModel)]="this.account.phoneNumber"/>
+                    </div>
+                </div>
+                <div class='form-row'>
+                    <div class="form-group col-md-4">
+                        <label for="inputEmail4">SIC Code</label>
+                        <select class='form-control'>
+                        <option value='-1'>Select a SIC Code</option>
+                        <option [selected]='this.account.sicId === item.id' [value]='item.id' *ngFor='let item of this.sic'>{{ item.code }} - {{ item.name }}</option>
+                        </select>
+                    </div>
+                  </div>
+            </app-tab>
+            <app-tab title='Billing Details'>
+                <div class="form-group col-md-4">
+                    <label for="billing1">Address Line 1</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.billingAddress1' class="form-control" id="billing1">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="billing2">Address Line 2</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.billingAddress2' class="form-control" id="billing2">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="billing3">City</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.billingCity' class="form-control" id="billing3">
+                   </div>
+                  <div class="form-group col-md-4">
+                    <label for="billing4">Country</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.billingCountry' class="form-control" id="billing4">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="billing5">Postcode</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.billingPostCode' class="form-control" id="billing5">
+                    <app-address-picker [postcode]='this.account.billingPostCode' (onAddressFound)='this.foundBillingAddress($event)'></app-address-picker>
+                  </div>
+                  <div class="row my-3">
+                    <div class="col-12 text-end">
+                      <button class='btn btn-block btn-info' (click)='transferAddress()'>Transfer Address Details to Shipping</button>
+                    </div>
+                  </div>
+            </app-tab>
+            <app-tab title='Shipping Details'>
+                <div class="form-group col-md-4">
+                    <label for="ship1">Address Line 1</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.shippingAddress1' class="form-control" id="ship1">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="ship2">Address Line 2</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.shippingAddress2' class="form-control" id="ship2">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="ship3">City</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.shippingCity' class="form-control" id="ship3">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="ship4">Country</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.shippingCountry' class="form-control" id="ship4">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="ship5">Postcode</label>
+                    <input type="text" name='name' [(ngModel)]='this.account.shippingPostCode' class="form-control" id="ship5">
+                    <app-address-picker [postcode]='this.account.shippingPostCode' (onAddressFound)='this.foundShippingAddress($event)'></app-address-picker>
+                  </div>
+            </app-tab>
+        </app-tabs>
+ 
+<div class="row mt-3">
+  <div class="col-12">
+    <button type="submit" class="btn btn-success" (click)='save()'>Save</button>&nbsp;
+    <button type="button" class="btn btn-danger" routerLink='/public/new/customer'>Cancel</button>
+  </div>
+</div>
+         
+    </div>
+</div>

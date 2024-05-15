@@ -1,0 +1,10 @@
+<div class="fullcontainer">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class='sheet'>
+    <h1 class='header'>Create a new quick order</h1>
+    <app-order-quick-form [order]='this.order' [account]='this.account' [site]='this.site' [quoteLines]='this.quoteLines'></app-order-quick-form>
+    <button type="submit" class="btn btn-success" (click)='save()'>Save</button>&nbsp;
+    <button type="button" class="btn btn-danger" routerLink='/orders'>Cancel</button>
+  </div>
+</div>

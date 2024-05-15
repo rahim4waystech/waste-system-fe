@@ -1,0 +1,32 @@
+<jw-modal id='tippingPriceCreateModal'>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <h1 class='header'>Add Tipping Price</h1>
+
+  <div class="form-row">
+    <div class='form-group col-md-4'>
+      <label>Grade</label>
+      <select class='form-control' [class.is-invalid]='tippingPrice.gradeId === -1'  (change)='tippingPrice.gradeId = +$event.target.value; tippingPrice.grade.id = tippingPrice.gradeId'>
+        <option value='-1'>Select a grade</option>
+        <option *ngFor='let grade of this.grades' [value]='grade.id' [selected]='grade.id === tippingPrice.gradeId'>{{ grade.name }} ({{ grade.ewcCodes }})</option>
+      </select>
+    </div>
+    <div class='form-group col-md-4'>
+      <label>Unit</label>
+      <select class='form-control' [class.is-invalid]='tippingPrice.unitId === -1'  (change)='tippingPrice.unitId = +$event.target.value; tippingPrice.unit.id = tippingPrice.unitId'>
+        <option value='-1'>Select a unit</option>
+        <option *ngFor='let unit of this.units' [selected]='tippingPrice.unitId === unit.id' [value]='unit.id'>{{ unit.name }}(s)</option>
+      </select>
+    </div>
+    <div class='form-group col-md-4'>
+      <label>Price</label>
+      <input [class.is-invalid]='tippingPrice.price <= 0' type='number' class='form-control' [(ngModel)]='tippingPrice.price'/>
+    </div>
+    <div class='form-group col-md-4'>
+      <label>Effective Date</label>
+      <input [class.is-invalid]='!tippingPrice.effectiveDate' type='date' class='form-control' [(ngModel)]='tippingPrice.effectiveDate'/>
+    </div>
+  </div>
+  <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='this.close()'>Cancel</button>
+</jw-modal>

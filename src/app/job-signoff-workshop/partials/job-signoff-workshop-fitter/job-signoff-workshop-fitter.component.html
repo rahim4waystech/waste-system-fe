@@ -1,0 +1,21 @@
+<app-job-signoff-workshop-fitter-modal [jobs]='this.selectedJobs'></app-job-signoff-workshop-fitter-modal>
+<br />
+<br />
+<button type='button' class='btn btn-primary' (click)='this.onSignOffButtonClicked()'>Sign off selected</button>
+<br />
+<br /> 
+
+
+
+<app-grid
+entity='defect-job'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+[relationships]='["defectAssignment", "defectAssignment.fitter"]'
+[checkboxSelector]='true'
+[backgroundSetter]='this.getRowColor'
+(checkboxSelected)='this.onCheckboxSelected($event)'
+></app-grid>

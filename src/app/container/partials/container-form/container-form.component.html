@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-lg-4 form-group">
+    <label for="inputEmail4">Name</label>
+    <input type="text" name='name' [(ngModel)]='this.container.name' 
+      class="form-control" id="inputEmail4">
+  </div>
+  <div class="col-lg-4 form-group">
+    <label for="inputPassword4">Serial Number</label>
+    <input type="text" name='registration' (ngModelChange)='this.container.name = this.container.serialNumber'
+       [(ngModel)]='this.container.serialNumber' class="form-control"
+      id="inputPassword4">
+  </div>
+  <div class="col-lg-4 form-group">
+    <label for="inputPassword4">Container Group</label>
+    <select class='form-select' 
+      (change)='this.container.containerGroupId = +$event.target.value; this.container.containerGroup.id = this.container.containerGroupId'>
+      <option value='-1'>Select a Container Group</option>
+      <option *ngFor='let item of this.groups' [value]='item.id'
+        [selected]='this.container.containerGroupId === item.id'>{{ item.name }}</option>
+    </select>
+  </div>
+  <div class="col-lg-4 form-group">
+    <label for="inputPassword4">Container Type</label>
+    <select class='form-select' 
+      (change)='this.container.containerTypeId = +$event.target.value; this.container.containerType.id = this.container.containerTypeId;populateName()'>
+      <option value='-1'>Select a Container Type</option>
+      <option *ngFor='let item of this.types' [value]='item.id'
+        [selected]='this.container.containerTypeId === item.id'>{{ item.name }}</option>
+    </select>
+  </div>
+  <div class="col-lg-4 form-group" *ngIf='this.container.containerGroupId < 3 || this.container.containerGroupId > 4'>
+    <label for="inputPassword4">Container Size</label>
+    <select class='form-select' 
+      (change)='this.container.containerSizeTypeId = +$event.target.value; this.container.containerSizeType.id = this.container.containerSizeTypeId'>
+      <option value='-1'>Select a Container Type</option>
+      <option *ngFor='let item of this.sizes' [value]='item.id'
+        [selected]='this.container.containerSizeTypeId === item.id'>{{ item.size }} {{ item.unit.name }}</option>
+    </select>
+  </div>
+  <!-- <div class="col-lg-3">
+    <label>Active?</label>
+    <input type='checkbox' [(ngModel)]="this.container.active" [ngModelOptions]="{standalone: true}" />
+  </div>
+  <div class='col-lg-3'>
+    <br />
+    <label [data]="this.grades" [(ngModel)]="containerGrades.grades" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+       Allowed grades
+    <ng-multiselect-dropdown [settings]="dropdownSettings" [placeholder]="'Select grades (non required)'"><ng-mtiselect-dropdown>
+  </div> -->
+  <div class="col-lg-4 form-group">
+    <label for="inputPassword4">Notes</label>
+    <textarea rows="1" name='notes' [(ngModel)]='this.container.notes' class="form-control"></textarea>
+  </div>
+ 
+  <div class="col-4 mt-3 ">
+      <app-qr-gen [input]='this.pageRoute' [size]='this.qrSize'></app-qr-gen>
+    </div>
+</div>

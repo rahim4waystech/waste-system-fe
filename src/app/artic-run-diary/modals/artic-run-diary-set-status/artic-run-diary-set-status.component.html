@@ -1,0 +1,19 @@
+<jw-modal id="articSetStatusModal">
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <h1 class='header'>Set Status for Job</h1>
+
+    <div class="form-group col-md-4">
+        <label for="inputEmail4">Driver Status</label>
+        <ng-select name='status' [(ngModel)]="this.job.driverJobStatusId" [class.is-invalid]='this.job.driverJobStatusId === -1' (change)='onStatusChanged($event)'>
+          <ng-option *ngFor='let item of this.driverJobStatues' [value]='item.id'>{{ item.name }}</ng-option>
+        </ng-select>
+      </div>
+
+      <div class="form-group col-md-4">
+          <label>Time</label>
+          <input type="time" [(ngModel)]="this.job.time"/>
+      </div>
+      <button class='btn btn-success' (click)="save()">Save</button>&nbsp;
+      <button class='btn btn-danger' (click)="cancel()">Cancel</button>
+</jw-modal>

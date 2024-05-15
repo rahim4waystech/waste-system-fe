@@ -1,0 +1,45 @@
+<div class="row m-0">
+  <div class="col text-center">
+    <b>No orders in last month</b>
+    <hr>
+  </div>
+</div>
+
+<div class="row m-0">
+  <div class="col text-center">
+    <select class="form-control" (change)='changedPeriod($event)'>
+      <option value="1" [selected]='this.selectedPeriod === 1'>Last Month</option>
+      <option value="2" [selected]='this.selectedPeriod === 2'>2 Months</option>
+      <option value="3" [selected]='this.selectedPeriod === 3'>3 Months</option>
+    </select>
+  </div>
+</div>
+
+<table class='table table-bordered m-0' *ngIf='!errorReport'>
+  <thead class='thead-dark'>
+    <tr>
+      <th>Account</th>
+      <th>Contract</th>
+      <th>Last Order</th>
+      <th>View</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let item of this.noOrders'>
+      <td>{{item.account.name}}</td>
+      <td>{{item.description}}</td>
+      <td>{{this.parseDate(item.date)}}</td>
+      <td>
+        <button class='btn btn-block btn-info' (click)='this.clickedLink(item.id)'>
+          <i class="fas fa-eye"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="alert alert-danger" role="alert" *ngIf='this.errorReport'>
+  There was a problem loading Last Orders
+  <hr>
+  {{this.errorMessage.error.statusCode}}: {{this.errorMessage.error.message}}
+</div>

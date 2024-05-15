@@ -1,0 +1,34 @@
+<jw-modal id="quoteAddProductModal">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <h1 class='header'>Add Product</h1>
+  <hr />
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Product</label>
+      <select class='form-control' [class.is-invalid]='this.quoteLine.productId === -1' (change)='onProductChanged($event)'>
+        <option value='-1'>Select a product</option>
+        <option *ngFor='let item of this.products' [value]='item.id' [selected]='this.quoteLine.productId === item.id'>{{ item.name }} (&pound;{{ item.price }} per {{ item.unit.name }})</option>
+      </select>
+    </div>
+
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Qty</label>
+        <input type="number" name='name' [(ngModel)]='this.quoteLine.qty' [class.is-invalid]='!this.quoteLine.qty' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Unit (readonly)</label>
+        <input type="text" name='name' class='form-control' readonly id="inputEmail4" [value]="this.quoteLine.productId === -1 ? 'Product not set' : this.quoteLine.product.unit.name">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Price</label>
+        <input type="number" name='name' [(ngModel)]='this.quoteLine.newPrice' [class.is-invalid]='!this.quoteLine.newPrice' class="form-control" id="inputEmail4">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success" (click)='this.onSubmit()'>Save</button>&nbsp;
+    <button type="button" class="btn btn-danger" (click)='this.reset();this.close()'>Cancel</button>
+    </jw-modal>
+
+

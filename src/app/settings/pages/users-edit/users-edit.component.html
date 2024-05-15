@@ -1,0 +1,29 @@
+<div class="fullcontainer">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class="alert alert-success" *ngIf='this.isSuccess'>User was updated successfully</div>
+  <div class='sheet'>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">  <h3 class='header'>Edit User - {{ this.user.firstName }} {{ this.user.lastName }}</h3>  </div>
+          <div class="card-body">
+            <app-audit-line [data]='this.user'></app-audit-line>
+    <form (ngSubmit)='this.onSubmit()' method='post'>
+      <app-user-form [userSkills]='this.skills' [user]='this.user'></app-user-form>
+      <div class="row">
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-success">Save</button>&nbsp;
+          <button type="button" class="btn btn-danger" routerLink='/settings/user'>Cancel</button>
+        </div>
+      </div>
+      
+    </form>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    
+  </div>
+</div>

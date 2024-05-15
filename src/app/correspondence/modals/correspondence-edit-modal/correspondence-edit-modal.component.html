@@ -1,0 +1,37 @@
+<jw-modal id='correspondenceEditModal'>
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <h1 class='header'>Edit Correspondence</h1>
+    <div class="form-row">
+        <div class="col-md-12 form-group">
+            <label>Calendar</label>
+            <select class='form-control' (change)='this.correspondence.calendarId = +$event.target.value;'>
+                <option value='-1'>No Calendar</option>
+                <option *ngFor='let calendar of this.calendars' [value]='calendar.id' [selected]='this.correspondence.calendarId === calendar.id'>{{ calendar.name }}</option>
+            </select>
+        </div>
+
+      <div class="col-md-12 form-group">
+          <label>Subject</label>
+          <input [class.is-invalid]='!this.correspondence.subject' class='form-control' type='text' [(ngModel)]="this.correspondence.subject" />
+      </div>
+      <div class="col-md-12 form-group">
+        <label>Type</label>
+        <select class='form-control' (change)='this.correspondence.correspondenceTypeId = +$event.target.value; this.correspondence.correspondenceType = {id: this.correspondence.correspondenceTypeId}'>
+            <option value='-1'>Select a type</option>
+            <option [class.is-invalid]='this.correspondence.correspondenceTypeId === -1' *ngFor='let type of this.types' [value]='type.id' [selected]='this.correspondence.correspondenceTypeId === type.id'>{{ type.name }}</option>
+        </select>
+    </div>
+    <div class="col-md-12 form-group">
+        <label>Date</label>
+        <input [class.is-invalid]='!this.correspondence.date' class='form-control' type='date' [(ngModel)]="this.correspondence.date" />
+    </div>
+      <div class="col-md-12 form-group">
+        <label>Description</label>
+        <textarea class='form-control' [(ngModel)]="this.correspondence.description"></textarea>
+    </div>
+
+    <button type='button' class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+    <button type='button' class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+    </div>
+</jw-modal>

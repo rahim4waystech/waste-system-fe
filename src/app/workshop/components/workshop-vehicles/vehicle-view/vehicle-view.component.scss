@@ -1,0 +1,13 @@
+table, tr, th, td{
+  text-align:center;
+}
+.DefectHistory{
+  box-shadow: var(--box-shadow-1) inset;
+  padding: 5px;
+}
+.DefectHistory .btn.btn-primary {
+  color: #FFFFFF;
+  padding: 10px 5px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}

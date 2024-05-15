@@ -1,0 +1,61 @@
+<div class='fullcontainer-noBg'>
+  <div class='fullcontainer'>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+       
+        <div class="card-body">
+          <div class="row" *ngIf='this.dashItems.length > 0'>
+            <div class="col-lg-4 form-group mb-0">
+              <label>Start Date</label>
+              <input class='form-control' type='date' [(ngModel)]='this.startDate'/>
+            </div>
+            <div class="col-lg-4 form-group mb-0">
+              <label>End Date</label>
+              <input class='form-control' type='date' [(ngModel)]='this.endDate'/>
+            </div>
+            <div class="col-lg-4 mt-auto">
+              
+              <button class='btn btn-sm btn-block btn-success' (click)='updateDate()'>Update Date Range</button>
+            </div>
+          </div>
+        
+          <div class="row">
+            <ng-container *ngIf='this.dashItems.length === 0'>
+              <div class="col m-2 graph-block-small p-3">
+                <h4>No dashboard Items set. </h4>
+                <button class='btn btn-block btn-info' routerLink='/settings/user/profile'>Customise Dashboard...</button>
+              </div>
+            </ng-container>
+            <ng-container *ngIf='this.dashItems.length > 0'>
+              <ng-container *ngFor='let item of this.dashItems'>
+                <div class="col m-2 graph-block p-0 pt-3">
+                  <!-- Sales items -->
+                  <app-contract-ending-grid [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "contract-ending-grid"'></app-contract-ending-grid>
+                  <app-gross-profit-by-salesman-graph [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "gross-profit-by-salesman-graph"'></app-gross-profit-by-salesman-graph>
+                  <app-last-order-date-grid [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "last-order-date-grid"'></app-last-order-date-grid>
+                  <app-invoices-to-be-authorised [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "invoices-to-be-authorised"'></app-invoices-to-be-authorised>
+                  <!-- transport items -->
+                  <app-jobs-by-vehicle-graph [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "jobs-by-vehicle-graph"'></app-jobs-by-vehicle-graph>
+                  <app-collections-due-today [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "collections-due-today"'></app-collections-due-today>
+                  <app-issues-from-drivers [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "issues-from-drivers"'></app-issues-from-drivers>
+                  <!-- Finance items -->
+                  <app-invoice-status-graph [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "invoice-status-graph"'></app-invoice-status-graph>
+                  <!-- Vehicles Items -->
+                  <app-vehicle-utilisation-graph [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "vehicle-utilisation-graph"'></app-vehicle-utilisation-graph>
+                  <app-vehicle-availability-graph [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "vehicle-availability-graph"'></app-vehicle-availability-graph>
+                  <!-- Workshop Items -->
+                  <app-vehicle-status-graph [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "vehicle-status-graph"'></app-vehicle-status-graph>
+                  <app-daily-driver-checks-graph [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "daily-driver-checks-graph"'></app-daily-driver-checks-graph>
+                  <app-inspections-due [startDate]='this.startDate' [endDate]='this.endDate' *ngIf='item === "inspections-due"'></app-inspections-due>
+                </div>`
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>

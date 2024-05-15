@@ -1,0 +1,12 @@
+<div class="fullcontainer">
+    <div class="sheet">
+      <h1 class='header'>Delete Tipped Ticket: {{ this.tipTicket.ticketNo }}/{{ this.tipTicket.collectionTicketNumber }}</h1>
+  
+      <p>Are you sure you wish to delete this ticket? 
+          This will delete it from the system. If you wish to restore please contact support.</p>
+  
+        
+      <button type="submit" class="btn btn-danger" (click)='this.onCancelClicked()'>Yes! I'm Sure!</button>&nbsp;
+      <button type="button" class="btn btn-primary" routerLink='/tip-ticket'>No! Take me back!</button>
+    </div>
+  </div>

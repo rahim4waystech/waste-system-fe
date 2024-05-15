@@ -1,0 +1,69 @@
+<div class="row p-2">
+  <div class="col-md-4 form-group">
+    <label>Part Name</label>
+    <input type='text' class='form-control' [(ngModel)]='this.part.name' [class.is-valid]='part.name !== ""' [class.is-invalid]='part.name === ""'/>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>Part Category</label>
+    <select
+      class='form-select'
+      [class.is-valid]='this.part.partCategoryId > 0'
+      [class.is-invalid]='this.part.partCategoryId === -1'
+      (change)='this.changeCat($event)'
+      >
+      <option value='-1'>Select a Category</option>
+      <option *ngFor='let item of this.partCat' [value]='item.id' [selected]='this.part.partCategoryId === item.id'>
+        {{ item.name }}
+      </option>
+    </select>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>Manufacturer</label>
+    <input type='text' class='form-control' [(ngModel)]='this.part.manufacturer' [class.is-valid]='part.manufacturer !== ""' [class.is-invalid]='part.manufacturer === ""'/>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>Model</label>
+    <input type='text' class='form-control' [(ngModel)]='this.part.model'/>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>Description</label>
+    <textarea rows="1" class='form-control' [(ngModel)]='this.part.description'></textarea>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>SKU</label>
+    <input type='text' class='form-control' [(ngModel)]='this.part.sku'/>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>Manufacturer Part Number</label>
+    <input type='text' class='form-control' [(ngModel)]='this.part.manufacturerPartNumber'/>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>EAN</label>
+    <input type='text' class='form-control' [(ngModel)]='this.part.eanNumber'/>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>Quantity</label>
+    <input type='number' class='form-control' [(ngModel)]='this.part.qty' [class.is-valid]='part.qty >= 0' [class.is-invalid]='part.qty < 0'/>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>Cost</label>
+    <div class='input-group'>
+      <div class='input-group-prepend'>
+        <span class='input-group-text'>£</span>
+      </div>
+      <input type='number' class='form-control' [(ngModel)]='this.part.value' [class.is-valid]='part.value >= 0' [class.is-invalid]='part.value < 0'/>
+    </div>
+  </div>
+  <div class="col-md-4 form-group">
+    <label>Depot / Stock Location</label>
+    <select
+      class='form-select'
+      (change)='this.changeDepot($event)'
+      >
+      <option value='-1'>Select a Depot</option>
+      <option *ngFor='let item of this.depots' [value]='item.id' [selected]='this.part.depotId === item.id'>
+        {{ item.name }}
+      </option>
+    </select>
+  </div>
+</div>

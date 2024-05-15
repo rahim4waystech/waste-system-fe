@@ -1,0 +1,227 @@
+<app-quote-add-product [products]='this.products'></app-quote-add-product>
+<app-tabs>
+  <app-tab title='Main Details' [invalid]='!this.isTabComplete("main")'>
+    <p><strong>Customer: {{ this.account.name }} </strong></p>
+    <p><strong>Site: {{  this.site.name }}</strong></p>
+    <br />
+
+
+    <div class='form-row'>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">From Time</label>
+        <input (keyup)='setTimeBasedOnRange()' [(ngModel)]='this.fromTime' type="time" name='name' class="form-control" id="inputEmail4" [disabled]="['AM', 'PM', 'ASAP'].indexOf(this.order.time) !== -1">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">To Time</label>
+        <input (keyup)='setTimeBasedOnRange()' [(ngModel)]='this.toTime' type="time" name='name' class="form-control" id="inputEmail4" [disabled]="['AM', 'PM', 'ASAP'].indexOf(this.order.time) !== -1">
+      </div>
+
+      <div class="form-group col-md-4">
+
+        <input type='radio' name='group[]' value='1' [checked]="['AM', 'PM', 'ASAP'].indexOf(this.order.time) === -1" (change)='onTimeOptionClicked($event)'/><label>Time Window</label>
+        <input type='radio' name='group[]' value='AM' [checked]='this.order.time === "AM"' (change)='onTimeOptionClicked($event)'/><label>AM</label>
+        <input type='radio' name='group[]' value='PM' [checked]='this.order.time === "PM"' (change)='onTimeOptionClicked($event)'/><label>PM</label>
+        <input type='radio' name='group[]' value='ASAP' [checked]='this.order.time === "ASAP"' (change)='onTimeOptionClicked($event)' /><label>ASAP</label>
+        </div>
+      </div>
+
+
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Date</label>
+        <input type="date" name='name' [(ngModel)]='this.order.date' [class.is-invalid]='!this.order.date' class="form-control" id="inputEmail4">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">PO Number <button class='btn btn-primary' type='button' (click)='this.copyPOToSite()'>Copy to Site</button></label>
+        <input type="text" name='name' [(ngModel)]='this.order.poNumber' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Order Number</label>
+        <input type="text" name='name' [(ngModel)]='this.order.orderNumber' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Collection Number</label>
+        <input type="text" name='name' [(ngModel)]='this.order.collectionNumber' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Unique Reference Number</label>
+        <input type="text" name='name' [(ngModel)]='this.order.uniqueReference' class="form-control">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Order Type</label>
+        <select class='form-control' [class.is-invalid]='this.order.orderTypeId === -1' (change)='this.order.orderTypeId = +$event.target.value; this.order.orderType.id = this.order.orderTypeId'>
+          <option value='-1'>Select a order type</option>
+          <option *ngFor='let item of this.types' [value]='item.id' [selected]='this.order.orderTypeId === item.id'>{{ item.name }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4" [hidden]='this.order.orderTypeId !== 8'>
+        <label>Contract</label>
+        <select class='form-control' [class.is-invalid]='this.order.contractId === -1' (change)='this.order.contractId = +$event.target.value;populateProductsFromContract()'>
+          <option value='-1'>Select a contract</option>
+          <option *ngFor='let item of this.contracts' [value]='item.id' [selected]='item.id === this.order.contractId'>{{ item.name }}</option>
+        </select>
+      </div>
+      <!-- if skip order then select skip order type -->
+      <div class="form-group col-md-4" *ngIf='this.order.orderTypeId === 1'>
+        <label for="inputEmail4">Skip Order Type</label>
+        <select class='form-control' [class.is-invalid]='this.order.skipOrderTypeId === -1' (change)='this.order.skipOrderTypeId = +$event.target.value; this.order.skipOrderType.id = this.order.skipOrderTypeId'>
+          <option value='-1'>Select a skip order type</option>
+          <option *ngFor='let item of this.skipOrderTypes' [value]='item.id' [selected]='this.order.skipOrderTypeId === item.id'>{{ item.name }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4" *ngIf='this.order.orderTypeId === 8'>
+        <label>Shredder Order Type</label>
+        <select class='form-control' [class.is-invalid]='this.order.shredderOrderTypeId === -1' (change)='this.order.shredderOrderTypeId = +$event.target.value; this.order.shredderOrderType.id = this.order.shredderOrderTypeId'>
+          <option value='-1'>Select a skip order type</option>
+          <option *ngFor='let item of this.shredderTypes' [value]='item.id' [selected]='this.order.shredderOrderTypeId === item.id'>{{ item.name }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4" *ngIf='this.order.orderTypeId === 1'>
+        <label for="inputEmail4">Container Size</label>
+        <select class='form-control' [class.is-invalid]='this.order.containerSizeTypeId === -1' (change)='this.order.containerSizeTypeId = +$event.target.value; this.order.containerSizeType.id = this.order.containerSizeTypeId;'>
+          <option value='-1'>Select a container size</option>
+          <ng-container  *ngFor='let item of this.containerSizes'>
+            <option *ngIf='item.vehicleTypeId === 1 || item.vehicleTypeId === 2' [value]='item.id' [selected]='this.order.containerSizeTypeId === item.id'>{{ item.size + ' ' + item.unit.name }}</option>
+          </ng-container>
+        </select>
+      </div>
+      <div class="form-group col-md-4" *ngIf='this.order.orderTypeId === 1 || this.order.orderTypeId === 8'>
+        <label for="inputEmail4">Container type</label>
+        <select class='form-control' [class.is-invalid]='this.order.containerTypeId === -1' (change)='this.order.containerTypeId = +$event.target.value; this.order.containerType.id = this.order.containerTypeId;'>
+          <option value='-1'>Select a container type</option>
+          <option *ngFor='let item of this.containerTypes' [value]='item.id' [selected]='this.order.containerTypeId === item.id'>{{ item.name }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Grade</label>
+        <select class='form-control' [class.is-invalid]='this.order.gradeId === -1' (change)='this.order.gradeId = +$event.target.value; this.order.grade.id = this.order.gradeId;'>
+          <option value='-1'>Select a grade</option>
+          <option *ngFor='let item of this.grades' [value]='item.id' [selected]='this.order.gradeId === item.id'>{{ item.name }}({{ item.ewcCodes }})</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Tip Site</label>
+        <select class='form-control' [class.is-invalid]='this.order.tipSiteId === -1' (change)='this.order.tipSiteId = +$event.target.value; this.order.tipSite.id = this.order.tipSiteId;'>
+
+          <option value='-1'>Select a tip site</option>
+          <option *ngFor='let item of this.tips' [value]='item.id' [selected]='this.order.tipSiteId === item.id'>{{ item.name }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-12">
+        <label for="inputPassword4">Description </label>
+        <textarea name='notes' [(ngModel)]='this.order.description' class="form-control"></textarea>
+      </div>
+      <div class="form-group col-md-12">
+        <label for="inputPassword4">Driver Notes </label>
+        <textarea name='notes' [(ngModel)]='this.order.driverNotes' class="form-control"></textarea>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+  </app-tab>
+  <app-tab title='Pricing' [invalid]='!this.isTabComplete("product")'>
+    <button class='btn btn-secondary' type="button" (click)='this.openModal("quoteAddProductModal")'><i class="fas fa-plus"></i></button>
+
+    <table class="table" *ngIf='this.quoteLines.quoteLines.length > 0'>
+      <thead>
+        <th>Name</th>
+        <th>Qty</th>
+        <th>Unit</th>
+        <th>Base Price(&pound;)</th>
+        <th>Total Price(&pound;)</th>
+        <th></th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr *ngFor='let item of this.quoteLines.quoteLines; let i = index;'>
+          <td>{{ item.product.name }}</td>
+          <td>
+            <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.qty'>
+          </td>
+          <td>
+            {{ item.product.unit.name }}(s)
+          </td>
+          <td>
+            <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.newPrice'>
+          </td>
+          <td>
+            {{ getTotalPriceForQuoteLine(item).toFixed(2) }}
+          </td>
+          <td>
+            <!-- <button class='btn btn-warning' type="button"><i class="fas fa-pencil-alt"></i></button> -->
+            <button class='btn btn-danger' type="button" (click)='deleteQuoteLine(i)'><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+
+    <table lass='table' style='width:100%;'>
+      <tbody>
+        <tr>
+          <td colspan='3'><strong>Net total</strong></td>
+          <td>&pound;{{  this.getNetTotal().toFixed(2) }}</td>
+        </tr>
+        <tr>
+          <td colspan='3'><strong>VAT total @ 20%</strong></td>
+          <td>&pound;{{ this.getVatTotal().toFixed(2) }}</td>
+        </tr>
+        <tr>
+          <td colspan='3'><strong>Gross total</strong></td>
+          <td>&pound;{{ (this.getNetTotal() + this.getVatTotal()).toFixed(2) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </app-tab>
+  <app-tab title='Site Contact Details'>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Company Name</label>
+        <input type="text" name='name' [(ngModel)]='this.order.companyName' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Contact Name</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactName' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Contact Telephone</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactTelephone' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Contact Email</label>
+        <input type="email" name='name' [(ngModel)]='this.order.contactEmail' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Contact Address Line 1</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactAddressLine1' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Contact Address Line 2</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactAddressLine2' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Contact Address Line 3</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactAddressLine3' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Contact City</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactCity' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Contact Country</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactCountry' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Site Contact Postcode</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactPostCode' class="form-control" id="inputEmail4">
+        <app-address-picker [postcode]='this.order.contactPostCode' (onAddressFound)='this.foundContactAddress($event)'></app-address-picker>
+      </div>
+    </div>
+  </app-tab>
+</app-tabs>

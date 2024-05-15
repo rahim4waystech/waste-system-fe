@@ -1,0 +1,181 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12 driverchecks">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <div class="">
+            <div class="row mt-3 content-block-head">
+              <div class="col-12">
+                <div class="row">
+                  <h4>Driver Checks</h4>
+                </div>
+              </div>
+            </div>
+<hr>
+            <div class="row content-block">
+              <div class="col-12">
+                <app-tabs (tabClicked)='this.cancelAllCheck()'>
+                  <app-tab title='{{vehicleType.name}} ({{vehicleType.checks.length}})'
+                    *ngFor='let vehicleType of this.vehicleChecks'>
+                    <table class='table table-bordered table-hover'>
+                      <thead class='table-dark'>
+                        <tr>
+                          <th>Question</th>
+                          <th>Severity</th>
+                          <th>Check Area</th>
+                          <th>VOR?</th>
+                          <th>Active?</th>
+                          <th>Action</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor='let checks of vehicleType.checks'>
+                          <ng-container *ngIf='!checks.editing'>
+                            <td>{{checks.checkInformation}}</td>
+                            <td>{{this.getSeverity(checks.severity)}}</td>
+                            <td>{{this.getArea(checks.vehicleCheckAreaId)}}</td>
+                            <td>{{this.parseBoolean(checks.isVor)}}</td>
+                            <td>{{this.parseBoolean(checks.active)}}</td>
+                            <td class='p-0 text-center'>
+                              <button *ngIf='!disableButtons' class='btn btn-warning m-0 btn-block'
+                                (click)='this.editCheck(vehicleType.vehicleTypeId,checks.id)'>
+                                <i class="far fa-edit"></i>
+                              </button>
+                              <button *ngIf='disableButtons' disabled class='btn btn-warning m-0 btn-block'><i
+                                  class="far fa-edit"></i></button>
+                            </td>
+                          </ng-container>
+                          <ng-container *ngIf='checks.editing'>
+                            <td>
+                              <input class='form-control' type='text' placeholder='Question...'
+                                [(ngModel)]='checks.checkInformation' />
+                            </td>
+                            <td>
+                              <select class='form-control' (change)='checks.severity=+$event.target.value;'>
+                                <option *ngFor='let item of this.severities'
+                                  [selected]='checks.severity === item.severity' [value]='item.severity'>{{
+                                  item.severity }} - {{item.notes}}</option>
+                              </select>
+                            </td>
+                            <td>
+                              <select class='form-control' (change)='checks.vehicleCheckAreaId=+$event.target.value;'>
+                                <option *ngFor='let item of this.checkAreas'
+                                  [selected]='item.id === checks.vehicleCheckAreaId' [value]='item.id'>{{ item.name }}
+                                </option>
+                              </select>
+                            </td>
+                            <td>
+                              <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1"
+                                  [(ngModel)]='checks.isVor'>
+                                <label *ngIf='this.checks.isVor' class="custom-control-label"
+                                  for="customSwitch1">Failure triggers VOR</label>
+                                <label *ngIf='!this.checks.isVor' class="custom-control-label"
+                                  for="customSwitch1">Failure is not VOR</label>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch2"
+                                  [(ngModel)]='checks.active'>
+                                <label *ngIf='this.checks.active' class="custom-control-label" for="customSwitch2">Shows
+                                  in App</label>
+                                <label *ngIf='!this.checks.active' class="custom-control-label"
+                                  for="customSwitch2">Hidden in App</label>
+                              </div>
+                            </td>
+                            <td class='p-0 text-center'>
+                              <div class="btn-group m-0 p-0">
+                                <button class='btn btn-success' (click)='this.updateCheck(this.checks)'>
+                                  <i class="fas fa-check"></i>
+                                </button>
+                                <button class='btn btn-danger'
+                                  (click)='this.cancelEditCheck(vehicleType.vehicleTypeId,checks.id)'>
+                                  <i class="fas fa-times"></i>
+                                </button>
+                              </div>
+                            </td>
+                          </ng-container>
+                        </tr>
+
+                        <ng-container *ngIf='vehicleType.addToggle'>
+                          <tr>
+                            <td>
+                              <input class='form-control' type='text' placeholder='Question...'
+                                [(ngModel)]='this.newCheck.checkInformation' />
+                            </td>
+                            <td>
+                              <select class='form-control' (change)='this.changeVehicleSeverity($event)'>
+                                <option value='-1'>Select Severity</option>
+                                <option *ngFor='let item of this.severities' [value]='item.severity'>{{ item.severity }}
+                                  - {{item.notes}}</option>
+                              </select>
+                            </td>
+                            <td>
+                              <select class='form-control' (change)='this.changeVehicleArea($event)'>
+                                <option value='-1'>Select a Vehicle Area</option>
+                                <option *ngFor='let item of this.checkAreas' [value]='item.id'>{{ item.name }}</option>
+                              </select>
+                            </td>
+                            <td>
+                              <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1"
+                                  [(ngModel)]='this.newCheck.isVor'>
+                                <label *ngIf='this.newCheck.isVor' class="custom-control-label"
+                                  for="customSwitch1">Failure triggers VOR</label>
+                                <label *ngIf='!this.newCheck.isVor' class="custom-control-label"
+                                  for="customSwitch1">Failure is not VOR</label>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch2"
+                                  [(ngModel)]='this.newCheck.active'>
+                                <label *ngIf='this.newCheck.active' class="custom-control-label"
+                                  for="customSwitch1">Shows in App</label>
+                                <label *ngIf='!this.newCheck.active' class="custom-control-label"
+                                  for="customSwitch1">Hidden in App</label>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan='5'></td>
+                            <td>
+                              <span class='btn-group'>
+                                <button class='btn btn-success'
+                                  (click)='saveCheck(vehicleType.vehicleTypeId)'>Save</button> &nbsp;
+                                <button class='btn btn-danger'
+                                  (click)='cancelCheck(vehicleType.vehicleTypeId)'>Cancel</button>
+                              </span>
+                            </td>
+                          </tr>
+                        </ng-container>
+                        <tr>
+                          <td colspan='6'>
+                            <button *ngIf='!disableButtons' class='btn btn-success btn-block'
+                              (click)='addRow(vehicleType.vehicleTypeId)'>
+                              <i class="far fa-plus-square"></i>
+                            </button>
+                            <button *ngIf='disableButtons' class='btn btn-secondary btn-block' disabled>
+                              <i class="far fa-plus-square"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </app-tab>
+                </app-tabs>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

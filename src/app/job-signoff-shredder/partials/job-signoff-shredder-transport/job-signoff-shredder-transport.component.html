@@ -1,0 +1,10 @@
+<app-grid
+entity='job'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+[relationships]='["jobAssignment", "jobAssignment.driver", "jobAssignment.vehicle", "jobAssignment.subcontractor"]'
+[backgroundSetter]='this.getRowColor'
+></app-grid>

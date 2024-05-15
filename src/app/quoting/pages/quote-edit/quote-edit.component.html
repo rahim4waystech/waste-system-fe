@@ -1,0 +1,38 @@
+<div class="fullcontainer">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class="alert alert-success" *ngIf='this.isSuccess'>Quote was updated successfully</div>
+  <div class='sheet'>
+    <div class="row">
+      <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+              <h3 class='header'>Edit Quote - {{ this.quote.name }}</h3>
+        </div>
+        <div class="card-body">
+          <app-audit-line [data]='this.quote'></app-audit-line>
+<div class="row">
+  <div class="col-12 text-end">
+    <button class='btn btn-sm btn-secondary' type='button' (click)='this.createPDFFile();'>Export to PDF</button>&nbsp;
+    <button class='btn btn-sm btn-secondary' type='button' (click)='this.emailPDF();'>Email PDF</button>
+
+  </div>
+</div>
+   
+    <form method='post' (ngSubmit)='this.onSubmit()'>
+      <app-quote-forms [account]='this.account' [site]='this.site' [quoteLines]='this.quoteLines' [quote]='this.quote'></app-quote-forms>
+     <div class="row mt-3">
+      <div class="col-12 text-end">
+        <button type="submit" class="btn btn-success">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" routerLink='/quoting'>Cancel</button>
+      </div>
+     </div>
+      
+    </form>
+        </div>
+      </div>
+    </div>
+</div>
+  </div>
+</div>
+

@@ -1,0 +1,44 @@
+<div class="fullcontainer" >
+  <br />
+  <br />
+
+  <div class='titleContainer'>
+    <h2 class='header' style='color: white;'>Accepted Orders for {{ this.date }}</h2>
+    <div>
+      <button class='btn btn-secondary'>+ Add</button>&nbsp;
+      <button class='btn btn-secondary' routerLink='/artic/run-diary'><i class="fas fa-arrow-left"></i> Back</button>
+    </div>
+  </div>
+  <div class="sheet">
+    <div class='col-md-4'>
+        <label>Customer</label>
+        <ng-select [(ngModel)]="this.customSearchFilters.customer" (change)='this.customSearchFilters.customer = +$event;this.loadSites($event);'>
+           <ng-option *ngFor='let item of this.accounts' [value]='item.id'>{{ item.name }}</ng-option>
+        </ng-select>
+     </div>
+     <div class='col-md-4'>
+        <label>Site</label>
+        <ng-select [(ngModel)]="this.customSearchFilters.site" (change)='this.customSearchFilters.site = $event;'>
+           <ng-option *ngFor='let item of this.sites' [value]='item.name'>{{ item.name }}</ng-option>
+        </ng-select>
+     </div>
+
+     <div class='col-md-4'>
+         <label>Parent Job Id</label><br />
+         <input type='text' placeholder="Job Parent Id" [(ngModel)]='this.customSearchFilters.orderId'/>
+     </div>
+     <br />
+
+     <button class='btn btn-primary' type='button' (click)='search()'>Search</button>&nbsp;
+     <button class='btn btn-danger' type='button' (click)='clear()'>Clear</button>
+</div>
+  <br />
+  <br />
+  <app-grid
+entity='order'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+></app-grid>

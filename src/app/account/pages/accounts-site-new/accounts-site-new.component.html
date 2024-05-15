@@ -1,0 +1,28 @@
+<div [class.fullcontainer]='!this.isPopup'>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class='sheet'>
+    <div class="row">
+      <div class="col-12">
+        <h1 class='header'>Create a new site</h1>
+      </div>
+    </div>
+  
+    <hr>
+    <div class="row  mt-5">
+      <div class="col-12">
+        <form (ngSubmit)='this.onSubmit()' method='post'>
+          <app-accounts-form [account]='this.account' [isSimpleOrder] = 'this.isSimpleOrder'></app-accounts-form>
+          <div class="row mt-3">
+            <div class="col-12 text-end">
+              <button type="submit" class="btn btn-success">Save</button>&nbsp;
+              <button type="button" class="btn btn-danger" (click)='this.cancel()'>Cancel</button>
+            </div>
+          </div>
+          
+        </form> 
+      </div>
+    </div>
+   
+  </div>
+</div>

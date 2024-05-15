@@ -1,0 +1,9 @@
+<button class='btn btn-info btn-block' type='button' (click)='postcodeLookup()'>Look Up Postcode</button>
+
+<app-container *ngIf='this.completeAddresses.length > 0'>
+  <select class='form-control' (change)='this.changedAddress($event)'>
+    <option value='-1'>Select an Address</option>
+    <option *ngFor='let item of this.completeAddresses' [value]='item.id'>{{item.sanitisedAddress}}</option>
+    <!-- <option *ngFor='let item of this.addressList' [value]='item.id' [selected]='this.fuel.vehicleId === item.id'>{{ item.name }}</option> -->
+  </select>
+</app-container>

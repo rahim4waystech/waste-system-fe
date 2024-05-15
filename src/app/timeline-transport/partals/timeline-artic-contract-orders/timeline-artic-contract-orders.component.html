@@ -1,0 +1,163 @@
+<app-timeline-transport-order-information [order]='this.currentOrder'></app-timeline-transport-order-information>
+<app-timeline-transport-all-orders></app-timeline-transport-all-orders>
+<app-timeline-add-site></app-timeline-add-site>
+<div class='acceptedOrdersContainer articContractsContainer'>
+  <div class='header'>
+    <div class="row">
+      <div class="col-md-3">
+        <i class="fas fa-fw fa-truck-loading"></i>
+      </div>
+      <div class="col-md-5 text-center">
+        Contract12 Orders
+      </div>
+      <div class="col-md-4 text-end">
+        <button class='btn  btn-sm btn-primary' (click)='this.loadOrders()'><i class="fas fa-sync-alt"></i></button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bodyContainer">
+    <div class="row">
+      <div class="col-md-11 mx-auto form-group">
+        <ng-select class="form-select" [(ngModel)]="this.searchFilters.customer"
+          (change)='this.searchFilters.customer = $event;'>
+          <ng-option *ngFor='let item of this.accounts' [selected]='this.searchFilters.customer === item.id'
+            [value]='item.id'>{{ item.name }}</ng-option>
+        </ng-select>
+      </div>
+      <div class="col-md-11 mx-auto form-group">
+        <ng-select class="form-select" [(ngModel)]="this.searchFilters.site"
+          (change)='this.searchFilters.site = $event;'>
+          <ng-option *ngFor='let item of this.sites' [value]='item.id'
+            [selected]='this.searchFilters.site === item.id'>{{ item.name }}</ng-option>
+        </ng-select>
+      </div>
+      <div class="col-md-11 mx-auto form-group">
+        <ng-select class="form-select" [(ngModel)]="this.searchFilters.tipSite"
+          (change)='this.searchFilters.tipSite = $event;'>
+          <ng-option *ngFor='let item of this.tips' [selected]='this.searchFilters.tipSite === item.id'
+            [value]='item.id'>{{ item.name }}</ng-option>
+        </ng-select>
+      </div>
+      <div class="col-md-11 mx-auto ">
+        <button class='btn btn-primary w-100' (click)='this.loadOrders()'>Search</button>
+      </div>
+      <div class="col-md-11 mx-auto my-1">
+        <button class='btn btn-danger w-100' (click)='this.clear()'>Clear</button>
+      </div>
+      <div class="col-md-11 mx-auto">
+        <button class='btn btn-dark w-100' (click)='this.openModal("transportAllOrdersModal")'>Show Orders</button>
+
+      </div>
+      <div class="col-md-11 mx-auto my-1">
+        <button class='btn btn-secondary w-100' routerLink='/orders/new/accounts'>+ New Order</button>
+      </div>
+      <div class="col-md-11 mx-auto">
+        <button class='btn btn-info w-100' (click)='this.newSite()'>+ New Account/Site</button>
+
+      </div>
+    </div>
+
+    <!-- <div class="form-group">
+      <label for="inputPassword4">Sort by</label>
+      <select class='form-control' (change)='this.sortBy = $event.target.value; this.loadOrders()'>
+        <option value='time'>Time</option>
+        <option value='account'>Account</option>
+        <option value='po-number'>PO Number</option>
+      </select>
+    </div> -->
+
+    <!-- used for clone icon don't remove-->
+    <div id="div2" style='display:none;z-index:9999999999'>Test</div>
+
+    <ng-container *ngIf='this.orders.length > 0'>
+      <ng-container *ngFor='let order of this.orders'>
+        <!-- Normal orders -->
+        <div class='orderContainer row ml-0'
+          [class.changed]='order.createdBy !== order.updatedBy && order.updatedBy !== -1'
+          *ngIf='order.shredderOrderTypeId !== 3' [class.dragging]='this.draggingId == order.id'
+          data-id='{{ order.id }}' draggable="true" (dragstart)='dragStart($event, order)' (dragend)='dragEnd($event)'>
+          <div class="col-2 text-center">
+            <button class='btn btn-secondary btn-small'
+              (click)='this.currentOrder = order; openModal("orderTransportInformationModal")'>
+              <i class="fas fa-info-circle"></i>
+            </button>&nbsp;
+            <button class='btn btn-secondary btn-small' (click)='this.makeOrderDaily(order)'>
+              <i class="fas fa-calendar-day"></i>
+            </button>
+            <br />
+            <span class="badge badge-pill" [class.badge-secondary]='this.getAllocatedQty(order) === 0'
+              [class.badge-primary]='this.getAllocatedQty(order) < this.getOrderQty(order)'
+              [class.badge-success]='this.getAllocatedQty(order) === this.getOrderQty(order)'
+              [class.badge-danger]='this.getAllocatedQty(order) > this.getOrderQty(order)'>{{this.getAllocatedQty(order)}}/{{this.getOrderQty(order)}}</span>
+          </div>
+          <div class="col">
+            <strong>{{ order.account.name }}</strong>
+            {{ order.site.name }}
+
+            <ng-container *ngIf='order.tipSite !== null'>
+              TO {{ order.tipSite.name }}
+            </ng-container>
+
+            Job Type: <strong>Per {{ this.getUnitForJob(order) }}</strong>
+            <br />
+            <ng-container *ngIf='order.createdBy !== order.updatedBy && order.updatedBy !== -1'>
+              <span>Changed By: {{ order.updatedUser.firstName }} {{ order.updatedUser.lastName }}</span><br />
+            </ng-container>
+            <ng-container *ngIf='this.orderTypeId === 8 && order.shredderOrderTypeId === 3'>
+              <span *ngIf='!order.isPrepaid'>Delivery</span>
+              <span *ngIf='order.isPrepaid'>Collection</span>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <div class="gridPagination">
+        <ul>
+          <li *ngIf="this.isPrevActive()">
+            <button class="btn btn-secondary" type="button" name="button"
+              (click)="onPaginationPageClicked(this.getCurrentPage() - 1)">
+              &lt;
+            </button>
+          </li>
+
+
+          <ng-container *ngIf='this.paginationService.getTotalPages() <= 30'>
+            <li *ngFor="let page of this.getPagesArray()">
+              <button class="btn btn-secondary" type="button" name="button" (click)="onPaginationPageClicked(page)"
+                [class.active]="page === this.getCurrentPage()">
+                {{ page }}
+              </button>
+            </li>
+          </ng-container>
+
+
+          <ng-container *ngIf='this.paginationService.getTotalPages() > 30'>
+
+            <ng-container
+              *ngFor="let page of this.paginationService.getShortPagesRange(this.paginationService.getPage(), this.paginationService.getTotalPages())">
+              <li *ngIf='page !== "..."'>
+                <button class="btn btn-secondary" type="button" name="button" (click)="onPaginationPageClicked(page)"
+                  [class.active]="page === this.getCurrentPage()">
+                  {{ page }}
+                </button>
+              </li>
+              <span *ngIf='page === "..."'>...</span>
+            </ng-container>
+
+          </ng-container>
+          <li *ngIf="this.isNextActive()">
+            <button class="btn btn-secondary" type="button" name="button"
+              (click)="onPaginationPageClicked(this.getCurrentPage() + 1)">
+              &gt;
+            </button>
+          </li>
+
+        </ul>
+      </div>
+    </ng-container>
+    <ng-container *ngIf='this.orders.length === 0'>
+      <div style='color:red;font-weight:bold'>No results found</div>
+    </ng-container>
+  </div>
+</div>

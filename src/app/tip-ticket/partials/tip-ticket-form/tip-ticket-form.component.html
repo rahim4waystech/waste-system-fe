@@ -1,0 +1,31 @@
+
+<div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Job ID</label>
+      <input type="text" name='name' [(ngModel)]='this.tipTicket.jobId' [class.is-invalid]='!this.tipTicket.jobId' class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+        <label for="inputPassword4">Tipped Ticket</label>
+        <input type="text" name='contact' [(ngModel)]='this.tipTicket.ticketNo' class="form-control" id="inputPassword4">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputPassword4">Collection Ticket</label>
+        <input type="text" name='contact' [(ngModel)]='this.tipTicket.collectionTicketNumber' class="form-control" id="inputPassword4">
+      </div>
+        
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Unit</label>
+    <select class='form-control' (change)='this.tipTicket.unitId = +$event.target.value;'>
+      <option *ngFor='let item of this.units' [value]='item.id' [selected]='this.tipTicket.unitId === item.id'>{{ item.name }}</option>
+    </select>
+  </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Price</label>
+      <input type="number" name='registration' [(ngModel)]='this.tipTicket.price'  class="form-control" id="inputPassword4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">qty</label>
+      <input type="number" name='vinNumber' [(ngModel)]='this.tipTicket.qty' class="form-control" id="inputPassword4">
+    </div>
+  
+  </div>

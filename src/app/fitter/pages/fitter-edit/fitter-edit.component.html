@@ -1,0 +1,15 @@
+<div class="fullcontainer">
+  <app-workshop-nav></app-workshop-nav>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class="alert alert-success" *ngIf='this.isSuccess'>Fitter was updated successfully</div>
+  <div class='sheet'>
+    <h1 class='header'>Edit Fitter - {{ this.fitter.firstName }} {{ this.fitter.lastName }}</h1>
+    <app-audit-line [data]='this.fitter'></app-audit-line>
+    <form (ngSubmit)='this.onSubmit()' method='post'>
+      <app-fitter-form [fitter]='this.fitter'></app-fitter-form>
+      <button type="submit" class="btn btn-success">Save</button>&nbsp;
+      <button type="button" class="btn btn-danger" routerLink='/fitters'>Cancel</button>
+    </form>
+  </div>
+</div>

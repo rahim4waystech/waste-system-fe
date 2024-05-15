@@ -1,0 +1,18 @@
+<jw-modal id='gridSavedSearchModal'>
+    <h1 class='header'>Saved Search</h1>
+
+    <div>
+        <div>
+            <div class='row'>
+                <div class='col-md-4'>
+                    <label>Name *</label>
+                    <input [class.is-invalid]='this.name === ""' type='text' class='form-control' [(ngModel)]="this.name"/>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <button class='btn btn-success' (click)='save()'>Save</button>&nbsp;
+    <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+</jw-modal>

@@ -1,0 +1,26 @@
+<jw-modal id='printPodModal'>
+    <h1 class='header'>Print PODs</h1>
+  
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="inputEmail4">Type</label>
+        <select name='depot' class='form-control' (change)='this.podType === $event.target.value'>
+        <option selected value='pod'>Default</option>
+        </select>
+      </div>
+    </div>
+
+
+<div class='form-row'>
+    <div class='form-group'>
+      <label>Show tipped details?</label>
+      <input type='checkbox'
+      [(ngModel)]="this.tippedDetails"
+      [ngModelOptions]="{standalone: true}"/>
+    </div>
+  </div>
+  
+    <button class='btn btn-success' (click)='this.print()'>Save</button>&nbsp;
+    <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+  </jw-modal>
+  

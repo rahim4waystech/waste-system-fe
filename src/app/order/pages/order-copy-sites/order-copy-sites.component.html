@@ -1,0 +1,21 @@
+<div class="fullcontainer" >
+  <br />
+  <br />
+
+  <div class='titleContainer'>
+    <h2 class='header' >Select a Site</h2>
+    <div>
+      <button class='btn btn-secondary' (click)='addSite()'><i class="fas fa-plus"></i> New</button>&nbsp;
+      <button class='btn btn-secondary' routerLink='/orders/new/accounts'><i class="fas fa-arrow-left"></i> Back</button>
+    </div>
+  </div>
+  <br />
+  <br />
+  <app-grid
+entity='account'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+></app-grid>

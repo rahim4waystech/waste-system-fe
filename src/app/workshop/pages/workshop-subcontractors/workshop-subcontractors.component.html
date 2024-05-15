@@ -1,0 +1,23 @@
+<div class="fullcontainer ml-5">
+  <app-workshop-nav></app-workshop-nav>
+  <div class="p-3">
+    <div class="row mt-2">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <button class='btn btn-info btn-block' routerLink='/4workshop/subcontractors/new'><i class="fas fa-plus"></i></button>
+            <app-grid
+              entity='workshop-subcontractors'
+              [filters]='this.filters'
+              [columns]='this.columns'
+              [buttons]='this.buttons'
+              [searchFilters]='this.searchFilters'
+              [searchFields]='this.searchFields'
+              >
+            </app-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

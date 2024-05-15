@@ -1,0 +1,81 @@
+<br />
+<br />
+<button type='button' class='btn btn-primary' (click)='onSignOffButtonClicked()'>Sign off selected</button>
+<br />
+<br />
+
+<div class='sheet' style='padding: 0.5rem;'>
+    <div class='row'>
+       <div class='col-md-4'>
+          <label>Start Date</label>
+          <input [(ngModel)]="this.searchFilters.startDate" class='form-control' type='date' />
+       </div>
+       <div class='col-md-4'>
+          <label>End Date</label>
+          <input [(ngModel)]="this.searchFilters.endDate"  class='form-control' type='date' />
+       </div>
+       <div class='col-md-4'>
+          <label>Vehicle</label>
+          <input [(ngModel)]="this.searchFilters.vehicle"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Driver</label>
+          <input [(ngModel)]="this.searchFilters.driver"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Subcontractor</label>
+          <input [(ngModel)]="this.searchFilters.subcontractor"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Customer</label>
+          <input [(ngModel)]="this.searchFilters.customer"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Order REF</label>
+          <input [(ngModel)]="this.searchFilters.orderRef"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Job Number</label>
+          <input [(ngModel)]="this.searchFilters.jobNumber"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Status</label>
+          <select class='form-control' (change)='this.searchFilters.status = $event.target.value'>
+             <option value=''>All Jobs</option>
+             <option value='not'>Not Signed off</option>
+             <option value='signed'>Signed off</option>
+          </select>
+       </div>
+    </div>
+   <div class="row mt-3">
+      <div class="col-12 text-end">
+         <button class='btn btn-primary' type='button' (click)='search()'>Search</button>&nbsp;
+         <button class='btn btn-danger' type='button' (click)='clear()'>Clear</button>
+      </div>
+   </div>
+   
+ </div>
+
+<p style='font-size:2rem' *ngIf='this.selectedJobs.length > 0'>
+    <strong>Total Selected: {{ this.getSelectedDetails().total }} Total Qty: {{ this.getSelectedDetails().qty }} Total Price: {{this.getSelectedDetails().price }}</strong>
+ </p>
+
+ <br />
+ <br />
+
+ <button class='btn btn-danger' (click)='clearSelected()'>Deselect All</button>
+
+ <button class='btn btn-danger' (click)='clearSelected()'>Delete All</button>
+<app-grid
+entity='job'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFiltersGrid'
+[searchFields]='this.searchFields'
+[relationships]='["order.orderLines", "jobAssignment", "jobAssignment.driver", "jobAssignment.vehicle", "jobAssignment.subcontractor", "tippingPrice"]'
+[backgroundSetter]='this.getRowColor'
+[checkboxSelector]='true'
+[showSearch]='false'
+(checkboxSelected)='this.onCheckboxSelected($event)'
+></app-grid>

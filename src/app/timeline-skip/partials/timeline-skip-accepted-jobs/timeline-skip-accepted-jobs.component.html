@@ -1,0 +1,105 @@
+<div class='acceptedOrdersContainer'>
+  <div class='header'>
+    <div class="row">
+      <div class="col-lg-3 my-auto"><i class="fas fa-fw fa-truck-loading"></i></div>
+      <div class="col-lg-5  my-auto text-center">Accepted Orders 1</div>
+      <div class="col-lg-4  my-auto text-end"><button class='btn btn-primary btn-sm' (click)='this.loadOrders()'><i class="fas fa-sync-alt"></i></button></div>
+    </div>
+     
+  </div>
+
+  <div class="bodyContainer" (drop)='this.onJobDrop($event)' (dragover)='$event.preventDefault();'>
+              
+              <!-- comment by shujat -->
+    <app-skip-accepted-order-information-modal [order]='this.currentOrder'></app-skip-accepted-order-information-modal>
+
+    <input type='text' placeholder='🔍 Search...' class='form-control' [(ngModel)]='this.search' (keyup)='this.loadOrders()'/>
+
+    <div class="form-group">
+      <label for="inputPassword4">Sort by</label>
+      <select class='form-control' (change)='this.sortBy = $event.target.value; this.loadOrders()'>
+        <option value='time'>Time</option>
+        <option value='account'>Account</option>
+        <option value='skip-type'>Skip Order Type</option>
+        <option value='container-type'>Container Size</option>
+        <option value='po-number'>PO Number</option>
+      </select>
+    </div>
+
+    <div class='ordersMainContainer' style='height: 70vh;
+    overflow: scroll;'>
+    <ng-container *ngIf='this.orders.length > 0'>
+      <div class='orderContainer dragging' [class.old]='this.isEarlierThanToday(order.date)' [class.dragging]='this.draggingId == order.id' data-id='{{ order.id }}' draggable="true" (dragstart)='dragStart($event, order)' (dragend)='dragEnd($event)' *ngFor='let order of this.orders'>
+        <button class='btn btn-secondary btn-small' (click)='this.currentOrder = order; this.openModal("orderInformationModal")'><i class="fas fa-info-circle"></i></button>&nbsp;&nbsp; <strong>{{ order.date | date: 'd/M/yy'}}</strong>-<strong>{{ order.account.name }}</strong> {{ this.getAddressForOrder(order) }}<br />
+
+        <strong>{{ order.skipOrderType.name }}</strong> {{ order.containerType.name }} ({{ order.containerSizeType.size }} {{ order.containerSizeType.unit.name }}) {{ order.grade.name }}
+      </div>
+
+      <!-- <div class="gridPagination">
+        <ul>
+          <li *ngIf="this.isPrevActive()">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              name="button"
+              (click)="onPaginationPageClicked(this.getCurrentPage() - 1)"
+            >
+              &lt;
+            </button>
+          </li>
+    
+          <ng-container *ngIf='this.paginationService.getTotalPages() <= 30'>
+            <li *ngFor="let page of this.getPagesArray()">
+              <button
+                class="btn btn-secondary"
+                type="button"
+                name="button"
+                (click)="onPaginationPageClicked(page)"
+                [class.active]="page === this.getCurrentPage()"
+              >
+                {{ page }}
+              </button>
+            </li>
+          </ng-container>
+    
+          <ng-container *ngIf='this.paginationService.getTotalPages() > 30'>
+    
+            <ng-container *ngFor="let page of this.paginationService.getShortPagesRange(this.paginationService.getPage(), this.paginationService.getTotalPages())">
+              <li *ngIf='page !== "..."'>
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  name="button"
+                  (click)="onPaginationPageClicked(page)"
+                  [class.active]="page === this.getCurrentPage()"
+                >
+                  {{ page }}
+                </button>
+              </li>
+              <span *ngIf='page === "..."'>...</span>
+            </ng-container>
+    
+        </ng-container>
+          <li *ngIf="this.isNextActive()">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              name="button"
+              (click)="onPaginationPageClicked(this.getCurrentPage() + 1)"
+            >
+              &gt;
+            </button>
+          </li>
+    
+        </ul>
+      </div> -->
+      
+    </ng-container>
+    </div>
+    <ng-container *ngIf='this.orders.length === 0'>
+      <div style='color:red;font-weight:bold'>No results found</div>
+    </ng-container>
+
+
+  </div>
+</div>

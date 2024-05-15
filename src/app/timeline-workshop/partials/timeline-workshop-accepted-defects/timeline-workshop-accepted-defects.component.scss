@@ -1,0 +1,59 @@
+.header {
+  background-color: white;
+  color: white;
+  // border-top: 3px solid #27ae60;
+  padding: 5px;
+  background: #34495e;
+}
+
+.bodyContainer {
+  // margin-top: 0.5rem;
+  // background-color: white;
+  // height: 95%;
+  // min-height: 50rem;
+  height: 80vh !important;
+    overflow: auto;
+    box-shadow: var(--box-shadow-1) inset;
+}
+
+.acceptedDefectsContainer {
+  // position: fixed;
+  // width: 17rem;
+  font-size: 0.65rem;
+  // min-height: 50rem;
+  // left: 3.2%;
+  // top: 6.8%;
+  z-index: 99;
+  // border: 3px solid #27ae60;
+  box-shadow: var(--box-shadow-1);
+
+  .btn-small {
+    width:2rem;
+  }
+}
+
+.defectContainer {
+  background-color:#bdc3c7;
+
+  &.old {
+    background-color: pink;
+  }
+
+  &.isVOR {
+    background: #e51c23 linear-gradient(180deg,#e93e44,#e51c23) repeat-x;
+    color: white;
+  }
+
+  width:100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: grab;
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  z-index:  -1;
+}
+
+
+.dragging {
+  opacity: .5;
+  transform: scale(.8);
+}

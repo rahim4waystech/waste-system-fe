@@ -1,0 +1,23 @@
+// .timelineLineContainer {
+//   display: flex;
+//   flex-flow: row wrap;
+// }
+
+// .timelineMainContainer {
+// }
+.subright-div{
+  height: 70vh !important;
+  overflow: auto;
+  box-shadow: var(--box-shadow-1) inset;
+  padding: 10px;
+}
+
+.subright-div table{
+  height: 50vh !important;
+  overflow: auto;
+}
+
+
+.hide {
+  display:none;
+}

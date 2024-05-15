@@ -1,0 +1,36 @@
+<div class="fullcontainer">
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <div class='sheet'>
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-lg-6 my-auto">
+                  <div class='titleContainer'>
+                    <h3 class='header'>Create a new fitter hours</h3>
+                  </div>
+                  </div>
+               
+              </div>
+            </div> 
+            <div class="card-body">
+              <form (ngSubmit)='this.onSubmit()' method='post'>
+                <app-fitter-hours-form [fitterHours]='this.fitterHours'></app-fitter-hours-form>
+               <div class="row">
+                <div class="col-12 text-end">
+                  <button type="submit" class="btn btn-success">Save</button>&nbsp;
+                  <button type="button" class="btn btn-danger" routerLink='/4workshop/fitters/hours/advanced'>Cancel</button>
+                
+                </div>
+               </div>
+               
+              </form>
+            </div>
+          </div>
+        </div>
+      </div> 
+      </div>
+      </div>
+      

@@ -1,0 +1,18 @@
+<jw-modal id="stockEditModal">
+  <div class="row">
+    <div class="col">
+      <h5>Editing {{this.part.name}}</h5>
+    </div>
+  </div>
+
+  <app-parts-form [part]='this.part'></app-parts-form>
+
+  <div class="row">
+    <div class="col btn-group">
+      <button class='btn btn-success' (click)='this.save()'>Save</button> &nbsp;
+      <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+    </div>
+  </div>
+
+
+</jw-modal>

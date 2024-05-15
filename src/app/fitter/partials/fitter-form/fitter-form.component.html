@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="form-group col-md-4">
+    <label for="inputEmail4">First Name</label>
+    <input type="text" name='name' [(ngModel)]='this.fitter.firstName' [class.is-invalid]='!this.fitter.firstName'
+      class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Middle Name</label>
+    <input type="text" name='registration' [(ngModel)]='this.fitter.middleName' class="form-control"
+      id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Last Name</label>
+    <input type="text" name='vinNumber' [(ngModel)]='this.fitter.lastName' [class.is-invalid]='!this.fitter.lastName'
+      class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Contact</label>
+    <input type="text" name='contact' [(ngModel)]='this.fitter.contact' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Employee Number</label>
+    <input type="text" name='make' [(ngModel)]='this.fitter.employeeNumber' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Depot</label>
+    <select class='form-control'
+      (change)='this.fitter.depotId = +$event.target.value; this.fitter.depot = {}; this.fitter.depot.id = this.fitter.depotId'>
+      <option value='-1'>Select a depot</option>
+      <option *ngFor='let item of this.depots' [value]='item.id' [selected]='this.fitter.depotId === item.id'>{{
+        item.name }}</option>
+    </select>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Notes</label>
+    <textarea rows="1" name='notes' [(ngModel)]='this.fitter.notes' class="form-control"></textarea>
+  </div>
+  <div class='form-group col-md-4 mt-auto'> 
+    <input type='checkbox' [(ngModel)]="this.fitter.active" [ngModelOptions]="{standalone: true}" /> &nbsp;
+    <label>Active?</label>
+  </div>
+</div>

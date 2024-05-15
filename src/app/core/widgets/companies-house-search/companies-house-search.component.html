@@ -1,0 +1,8 @@
+<button class='btn btn-info btn-block' type='button' (click)='companiesHouseLookup()'>Search Companies House</button>
+ 
+<app-container *ngIf='this.items.length > 0'>
+    <select class='form-control' (change)='onCompanySelected($event)'>
+      <option value='-1'>Select a company</option>
+      <option *ngFor='let item of this.items' [value]='item.company_number'>{{item.title}}</option>
+    </select>
+  </app-container>

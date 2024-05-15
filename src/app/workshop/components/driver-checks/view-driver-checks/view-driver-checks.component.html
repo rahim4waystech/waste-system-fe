@@ -1,0 +1,61 @@
+<div class="fullcontainer ml-5">
+  <app-workshop-nav></app-workshop-nav>
+  <div class="p-3">
+    <div class="row mt-0 content-block-head">
+      <div class="col p-2">
+        <h4>Viewing Check #{{this.group.id}}</h4>
+        <b>Vehicle: </b> {{this.group.vehicle.registration}}
+        <span class='mx-3'>|</span>
+        <b>Driver: </b> {{this.group.driver.firstName}} {{this.group.driver.lastName}}
+        <span class='mx-3'>|</span>
+        <b>Check Completed: </b> {{this.inspectionEnd}}
+      </div>
+    </div>
+
+    <div class="row content-block">
+      <div class="col">
+        <table class='table table-bordered'>
+          <thead class='thead-dark'>
+            <tr>
+              <th>Check</th>
+              <th>Description</th>
+              <th>OverRide</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let row of this.rows'>
+              <td
+                [class.bg-success]='row.result'
+                [class.bg-danger]='!row.result'
+                class='text-light font-weight-bold text-center'
+              >{{row.vehicleCheck.checkInformation}}</td>
+              <td
+                [class.bg-success]='row.result'
+                [class.bg-danger]='!row.result'
+                class='text-light font-weight-bold'
+              >{{row.description}}</td>
+              <td
+                *ngIf='row.vehicleCheck.isVor'
+                [class.bg-success]='row.result'
+                [class.bg-danger]='!row.result'
+                class='text-light font-weight-bold'
+              >{{row.overRide}}</td>
+              <td
+                *ngIf='!row.vehicleCheck.isVor'
+                [class.bg-success]='row.result'
+                [class.bg-danger]='!row.result'
+                class='text-light font-weight-bold'
+              >Not VOR</td>
+              <td
+                [class.bg-success]='row.result'
+                [class.bg-danger]='!row.result'
+                class='text-light font-weight-bold'
+              >{{row.createdAt}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

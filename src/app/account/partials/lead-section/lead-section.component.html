@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col">
+    <button class='btn btn-info' (click)='newLead()'>New Lead</button>
+  </div>
+</div>
+
+<div class="bg-primary pb-3">
+  <app-grid
+    entity='lead'
+    [filters]='this.leadFilters'
+    [columns]='this.leadColumns'
+    [buttons]='this.leadButtons'
+    [searchFilters]='this.leadSearchFilters'
+    [searchFields]='this.leadSearchFields'
+></app-grid>
+</div>

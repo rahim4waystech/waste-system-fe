@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="form-group col-md-4">
+<label for="inputEmail4">Depot Name</label>
+<input type="text" name='name' [(ngModel)]='this.subcontractor.name'  class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Contact Name</label>
+  <input type="text" name='name' [(ngModel)]='this.subcontractor.contactName' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Contact Telephone</label>
+  <input type="text" name='name' [(ngModel)]='this.subcontractor.contactTelephone' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Contact Email</label>
+  <input type="email" name='name' [(ngModel)]='this.subcontractor.contactEmail' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Contact Address Line 1</label>
+  <input type="text" name='name' [(ngModel)]='this.subcontractor.contactAddressLine1' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Contact Address Line 2</label>
+  <input type="text" name='name' [(ngModel)]='this.subcontractor.contactAddressLine2' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Contact Address Line 3</label>
+  <input type="text" name='name' [(ngModel)]='this.subcontractor.contactAddressLine3' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Contact City</label>
+  <input type="text" name='name' [(ngModel)]='this.subcontractor.contactCity' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Contact Country</label>
+  <input type="text" name='name' [(ngModel)]='this.subcontractor.contactCountry' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Licence Number</label>
+  <input type="text" name='name' [(ngModel)]='this.subcontractor.licenceNumber' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Carrier Licence Number</label>
+  <input type="text" name='name' [(ngModel)]='this.subcontractor.carrierLicenceNumber' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-4">
+  <label for="inputEmail4">Carrier Licence Expiry date</label>
+  <input type="date" name='name' [(ngModel)]='this.subcontractor.carrierLicenceExpiryDate' class="form-control" id="inputEmail4">
+</div>
+<div class="form-group col-md-8">
+  <label for="inputEmail4">Contact Postcode</label>
+  <div class="row">
+    <div class="col-lg-6">
+      <input type="text" name='name' [(ngModel)]='this.subcontractor.contactPostCode' class="form-control" id="inputEmail4">
+  
+    </div>
+    <div class="col-lg-6">
+ <app-address-picker [postcode]='this.subcontractor.contactPostCode' (onAddressFound)='this.foundContactAddress($event)'></app-address-picker>
+
+    </div>
+  </div>
+</div>
+</div>

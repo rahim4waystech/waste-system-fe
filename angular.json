@@ -1,0 +1,299 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "7551f9a1-5bf0-4608-a325-ea57af1f67de"
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "waste-system-fe": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/waste-system-fe",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/assets/css/style.css"
+            ],
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "wmr": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.wmr.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            },
+            "ascot": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ascot.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            },
+            "total": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.total.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            },
+            "rio": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.rio.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            },
+            "testing": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testing.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            },
+            "ynd": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ynd.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": false,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "optimization": true,
+              "aot": true
+            },
+            "yndtesting": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.yndtesting.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": false,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "optimization": true,
+              "aot": true
+            },
+            "murdoch": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.murdoch.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            },
+            "wrc": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.wrc.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            },
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "waste-system-fe:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "waste-system-fe:build:production"
+            },
+            "rio": {
+              "browserTarget": "waste-system-fe:build:rio"
+            },
+            "testing": {
+              "browserTarget": "waste-system-fe:build:testing"
+            },
+            "wmr": {
+              "browserTarget": "waste-system-fe:build:wmr"
+            },
+            "ascot": {
+              "browserTarget": "waste-system-fe:build:ascot"
+            },
+            "total": {
+              "browserTarget": "waste-system-fe:build:total"
+            },
+            "ynd": {
+              "browserTarget": "waste-system-fe:build:ynd"
+            },
+            "yndtesting": {
+              "browserTarget": "waste-system-fe:build:yndtesting"
+            },
+            "wrc": {
+              "browserTarget": "waste-system-fe:build:wrc"
+            },
+            "murdoch": {
+              "browserTarget": "waste-system-fe:build:murdoch"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "waste-system-fe:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/assets/css/style.css"
+            ],
+            "scripts": []
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "waste-system-fe:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "waste-system-fe:serve:production"
+            },
+            "rio": {
+              "devServerTarget": "waste-system-fe:serve:rio"
+            },
+            "testing": {
+              "devServerTarget": "waste-system-fe:serve:testing"
+            },
+            "wmr": {
+              "devServerTarget": "waste-system-fe:serve:wmr"
+            },
+            "ascot": {
+              "devServerTarget": "waste-system-fe:serve:ascot"
+            },
+            "total": {
+              "devServerTarget": "waste-system-fe:serve:total"
+            },
+            "ynd": {
+              "devServerTarget": "waste-system-fe:serve:ynd"
+            },
+            "yndtesting": {
+              "devServerTarget": "waste-system-fe:serve:yndtesting"
+            },
+            "wrc": {
+              "devServerTarget": "waste-system-fe:serve:wrc"
+            },
+            "murdoch": {
+              "devServerTarget": "waste-system-fe:serve:murdoch"
+            }
+          }
+        }
+      }
+    }},
+  "defaultProject": "waste-system-fe"
+}

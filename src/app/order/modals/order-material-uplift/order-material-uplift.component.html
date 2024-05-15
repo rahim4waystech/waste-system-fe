@@ -1,0 +1,41 @@
+<jw-modal id='orderMaterialUpliftModal'>
+    <h1 class='header'>Add Material Uplift</h1>
+ 
+    <div class='row'>
+        <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+        <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+        <div class='col-md-4 form-group'>
+            <label>Customer</label>
+            <ng-select class="form-select" [(ngModel)]="this.materialUplift.accountId" (change)='this.materialUplift.accountId= +$event; setAccount();'>
+               <ng-option *ngFor='let item of this.tips' [value]='item.id'>{{ item.name }}</ng-option>
+            </ng-select>
+         </div>
+        <div class='col-md-4 form-group'>
+            <label>Name</label>
+            <input class='form-control' type='text' [(ngModel)]="this.materialUplift.name" [class.is-invalid]='!this.materialUplift.name'/> 
+        </div>
+        <div class='col-md-4 form-group'>
+            <label>Unit</label>
+            <select class='form-select' (change)='this.materialUplift.unitId = +$event.target.value;setUnit();'>
+                <option value='-1'>Select a unit</option>
+                <option [selected]='unit.id === this.materialUplift.unitId' *ngFor='let unit of this.units' [value]='unit.id'>{{ unit.name }}</option>
+            </select>
+        </div>
+        <div class='col-md-4 form-group'>
+            <label>Price</label>
+            <input class='form-control' type='text' [(ngModel)]="this.materialUplift.price"/> 
+        </div>
+        <div class='col-md-4 form-group'>
+            <label>Qty</label>
+            <input class='form-select' type='number' [(ngModel)]="this.materialUplift.qty"/> 
+        </div> 
+    </div>
+    <div class="row">
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-success" (click)='this.onSubmit()'>Save</button>&nbsp;
+            <button type="button" class="btn btn-danger" (click)='this.cancel()'>Cancel</button>
+
+        </div>
+    </div>
+   
+    </jw-modal>

@@ -1,0 +1,96 @@
+<div class="row">
+  <!--
+  Requirement has been removed, save this for later implementation if needed again
+  <div class="form-group col-md-4">
+    <label for="name">Name</label>
+    <input type="text" name='name' [(ngModel)]='this.vehicle.name' [class.is-invalid]='!this.vehicle.name' class="form-control" id="inputEmail4">
+  </div> -->
+  <div class="form-group col-md-3">
+    <label for="registration">Registration</label>
+    <input type="text" name='registration' [(ngModel)]='this.vehicle.registration' class="form-control"
+      id="inputPassword4">
+  </div>
+  <div class="form-group col-md-3">
+    <label for="vinNumber">VIN</label>
+    <input type="text" name='vinNumber' [(ngModel)]='this.vehicle.vinNumber' class="form-control" id="inputPassword4">
+  </div>
+
+  <div class="form-group col-md-3">
+    <label>Vehicle type</label>
+    <select class='form-select'
+      (change)='this.vehicle.vehicleTypeId = +$event.target.value; this.vehicle.vehicleType.id = this.vehicle.vehicleTypeId;getSecondaries();'>
+      <option value='-1'>Select a vehicle type</option>
+      <option *ngFor='let item of this.types' [value]='item.id' [selected]='this.vehicle.vehicleTypeId === item.id'>{{
+        item.name }}</option>
+    </select>
+  </div>
+
+  <div class="form-group col-md-3" *ngIf='this.secondaryTypes.length > 0'>
+    <label>Secondary Vehicle Type</label>
+    <select class='form-select' (change)='updateSecondaries($event)'>
+      <option value='-1'>Select a Secondary vehicle type</option>
+      <option *ngFor='let item of this.secondaryTypes' [value]='item.id'
+        [selected]='this.vehicle.secondaryVehicleTypeId === item.id'>{{ item.name }}</option>
+    </select>
+  </div>
+
+  <div class="form-group col-md-3" *ngIf='this.vehicle.vehicleTypeId !== 7'>
+    <label>Fuel type</label>
+    <select class='form-select'
+      (change)='this.vehicle.fuelTypeId = +$event.target.value; this.vehicle.fuelType.id = this.vehicle.fuelTypeId'>
+      <option value='-1'>Select a fuel type</option>
+      <option *ngFor='let item of this.fuelTypes' [value]='item.id' [selected]='this.vehicle.fuelTypeId === item.id'>{{
+        item.name }}</option>
+    </select>
+  </div>
+  <div class="form-group col-md-3">
+    <label for="make">Make</label>
+    <input type="text" name='make' [(ngModel)]='this.vehicle.make' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-3">
+    <label for="model">Model</label>
+    <input type="text" name='model' [(ngModel)]='this.vehicle.model' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-3">
+    <label for="vinNumber">Tare Weight ({{this.vehicleWeightUnit}})</label>
+    <input type="text" name='vinNumber' [(ngModel)]='this.vehicle.tareWeight' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-3">
+    <label for="purchaseDate">Purchase Date</label>
+    <input type="date" name='purchaseDate' [(ngModel)]='this.vehicle.purchaseDate' class="form-control"
+      id="inputPassword4">
+  </div>
+
+  <div class="form-group col-md-3">
+    <label for="">Depot</label>
+    <select class='form-select' [(ngModel)]="this.vehicle.depotId" (change)='updateDepot($event)'>
+      <option *ngFor='let item of this.depots' [value]='item.id'>{{ item.name }}</option>
+    </select>
+    <!-- <ng-select class="form-Select" [(ngModel)]="this.vehicle.depotId" (change)='updateDepot($event)'>
+      <ng-option *ngFor='let item of this.depots' [value]='item.id'>{{ item.name }}</ng-option>
+    </ng-select> -->
+  </div>
+
+  <div class="form-group col-md-3">
+    <label for="inputPassword4">Preferred Driver</label>
+    <select class='form-select' [(ngModel)]="this.vehicle.driverId" (change)='this.vehicle.driverId = +$event'>
+      <option *ngFor='let item of this.drivers' [value]='item.id'>{{ item.firstName }} {{ item.lastName
+        }}</option>
+
+    </select>
+    <!-- <ng-select class="form-Select" [(ngModel)]="this.vehicle.driverId" (change)='this.vehicle.driverId = +$event'>
+      <ng-option *ngFor='let item of this.drivers' [value]='item.id'>{{ item.firstName }} {{ item.lastName
+        }}</ng-option>
+    </ng-select> -->
+  </div>
+  <div class="form-group col-md-5">
+    <label for="inputPassword4">Notes</label>
+    <textarea name='notes' [(ngModel)]='this.vehicle.notes' rows="1" class="form-control"></textarea>
+  </div>
+  <div class='form-group col-md-1 mt-auto'>
+    
+    <input type='checkbox' [(ngModel)]="this.vehicle.active" [ngModelOptions]="{standalone: true}" /> &nbsp;
+    <label>Active</label>
+  </div>
+</div>
+

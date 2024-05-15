@@ -1,0 +1,19 @@
+<app-correspondence-add-modal [data]='this.data' [entity]='this.entity'></app-correspondence-add-modal>
+<app-correspondence-edit-modal [correspondence]='this.currentRecord'></app-correspondence-edit-modal>
+<app-correspondence-send-email-modal [data]='this.data' [entity]='this.entity'></app-correspondence-send-email-modal>
+<button class='btn btn-secondary' (click)='this.openModal("correspondenceAddModal")'><i class="fas fa-plus"></i> New</button>&nbsp;
+<button class='btn btn-secondary' (click)='this.openModal("correspondenceSendEmailModal")'><i class="fas fa-envelope"></i> Send Email</button>&nbsp;
+
+<br /> 
+<br />
+
+
+<app-grid
+entity='correspondence'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[searchFilters]='this.searchFilters'
+[searchFields]='this.searchFields'
+[inverse]='true'
+></app-grid>

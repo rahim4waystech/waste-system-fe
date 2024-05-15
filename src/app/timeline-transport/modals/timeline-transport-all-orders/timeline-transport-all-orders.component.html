@@ -1,0 +1,12 @@
+<jw-modal id="transportAllOrdersModal">
+
+    <h3>Search orders</h3>
+    <app-grid entity='order' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+        [searchFilters]='this.searchFilters' [searchFields]='this.searchFields'
+        [relationships]='["tipSite"]'></app-grid>
+        <div class="row mt-2">
+            <div class="col-12 text-end">
+    <button class='btn btn-danger' (click)='this.cancel()'>Close</button>
+    </div>
+</div>
+</jw-modal>

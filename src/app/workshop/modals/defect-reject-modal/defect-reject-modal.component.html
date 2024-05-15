@@ -1,0 +1,15 @@
+<jw-modal id='defectRejectModal'>
+  <div class="row">
+    <div class="col">
+      <label>Rejection Reason</label>
+      <textarea class='form-control' [(ngModel)]='this.report.rejectionNote'></textarea>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col btn-group">
+      <button class='btn btn-success' (click)='this.save()'>Save</button>
+      <button class='btn btn-danger' (click)='this.cancel()'>Close</button>
+    </div>
+  </div>
+</jw-modal>

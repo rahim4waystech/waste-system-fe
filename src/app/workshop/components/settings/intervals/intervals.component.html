@@ -1,0 +1,95 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+
+          <app-workshop-nav></app-workshop-nav>
+
+
+        </div>
+        <div class="card-body">
+
+          <div class="">
+            <div class="row  content-block-head">
+              <div class="col-12">
+                <div class="my-1">
+                  <h4>Vehicle  Check Areas</h4>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div class="row content-block">
+              <div class="col">
+                <table class='table table-bordered table-hover' >
+                  <thead class='table-dark'>
+                    <tr>
+                      <th>Name</th>
+                      <th>Value</th>
+                      <th>Unit</th>
+                      <th>Calendar Colour</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor='let interval of this.intervals'>
+                      <td>{{interval.name}}</td>
+                      <td>{{interval.number}}</td>
+                      <td>{{interval.unit}}</td>
+                      <td>
+                        <div style='width:100%;height:20px;border:1px solid black;' [style.background-color]='interval.colour'></div>
+                      </td>
+                    </tr>
+                    <tr *ngIf='!addRow'>
+                      <td colspan='4'>
+                        <button class='btn btn-success btn-block' (click)='addNewRow()'><i class="far fa-plus-square"></i></button>
+                      </td>
+                    </tr>
+        
+                    <ng-container *ngIf='addRow'>
+                      <tr>
+                        <td>
+                          <label>Name</label>
+                          <input type='text' [(ngModel)]='this.newRow.name' class='form-control' [class.is-valid]='this.newRow.name !== ""' [class.is-invalid]='this.newRow.name === ""'/>
+                        </td>
+                        <td>
+                          <label>Value</label>
+                          <input type='text' [(ngModel)]='this.newRow.number' class='form-control' [class.is-valid]='this.newRow.name >= 0' [class.is-invalid]='this.newRow.name < 0'/>
+                        </td>
+                        <td>
+                          <label>Time Unit</label>
+                          <select
+                          (change)='this.newRow.unit = $event.target.value;'
+                          class='form-control'
+                          >
+                            <option
+                              *ngFor='let item of this.timeUnits'
+                              [value]='item.name'
+                              [selected]='this.newRow.unit === item.name'>
+                              {{ item.name }}
+                            </option>
+                          </select>
+                        </td>
+                        <td>
+                          <label>Colour Tag</label>
+                          <input type='color' [(ngModel)]='this.newRow.colour' placeholder='#FFFFFF' class='form-control'/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan='4'><button class='btn btn-block btn-success' (click)='saveRow()'>Save</button></td>
+                      </tr>
+                    </ng-container>
+        
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>

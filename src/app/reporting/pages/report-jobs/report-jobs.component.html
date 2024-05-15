@@ -1,0 +1,120 @@
+<div class="fullcontainer pr-3">
+    <div class='sheet'>
+        <div class="row">
+            <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class='titleContainer'>
+                        <h3 class='header'>Report - Jobs</h3>   
+                    </div>
+                </div>
+                <div class="card-body">
+                    
+        <div class='row'>
+            <div class='col-md-4 form-group'>
+                <label>Start Date</label>
+                <input type='date' [(ngModel)]="this.searchFilters.startDate" class='form-control' />
+            </div>
+            <div class='col-md-4 form-group'>
+                <label>End Date</label>
+                <input type='date' class='form-control' [(ngModel)]="this.searchFilters.endDate" />
+            </div>
+            <div class='col-md-4 form-group'>
+                <label>Customer</label>
+                <ng-select class='form-select' [(ngModel)]="this.searchFilters.customer" (change)='this.searchFilters.customer = $event;'>
+                    <ng-option *ngFor='let item of this.accounts' [value]='item.name'>{{ item.name }}</ng-option>
+                 </ng-select> 
+            </div>
+            <div class='col-md-4 form-group'>
+                <label>Site</label>
+                <input type='text' class='form-control' [(ngModel)]="this.searchFilters.site"/>
+            </div>
+            <div class='col-md-4 form-group'>
+                <label>Tip Site</label>
+                <input type='text' class='form-control' [(ngModel)]="this.searchFilters.tipSite"/>
+            </div>
+            <div class='col-md-4'>
+                <label>Vehicle</label>
+                <ng-select class='form-select' [(ngModel)]="this.searchFilters.vehicle" (change)='this.searchFilters.vehicle = $event;'>
+                    <ng-option *ngFor='let item of this.vehicles' [value]='item.registration'>{{ item.registration }}</ng-option>
+                 </ng-select> 
+            </div>
+            <div class='col-md-4 form-group'>
+                <label>Driver</label>
+                <ng-select class='form-select' [(ngModel)]="this.searchFilters.driver" (change)='this.searchFilters.driver = +$event;'>
+                    <ng-option *ngFor='let item of this.drivers' [value]='item.id'>{{ item.firstName }} {{ item.lastName }}</ng-option>
+                 </ng-select> 
+            </div>
+            <div class='col-md-4 form-group'>
+                <label>Subcontractor</label>
+                <input type='text' class='form-control' [(ngModel)]="this.searchFilters.subcontractor"/>
+            </div>
+            <div class='col-md-4 form-group'>
+                <label>Parent Job ID</label>
+                <input type='text' class='form-control' [(ngModel)]="this.searchFilters.orderRef"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-end">
+                <button class='btn btn-primary' (click)='this.loadReport()'>Run Report</button> &nbsp;
+                <button class='btn btn-secondary' (click)='exportToCSV()'>Export to CSV</button>
+            </div>
+        </div>
+        
+        
+        
+                </div>
+            </div>
+        </div>
+        </div>     
+    </div>
+
+    <div class='sheet'>
+        <div class='titleContainer' *ngIf='this.jobs.length > 0'>
+            <div class="row">
+                <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class='header'>Results</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class='table'>
+                            <thead class="table-dark">
+                                <th>Job ID</th>
+                                <th>Parent Job ID</th>
+                                <th>Customer</th>
+                                <th>Site</th>
+                                <th>Tip Site</th>
+                                <th>Qty</th>
+                                <th>Date</th>
+                                <th>Vehicle</th>
+                                <th>Driver</th>
+                                <th>Subcontractor</th>
+                                <th></th>
+                            </thead> 
+            
+                            <tbody>
+                                <tr *ngFor='let job of this.jobs'>
+                                    <td>{{ job.id }}</td>
+                                    <td>{{ job.order.id }}</td>
+                                    <td>{{ job.order.account.name }}</td>
+                                    <td>{{ job.order.site.name }}</td>
+                                    <td>{{ job.order.tipSite.name }}</td>
+                                    <td>{{ job.qty }}</td>
+                                    <td>{{ job.date }}</td>
+                                    <td>{{ !job.jobAssignment.vehicle ? 'N/A' : job.jobAssignment.vehicle.registration }}</td>
+                                    <td *ngIf='job.jobAssignment.driver'>{{ job.jobAssignment.driver.firstName }} {{ job.jobAssignment.driver.lastName }}</td>
+                                    <td *ngIf='!job.jobAssignment.driver'>N/A</td>
+                                    <td>{{ !job.jobAssignment.subcontractor ? 'N/A' : job.jobAssignment.subcontractor.name }}</td>
+                                    <td><button class='btn btn-warning' [routerLink]='"/orders/edit/" + job.order.id'>View Order</button><button class='btn btn-warning' [routerLink]='"/job-signoff/land/view/" + job.id'>View job</button> 
+                                        <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,176 @@
+            <!-- modal comment by shujat -->
+<app-quote-add-product [products]='this.products'></app-quote-add-product>
+<br />
+<app-tabs>
+  <app-tab title='Main Details'>
+    <p *ngIf='this.quote.accountId !== -1'><strong>Customer: {{ this.account.name }}</strong></p>
+    <p *ngIf='this.quote.accountId !== -1'><strong>Site: {{ this.site.name }}</strong></p>
+    <br />
+    <div class="row" *ngIf='this.quote.accountId === -1'>
+      <div class="form-group col-md-3">
+        <label>Company Name</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.companyName' class="form-control">
+      </div>
+      <div class="form-group col-md-3">
+        <label>Contact Name</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.contactName' class="form-control">
+      </div>
+      <div class="form-group col-md-3">
+        <label>Contact Telephone</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.contactTelephone' class="form-control">
+      </div>
+      <div class="form-group col-md-3">
+        <label>Contact Email</label>
+        <input type="email" name='name' [(ngModel)]='this.quote.contactEmail' class="form-control">
+      </div>
+      <div class="form-group col-md-3">
+        <label>Contact Address Line 1</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.contactAddressLine1' class="form-control">
+      </div>
+      <div class="form-group col-md-3">
+        <label>Contact Address Line 2</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.contactAddressLine2' class="form-control">
+      </div>
+      <div class="form-group col-md-3">
+        <label>Contact Address Line 3</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.contactAddressLine3' class="form-control">
+      </div>
+      <div class="form-group col-md-3">
+        <label>Contact City</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.contactCity' class="form-control">
+      </div>
+      <div class="form-group col-md-3">
+        <label>Contact Country</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.contactCountry' class="form-control">
+      </div>
+      <div class="form-group col-md-6">
+        <label>Site Contact Postcode</label>
+        <div class="row">
+          <div class="col-lg-6">
+            <input type="text" name='name' [(ngModel)]='this.quote.contactPostCode' class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <app-address-picker [postcode]='this.quote.contactPostCode' (onAddressFound)='this.foundContactAddress($event)'></app-address-picker>
+          </div>
+        </div> 
+      </div>
+    </div>
+<hr>
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="inputEmail4">Name</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.name' [class.is-invalid]='!this.quote.name'
+          class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="inputEmail4">Quote Number</label>
+        <input type="text" name='name' [(ngModel)]='this.quote.quoteNumber' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="inputEmail4">Valid From</label>
+        <input type="date" name='name' [(ngModel)]='this.quote.validFrom' class="form-control" id="inputEmail4">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="inputEmail4">Valid To</label>
+        <input type="date" name='name' [(ngModel)]='this.quote.validTo' class="form-control" id="inputEmail4">
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="inputEmail4">Description</label>
+        <textarea rows="1" class='form-control' type="number" name='name'
+          [(ngModel)]='this.quote.description'></textarea>
+      </div>
+    </div>
+<hr>
+<div class="products-div">
+  <div class="row">
+    <div class="col-lg-8">
+      <h2 class='header'>Products</h2>
+    </div>
+    <div class="col-lg-2 text-end ms-auto my-auto">
+      <button class='btn btn-secondary' type="button" (click)='this.openModal("quoteAddProductModal")'><i
+        class="fas fa-plus"></i></button>
+    </div>
+  </div>
+
+    <table class="table" *ngIf='this.quoteLines.quoteLines.length > 0'>
+      <thead>
+        <th>Name</th>
+        <th>Qty</th>
+        <th>Unit</th>
+        <th>Base Price(&pound;)</th>
+        <th>Total Price(&pound;)</th>
+        <th></th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr *ngFor='let item of this.quoteLines.quoteLines; let i = index;'>
+          <td>{{ item.product.name }}</td>
+          <td>
+            <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.qty'>
+          </td>
+          <td>
+            {{ item.product.unit.name }}(s)
+          </td>
+          <td>
+            <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.newPrice'>
+          </td>
+          <td>
+            {{ getTotalPriceForQuoteLine(item).toFixed(2) }}
+          </td>
+          <td>
+            <!-- <button class='btn btn-warning' type="button"><i class="fas fa-pencil-alt"></i></button> -->
+            <button class='btn btn-danger' type="button" (click)='deleteQuoteLine(i)'><i
+                class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+    <table lass='table' style='width:100%;'>
+      <tbody>
+        <tr>
+          <td colspan='3'><strong>Net total</strong></td>
+          <td>&pound;{{  this.getNetTotal().toFixed(2) }}</td>
+        </tr>
+        <tr>
+          <td colspan='3'><strong>VAT total @ 20%</strong></td>
+          <td>&pound;{{ this.getVatTotal().toFixed(2) }}</td>
+        </tr>
+        <tr>
+          <td colspan='3'><strong>Gross total</strong></td>
+          <td>&pound;{{ (this.getNetTotal() + this.getVatTotal()).toFixed(2) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+  </div>
+
+  </app-tab>
+  <app-tab title='Recurrence'>
+    <app-intervaliser [entity]='this.quote'></app-intervaliser>
+  </app-tab>
+  <app-tab title='History' *ngIf='this.quote.id > 0'>
+    <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="table-dark">
+        <th>Person</th>
+        <th>Status</th>
+        <th>Message</th>
+        <th>When</th>
+      </thead>
+      <tbody>
+        <tr *ngFor='let item of this.history'>
+          <td>{{ item.createdBy === -1 ? 'System' : item.user.firstName + ' ' + item.user.lastName }}</td>
+          <td>{{ item.quoteStatus.name }}</td>
+          <td>{{ item.notes }}</td>
+          <td>{{ item.createdAt }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </app-tab>
+</app-tabs>

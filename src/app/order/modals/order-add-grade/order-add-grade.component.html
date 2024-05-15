@@ -1,0 +1,25 @@
+<jw-modal id='orderAddGradeModal'>
+    <h1 class='header'>Add Grade</h1>
+  <hr>
+ <form action="">
+        <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+        <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+        <div class="row"> 
+        <div class='form-group col-md-6'>
+            <label>Name</label>
+            <input class='form-control' type='text' [(ngModel)]="this.grade.name" [class.is-invalid]='!this.grade.name'/> 
+        </div>
+        <div class='form-group col-md-6'>
+            <label>EWC Code (not required)</label>
+            <input class='form-control' type='text' [(ngModel)]="this.grade.ewcCodes"/> 
+        </div>
+    </div>
+</form>
+<div class="row">
+    <div class="col-12 text-end">
+        <button type="submit" class="btn btn-success" (click)='this.onSubmit()'>Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" (click)='this.cancel()'>Cancel</button>
+    </div>
+</div>
+    
+    </jw-modal>

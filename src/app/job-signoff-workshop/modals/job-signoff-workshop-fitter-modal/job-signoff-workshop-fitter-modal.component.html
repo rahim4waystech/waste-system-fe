@@ -1,0 +1,24 @@
+<jw-modal id='jobSignOffWorkshopFitterModal'>
+
+  <h1 class='header'>Fitter Signoff</h1>
+  
+    <div class='defectJobContainer' *ngFor='let job of this.jobs'>
+      <h3>Defect Job - ID: {{ job.id }}</h3>
+    <div class="form-row">
+      <div class='form-group col-md-12'>
+        <label>You consent to the following being used as your digital signature</label>
+        <input type='text' class='form-control' readonly [value]='job.defectAssignment.fitter.firstName + " " + job.defectAssignment.fitter.lastName' />
+      </div>
+      <div class="form-group col-md-12">
+        <label>Notes</label>
+        <textarea [(ngModel)]='job.notes' style='height: 10rem' class='form-control'></textarea>
+      </div>
+    </div>
+
+    <hr />
+    </div>
+
+    <button class='btn btn-success' (click)='save()'>Save</button>&nbsp;
+    <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+  </jw-modal>
+  

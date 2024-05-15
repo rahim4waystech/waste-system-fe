@@ -1,0 +1,119 @@
+
+<br />
+<button type='button' class='btn btn-primary' (click)='this.onSignOffClicked()'>Sign off selected</button>
+<br />
+
+<!-- <div>
+    <button class='btn blueHover' (click)='this.setSignoffStatus("")' [class.btn-primary]='this.currentSignOffStatus === ""' [class.btn-secondary]='this.currentSignOffStatus !== ""'><i class="fas fa-columns"></i> All Jobs</button>&nbsp;
+   <button class='btn redHover' (click)='this.setSignoffStatus("not")'  [class.btn-danger]='this.currentSignOffStatus === "not"' [class.btn-secondary]='this.currentSignOffStatus !== "not"'><i class="fas fa-check-circle"></i> Not signed off</button>&nbsp;
+   <button class='btn greenHover' (click)='this.setSignoffStatus("signed")'  [class.btn-success]='this.currentSignOffStatus === "signed"' [class.btn-secondary]='this.currentSignOffStatus !== "signed"'><i class="fas fa-times-circle"></i> Signed off</button>&nbsp;
+ </div> -->
+
+ <div class='sheet' style='padding: 0.5rem;'>
+    <div class='row'>
+       <div class='col-md-4'>
+          <label>Start Date</label>
+          <input [(ngModel)]="this.searchFilters.startDate" class='form-control' type='date' />
+       </div>
+       <div class='col-md-4'>
+          <label>End Date</label>
+          <input [(ngModel)]="this.searchFilters.endDate"  class='form-control' type='date' />
+       </div>
+       <div class='col-md-4'>
+         <label>Vehicle</label>
+         <ng-select class="form-select" [(ngModel)]="this.searchFilters.vehicle" (change)='this.searchFilters.vehicle= $event;'>
+            <ng-option *ngFor='let item of this.vehicles' [value]='item.registration'>{{ item.registration }}</ng-option>
+         </ng-select>
+      </div>
+      <div class='col-md-4'>
+         <label>Driver</label>
+         <ng-select class="form-select" [(ngModel)]="this.searchFilters.driver" (change)='this.searchFilters.driver= $event;'>
+            <ng-option *ngFor='let item of this.drivers' [value]='item.firstName'>{{ item.firstName }} {{ item.lastName }}</ng-option>
+         </ng-select>
+      </div>
+      <div class='col-md-4'>
+         <label>Subcontractor</label>
+         <ng-select class="form-select" [(ngModel)]="this.searchFilters.subcontractor" (change)='this.searchFilters.subcontractor= $event;'>
+            <ng-option *ngFor='let item of this.subcontractors' [value]='item.name'>{{ item.name }}</ng-option>
+         </ng-select>
+      </div>
+       <div class='col-md-4'>
+          <label>Customer</label>
+          <ng-select class="form-select" [(ngModel)]="this.searchFilters.customer" (change)='this.searchFilters.customer = +$event; this.loadSites(+$event)'>
+            <ng-option *ngFor='let item of this.accounts' [value]='item.id'>{{ item.name }}</ng-option>
+         </ng-select>       </div>
+         <div class='col-md-4'>
+          <label>Site</label>
+          <ng-select class="form-select" [(ngModel)]="this.searchFilters.site" (change)='this.searchFilters.site = $event;'>
+             <ng-option *ngFor='let item of this.sites' [value]='item.name'>{{ item.name }}</ng-option>
+          </ng-select>
+       </div>
+         <div class='col-md-4'>
+          <label>Tip Site</label>
+          <ng-select class="form-select" [(ngModel)]="this.searchFilters.tipSite" (change)='this.searchFilters.tipSite = $event;'>
+             <ng-option *ngFor='let item of this.tips' [value]='item.name'>{{ item.name }}</ng-option>
+          </ng-select>
+       </div>
+       <div class='col-md-4'>
+        <label>Ticket types</label>
+        <select class='form-select' (change)='this.searchFilters.ticketType = $event.target.value'>
+           <option [selected]='this.searchFilters.ticketType === "" || !this.searchFilters.ticketType' value=''>All Tickets</option>
+           <option [selected]='this.searchFilters.ticketType === "has"' value='has'>Jobs with Tickets</option>
+           <option [selected]='this.searchFilters.ticketType === "not"' value='not'>Jobs without tickets</option>
+        </select>
+     </div>
+       <div class='col-md-4'>
+        <label>Vehicle Types</label>
+        <select class='form-select' (change)='this.searchFilters.vehicleType = $event.target.value'>
+           <option [selected]='this.searchFilters.vehicleType === "" || !this.searchFilters.vehicleType' value=''>All Vehicles</option>
+           <option [selected]='this.searchFilters.vehicleType === "own"' value='own'>Own Vehicles</option>
+           <option [selected]='this.searchFilters.vehicleType === "subcontractors"' value='subcontractors'>Subcontractors</option>
+        </select>
+     </div>
+       <div class='col-md-4'>
+          <label>Order REF</label>
+          <input [(ngModel)]="this.searchFilters.orderRef"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+         <label>Parent Job Id</label>
+         <input [(ngModel)]="this.searchFilters.parentJobId"  class='form-control' type='text' />
+      </div>
+       <div class='col-md-4'>
+          <label>Job Number</label>
+          <input [(ngModel)]="this.searchFilters.jobNumber"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+         <label>Status</label>
+         <select class='form-select' (change)='this.searchFilters.status = $event.target.value'>
+            <option [selected]='this.searchFilters.status === "" || !this.searchFilters.status' value=''>All Jobs</option>
+            <option [selected]='this.searchFilters.status === "not"' value='not'>Not Signed off</option>
+            <option [selected]='this.searchFilters.status === "signed"' value='signed'>Signed off</option>
+         </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-end">
+         <button class='btn btn-primary' type='button' (click)='search()'>Search</button>&nbsp;
+         <button class='btn btn-danger' type='button' (click)='clear()'>Clear</button>
+      </div>
+    </div>
+   
+ </div>
+
+ <br />
+
+ <button class='btn btn-danger' (click)='deleteAll()'>Delete All</button>
+
+<app-grid
+entity='job'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[showSearch]='false'
+[searchFilters]='this.searchFiltersGrid'
+[searchFields]='this.searchFields'
+[relationships]='["order.tipSite", "jobAssignment", "jobAssignment.driver", "jobAssignment.vehicle", "jobAssignment.subcontractor"]'
+[backgroundSetter]='this.getRowColor'
+[checkboxSelector]='true'
+(checkboxSelected)='this.onCheckboxSelected($event)'
+></app-grid>

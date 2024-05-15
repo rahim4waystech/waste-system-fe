@@ -1,0 +1,71 @@
+// .datePicker {
+//   display: inline-block;
+//   position: absolute;
+//   left: 42rem;
+//   top: 7rem;
+// }
+// .timelineToolbarContainer {
+//   display: flex;
+//   flex-flow: row wrap;
+//   justify-content: space-between;
+//   width:100%;
+//   padding-left: 15rem;
+//   position: fixed;
+//   z-index: 102;
+// }
+.datePicker{
+  display: inline-block;
+  position: absolute;
+  z-index: 200 !important;
+  top: 4rem !important;
+  right: 0 !important;
+  background-color: #f3f6f9 !important;
+}
+.dateSelectorContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: end;
+
+  button {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  i {
+    font-size: 1.2rem;
+    color: var(--primary);
+    &:hover {
+      color: #2196f3;
+      cursor: pointer;
+    }
+  }
+
+  .dateSelectorBox {
+    background-color: transparent;
+   
+    font-size: .9rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    color: #34495e;
+    font-weight: bold;
+
+    &:hover {
+      color:#2196f3;
+      cursor: pointer;
+    }
+  }
+}
+.switch-medium{
+  width: 45px !important;
+  height: 20px !important;
+  border-radius: 30px !important;
+}
+.switch-medium.checked small{
+  left: 31px !important;
+}
+.switch-medium small{
+  width: 20px !important;
+  height: 20px !important;
+}
+

@@ -1,0 +1,120 @@
+<div class="row mb-3">
+  <div class="col-md-3 content-block">
+    <ng-container *ngIf='this.personalisationSettings.timelineOrientationTipper'>
+      <button
+        class='btn btn-block btn-primary'
+        (click)='this.personalisationSettings.timelineOrientationTipper = !this.personalisationSettings.timelineOrientationTipper'
+      >Tipper Timeline: Horizontal</button>
+    </ng-container>
+    <ng-container *ngIf='!this.personalisationSettings.timelineOrientationTipper'>
+      <button
+        class='btn btn-block btn-info'
+        (click)='this.personalisationSettings.timelineOrientationTipper = !this.personalisationSettings.timelineOrientationTipper'
+      >Tipper Timeline: Vertical</button>
+    </ng-container>
+  </div>
+
+  <div class="col-md-3 content-block">
+    <ng-container *ngIf='this.personalisationSettings.timelineOrientationGrab'>
+      <button
+        class='btn btn-block btn-primary'
+        (click)='this.personalisationSettings.timelineOrientationGrab = !this.personalisationSettings.timelineOrientationGrab'
+      >Grab Timeline: Horizontal</button>
+    </ng-container>
+    <ng-container *ngIf='!this.personalisationSettings.timelineOrientationGrab'>
+      <button
+        class='btn btn-block btn-info'
+        (click)='this.personalisationSettings.timelineOrientationGrab = !this.personalisationSettings.timelineOrientationGrab'
+      >Grab Timeline: Vertical</button>
+    </ng-container>
+  </div>
+
+  <div class="col-md-3 content-block">
+    <ng-container *ngIf='this.personalisationSettings.timelineOrientationConcrete'>
+      <button
+        class='btn btn-block btn-primary'
+        (click)='this.personalisationSettings.timelineOrientationConcrete = !this.personalisationSettings.timelineOrientationConcrete'
+      >Concrete Timeline: Horizontal</button>
+    </ng-container>
+    <ng-container *ngIf='!this.personalisationSettings.timelineOrientationConcrete'>
+      <button
+        class='btn btn-block btn-info'
+        (click)='this.personalisationSettings.timelineOrientationConcrete = !this.personalisationSettings.timelineOrientationConcrete'
+      >Concrete Timeline: Vertical</button>
+    </ng-container>
+  </div>
+
+  <div class="col-md-3 content-block">
+    <ng-container *ngIf='this.personalisationSettings.timelineOrientationSweeper'>
+      <button
+        class='btn btn-block btn-primary'
+        (click)='this.personalisationSettings.timelineOrientationSweeper = !this.personalisationSettings.timelineOrientationSweeper'
+      >Sweeper Timeline: Horizontal</button>
+    </ng-container>
+    <ng-container *ngIf='!this.personalisationSettings.timelineOrientationSweeper'>
+      <button
+        class='btn btn-block btn-info'
+        (click)='this.personalisationSettings.timelineOrientationSweeper = !this.personalisationSettings.timelineOrientationSweeper'
+      >Sweeper Timeline: Vertical</button>
+    </ng-container>
+  </div>
+
+  <div class="col-md-3 content-block">
+    <ng-container *ngIf='this.personalisationSettings.timelineOrientationShredder'>
+      <button
+        class='btn btn-block btn-primary'
+        (click)='this.personalisationSettings.timelineOrientationShredder = !this.personalisationSettings.timelineOrientationShredder'
+      >Shredding Timeline: Horizontal</button>
+    </ng-container>
+    <ng-container *ngIf='!this.personalisationSettings.timelineOrientationShredder'>
+      <button
+        class='btn btn-block btn-info'
+        (click)='this.personalisationSettings.timelineOrientationShredder = !this.personalisationSettings.timelineOrientationShredder'
+      >Shredding Timeline: Vertical</button>
+    </ng-container>
+  </div>
+
+  <div class="col-md-3 content-block">
+    <ng-container *ngIf='this.personalisationSettings.timelineOrientationSkip'>
+      <button
+        class='btn btn-block btn-primary'
+        (click)='this.personalisationSettings.timelineOrientationSkip = !this.personalisationSettings.timelineOrientationSkip'
+      >Skips Timeline: Horizontal</button>
+    </ng-container>
+    <ng-container *ngIf='!this.personalisationSettings.timelineOrientationSkip'>
+      <button
+        class='btn btn-block btn-info'
+        (click)='this.personalisationSettings.timelineOrientationSkip = !this.personalisationSettings.timelineOrientationSkip'
+      >Skips Timeline: Vertical</button>
+    </ng-container>
+  </div>
+
+  <div class="col-md-3 content-block">
+    <ng-container *ngIf='this.personalisationSettings.timelineOrientationArtic'>
+      <button
+        class='btn btn-block btn-primary'
+        (click)='this.personalisationSettings.timelineOrientationArtic = !this.personalisationSettings.timelineOrientationArtic'
+      >Artic Timeline: Horizontal</button>
+    </ng-container>
+    <ng-container *ngIf='!this.personalisationSettings.timelineOrientationArtic'>
+      <button
+        class='btn btn-block btn-info'
+        (click)='this.personalisationSettings.timelineOrientationArtic = !this.personalisationSettings.timelineOrientationArtic'
+      >Artic Timeline: Vertical</button>
+    </ng-container>
+  </div>
+  <div class="col-md-3 content-block">
+    <ng-container *ngIf='this.personalisationSettings.timelineOrientationTanker'>
+      <button
+        class='btn btn-block btn-primary'
+        (click)='this.personalisationSettings.timelineOrientationTanker = !this.personalisationSettings.timelineOrientationTanker'
+      >Tanker Timeline: Horizontal</button>
+    </ng-container>
+    <ng-container *ngIf='!this.personalisationSettings.timelineOrientationTanker'>
+      <button
+        class='btn btn-block btn-info'
+        (click)='this.personalisationSettings.timelineOrientationTanker = !this.personalisationSettings.timelineOrientationTanker'
+      >Tanker Timeline: Vertical</button>
+    </ng-container>
+  </div>
+</div>

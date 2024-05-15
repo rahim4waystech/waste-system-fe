@@ -1,0 +1,36 @@
+<div class="fullcontainer ">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <div class="">
+            <div class="row my-2 content-block-head">
+              <div class="col-12">
+                <h4 *ngIf='asset.registration !== ""'>Asset Register for {{asset.registration}}</h4>
+                <h4 *ngIf='asset.registration === ""'>New Asset</h4>
+              </div>
+            </div>
+            <hr>
+            <app-audit-line *ngIf='this.asset.id !== -1' [data]='this.asset'></app-audit-line>
+            <div class="row">
+              <div class="col-12 content-block">
+                <app-asset-form [vehicle]='this.asset' [formSettings]='this.formSettings' [linkedAssets]='this.linkedAssets' [allowLink]='true'></app-asset-form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 content-block text-end">
+                <button class='btn btn-success' (click)='save()'>Save</button> &nbsp;
+                <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+ 
+</div>

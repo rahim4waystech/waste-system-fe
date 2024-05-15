@@ -1,0 +1,70 @@
+// .datePicker {
+//   display: inline-block;
+//   position: absolute;
+//   left: 42rem;
+//   top: 7rem;
+// }
+.timelineToolbarContainer {
+  // display: flex;
+  // flex-flow: row wrap;
+  // justify-content: space-between;
+  // width: 77%;
+  // position: fixed;
+}
+.datePicker  {
+  display: inline-block;
+  position: absolute;
+  z-index: 200 !important;
+  top: 7rem !important;
+  background-color: #f3f6f9 !important;
+}
+
+
+.dateSelectorContainer {
+  display: flex;
+  flex-flow: row wrap;
+
+  button {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  i {
+    font-size: 1.3rem;
+
+    &:hover {
+      color: #2196f3;
+      cursor: pointer;
+    }
+  }
+
+  // .dateSelectorBox {
+  //   background-color: transparent;
+  //   padding: 0.3rem;
+  //   width: 20rem;
+  //   font-size: 1.2rem;
+  //   text-align: center;
+  //   margin-top: 0.7rem;
+  //   color: #34495e;
+  //   font-weight: bold;
+  .dateSelectorBox {
+  background-color: transparent;
+  padding: 0.3rem;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #34495e;
+  font-weight: bold;
+ 
+    &:hover {
+      color:#2196f3;
+      cursor: pointer;
+    }
+  }
+}
+
+
+.vehicleTypeSelector {
+  width: 11rem;
+}
+

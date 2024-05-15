@@ -1,0 +1,34 @@
+<div *ngIf='this.vehicle.id !== -1' class="alert alert-danger" role="alert">
+  Searching from DVLA will overwrite already input data. Only use if this is Ok.
+</div>
+<div *ngIf='this.detailsFound === "Success"' class="alert alert-success" role="alert">
+  DVLA Details found
+</div>
+<div *ngIf='this.detailsFound !== "Success" && this.detailsFound !== ""' class="alert alert-warning" role="alert">
+  {{this.detailsFound}}
+</div>
+
+<div class="row">
+  <div class="col">
+    <label>Registration</label>
+    <div class='input-group'>
+      <input type="text" class="form-control" [(ngModel)]='this.vehicle.registration'>
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <button class='btn btn-info' (click)='getByReg();$event.preventDefault();'>Find by Registration</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <label>VIN</label>
+    <div class='input-group'>
+      <input type="text" class="form-control" [(ngModel)]='this.vehicle.vinNumber'>
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <button class='btn btn-info' (click)='getByVin();$event.preventDefault();'>Find by VIN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

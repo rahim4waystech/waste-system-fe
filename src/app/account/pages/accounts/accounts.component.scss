@@ -1,0 +1,41 @@
+// .accountHover:hover, .accountHoverActive {
+//     background: gray !important;
+//     color: white !important;
+// }
+
+// .customerHover:hover, .customerHoverActive {
+//     background: rgb(22, 160, 133) !important;
+//     color: white !important;
+// }
+
+// .tipHover:hover .tipHoverActive {
+//     background: rgb(41, 128, 185) !important;
+//     color: white !important;
+// }
+
+// .depotHover:hover, .depotHoverActive {
+//     background: rgb(44, 62, 80) !important;
+//     color: white !important;
+// }
+
+// .prospectHover:Hover, .prospectHoverActive {
+//    background:#9c27b0 linear-gradient(180deg,#ab47bc,#9c27b0) repeat-x !important;
+//    color: white !important; 
+// } 
+
+// .inactiveHover:Hover, .inactiveHoverActive {
+//     background:#c0392b linear-gradient(180deg,#c0392b,#c0392b) repeat-x !important;
+//     color: white !important; 
+//  } 
+.modal-header .btn-close {
+    padding: 1px !important; 
+    margin: -0.5rem -0.5rem -0.5rem auto;
+    border: 3px solid var(--primary) !important; 
+    width: 25px !important; 
+    height: 25px !important; 
+    border-radius: 50% !important; 
+    box-shadow: var(--box-shadow-1) !important; 
+}
+.modal-header .btn-close:hover {
+    box-shadow: var(--box-shadow-1) inset !important; 
+}

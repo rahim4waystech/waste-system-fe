@@ -1,0 +1,55 @@
+// {
+//   "compileOnSave": false,
+//   "compilerOptions": {
+//     "skipLibCheck": true,
+//     "baseUrl": "./",
+//     "outDir": "./dist/out-tsc",
+//     "sourceMap": true,
+//     "declaration": false,
+//     "downlevelIteration": true,
+//     "experimentalDecorators": true,
+//     "module": "es2020",
+//     "moduleResolution": "node",
+//     "importHelpers": true,
+//     "target": "es5",
+//     "lib": [
+//       "es2018",
+//       "dom"
+//     ]
+//   },
+//   "angularCompilerOptions": {
+//     "fullTemplateTypeCheck": false,
+//     "strictInjectionParameters": true
+//   },
+//   "compilerOptions": {
+//     "baseUrl": "./",
+//     "paths": {
+//       "ngx-bootstrap/*": ["node_modules/ngx-bootstrap/*"]
+//     }
+//   }
+// } 
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es5",
+    "lib": ["es2018", "dom"],
+    "paths": {
+      "ngx-bootstrap/*": ["node_modules/ngx-bootstrap/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": false,
+    "strictInjectionParameters": true
+  }
+}
+ 

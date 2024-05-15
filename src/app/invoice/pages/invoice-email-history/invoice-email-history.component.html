@@ -1,0 +1,18 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class='titleContainer'>
+            <h3 class='header'>Invoice Email History</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-grid entity='invoice-email-log' [filters]='this.filters' [columns]='this.columns'
+            [buttons]='this.buttons' [searchFilters]='this.searchFilters' [searchFields]='this.searchFields'
+            [relationships]='["invoice", "invoice.account"]'></app-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

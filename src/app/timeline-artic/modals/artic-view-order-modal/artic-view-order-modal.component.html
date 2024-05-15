@@ -1,0 +1,57 @@
+<jw-modal id="articOrderInformationModal">
+  <h1 class='header'>Order Information</h1>
+<hr />
+  <div>
+    <label><strong>Order ID: </strong> {{ this.order.id }}</label>
+  </div>
+  <div>
+    <label><strong>Account Name: </strong> {{ this.order.account.name }}</label>
+  </div>
+  <div>
+    <label><strong>Site Name: </strong> {{ this.order.site.name }}</label>
+  </div>
+  <div>
+    <label><strong>Time: </strong> {{ this.order.time }}</label>
+  </div>
+  <div>
+    <label><strong>PO Number: </strong> {{ this.order.poNumber }}</label>
+  </div>
+  <div>
+    <label><strong>Description: </strong> {{ this.order.description }}</label>
+  </div>
+  <div>
+    <label><strong>Driver Notes: </strong> {{ this.order.driverNotes }}</label>
+  </div>
+  <div>
+    <label><strong>Company Name: </strong> {{ this.order.companyName }}</label>
+  </div>
+  <div>
+    <label><strong>Contact Name: </strong> {{ this.order.contactName }}</label>
+  </div>
+  <div>
+    <label><strong>Contact Address Line 1: </strong> {{ this.order.contactAddressLine1 }}</label>
+  </div>
+  <div>
+    <label><strong>Contact Address Line 2: </strong> {{ this.order.contactAddressLine2 }}</label>
+  </div>
+  <div>
+    <label><strong>Contact Address Line 3: </strong> {{ this.order.contactAddressLine3 }}</label>
+  </div>
+  <div>
+    <label><strong>Contact City: </strong> {{ this.order.contactCity }}</label>
+  </div>
+  <div>
+    <label><strong>Contact Country: </strong> {{ this.order.contactCountry }}</label>
+  </div>
+  <div>
+    <label><strong>Contact Postcode: </strong> {{ this.order.contactPostCode }}</label>
+  </div>
+  <div>
+    <label><strong>Contact method: </strong> {{ this.order.contactEmail }}/{{ this.order.contactTelephone }}</label>
+  </div>
+
+
+  <button class='btn btn-primary' (click)='this.close()'>Close</button> &nbsp;&nbsp;
+  <a href='/orders/edit/{{ this.order.id }}' target='_blank' class='btn btn-warning'>Edit Order</a>&nbsp;
+  <a href='/orders/copy/{{ this.order.id }}' target='_blank' class='btn btn-info'>Copy Order</a>
+</jw-modal>

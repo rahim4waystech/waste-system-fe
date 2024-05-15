@@ -1,0 +1,260 @@
+<app-tabs>
+    <app-tab title='Main Details'>
+       
+
+        <div class='row'>
+            <div class="col-12 my-3">
+                <p><strong>Customer :-</strong> &nbsp; <b>{{ this.account.name }}</b></p>
+            </div>
+            <div class='col-md-3'>
+                <label>Name</label>
+                <input ngDefaultControl name='name' type='text'
+                    [class.is-invalid]='this.priceList.name === "" || !this.priceList.name' class='form-control'
+                    [(ngModel)]="this.priceList.name" />
+            </div>
+            <div class='col-md-3 mt-auto'>
+                <input type='checkbox' ngDefaultControl name='actives' [(ngModel)]="this.priceList.active"
+                    [ngModelOptions]="{standalone: true}" /> &nbsp; <label>Active</label>
+            </div>
+        </div>
+        <hr>
+        <h3>Pricing</h3>
+        <div class="tbl-div">
+            <div class="table-responsive">
+                <table class='table table-bordered table-striped table-hover'>
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Service Type</th>
+                            <th>Name</th>
+                            <th>Unit</th>
+                            <th>Price</th>
+                            <th>Site</th>
+                            <th>Active</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- existing items -->
+                        <tr *ngFor='let item of this.priceListItems.items; let i = index;'>
+                            <td>
+                                <select ngDefaultControl name='service' class='form-control'
+                                    (change)='this.onServiceTypeCurrentChanged($event, item)'>
+                                    <option value=''>Custom</option>
+                                    <option *ngFor='let item of this.serviceTypes' [value]='item.name'>{{ item.name }}
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='item' [(ngModel)]='item.name' class='form-control'
+                                    type='text' />
+                            </td>
+                            <td>
+                                <select ngDefaultControl name='unit' class='form-control'
+                                    (change)='item.unitId = +$event.target.value; item.unit = {id: +item.unitId}'>
+                                    <option [selected]='item.unitId === unit.id' *ngFor='let unit of this.units'
+                                        [value]='unit.id'>{{ unit.name }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='price' [(ngModel)]='item.price' type='number'
+                                    class='form-control' />
+                            </td>
+                            <td>
+                                <select ngDefaultControl name='sites' class='form-control'
+                                    (change)='item.siteId = +$event.target.value; item.site = {id: item.siteId}'>
+                                    <option value='-1'>All Sites</option>
+                                    <option [selected]='item.siteId === site.id' *ngFor='let site of this.sites'
+                                        [value]='site.id'>{{ site.name }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='check' type='checkbox' [(ngModel)]="item.active"
+                                    [ngModelOptions]="{standalone: true}" />
+                            </td>
+                            <td>
+                                <!-- <button class='btn btn-danger' (click)='deleteItem(i)'><i class="fas fa-trash"></i></button> -->
+                            </td>
+                        </tr>
+
+                        <!-- new item -->
+                        <tr>
+                            <td>
+                                <select ngDefaultControl name='servicenew' class='form-control'
+                                    (change)='this.onServiceTypeChanged($event)'>
+                                    <option value=''>Custom</option>
+                                    <option *ngFor='let item of this.serviceTypes' [value]='item.name'>{{ item.name }}
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl class='newprice'
+                                    [class.is-invalid]='!this.newPriceListItem.name || this.newPriceListItem.name === ""'
+                                    [(ngModel)]='this.newPriceListItem.name' class='form-control' type='text' />
+                            </td>
+                            <td>
+                                <select ngDefaultControl name='newunit'
+                                    [class.is-invalid]='this.newPriceListItem.unitId === -1' class='form-control'
+                                    (change)='this.newPriceListItem.unitId = +$event.target.value; this.newPriceListItem.unit = {id: +this.newPriceListItem.unitId}'>
+                                    <option [selected]='this.newPriceListItem.unitId === -1' value='1'>Select a unit
+                                    </option>
+                                    <option [selected]='this.newPriceListItem.unitId === unit.id'
+                                        *ngFor='let unit of this.units' [value]='unit.id'>{{ unit.name }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='newqty'
+                                    [class.is-invalid]='this.newPriceListItem.price <= 0'
+                                    [(ngModel)]='this.newPriceListItem.price' type='number' class='form-control' />
+                            </td>
+                            <td>
+                                <select ngDefaultControl name='newsite' class='form-control'
+                                    (change)='this.newPriceListItem.siteId = +$event.target.value; this.newPriceListItem.site = {id: +this.newPriceListItem.siteId}'>
+                                    <option selected value='-1'>All Sites</option>
+                                    <option [selected]='this.newPriceListItem.siteId === site.id'
+                                        *ngFor='let site of this.sites' [value]='site.id'>{{ site.name }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl type='checkbox' name='checknew'
+                                    [(ngModel)]="this.newPriceListItem.active" [ngModelOptions]="{standalone: true}" />
+                            </td>
+                            <td>
+                                <button ngDefaultControl class='btn btn-success' type='button' (click)='saveItem()'><i
+                                        class="fas fa-plus"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <h3>Other prices</h3>
+        <div class="tbl-div">
+            <div class="table-responsive">
+                <table class='table table-bordered table-striped table-hover'>
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Type</th>
+                            <th>Grade</th>
+                            <th>Name</th>
+                            <th>Unit</th>
+                            <th>After Amount (leave zero for N/A)</th>
+                            <th>Price</th>
+                            <th>Site</th>
+                            <th>Active</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let item of this.otherItems.items'>
+                            <td>
+                                <select class='form-control' (change)='item.type = +$event.target.value'>
+                                    <option [selected]='item.type === -1' value='-1'>Custom</option>
+                                    <option [selected]='item.type === 1' value='1'>Overweight</option>
+                                    <option [selected]='item.type === 2' value='2'>Contaminated Load</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class='form-control' (change)='item.gradeId = +$event.target.value'>
+                                    <option value='-1'>All grades</option>
+                                    <option [selected]='item.gradeId === grade.id' [value]='grade.id'
+                                        *ngFor='let grade of this.grades'>{{ grade.name }} ({{ grade.ewcCodes }})
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='item' [(ngModel)]='item.name' class='form-control'
+                                    type='text' />
+                            </td>
+                            <td>
+                                <select ngDefaultControl name='unit' class='form-control'
+                                    (change)='item.unitId = +$event.target.value; item.unit = {id: +item.unitId}'>
+                                    <option [selected]='item.unitId === unit.id' *ngFor='let unit of this.units'
+                                        [value]='unit.id'>{{ unit.name }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='afterAmount' [(ngModel)]='item.afterAmount' type='number'
+                                    class='form-control' />
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='price' [(ngModel)]='item.price' type='number'
+                                    class='form-control' />
+                            </td>
+                            <td>
+                                <select ngDefaultControl name='sites' class='form-control'
+                                    (change)='item.siteId = +$event.target.value; item.site = {id: item.siteId}'>
+                                    <option value='-1'>All Sites</option>
+                                    <option [selected]='item.siteId === site.id' *ngFor='let site of this.sites'
+                                        [value]='site.id'>{{ site.name }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='check' type='checkbox' [(ngModel)]="item.active"
+                                    [ngModelOptions]="{standalone: true}" />
+                            </td>
+                        </tr>
+
+                        <!-- new item -->
+                        <tr>
+                            <td>
+                                <select class='form-control' (change)='newOtherItem.type = +$event.target.value'>
+                                    <option [selected]='newOtherItem.type === -1' value='-1'>Custom</option>
+                                    <option [selected]='newOtherItem.type === 1' value='1'>Overweight</option>
+                                    <option [selected]='newOtherItem.type === 2' value='2'>Contaminated Load</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class='form-control'
+                                    (change)='this.newOtherItem.gradeId = +$event.target.value'>
+                                    <option value='-1'>All grades</option>
+                                    <option [selected]='this.newOtherItem.gradeId === item.id' [value]='item.id'
+                                        *ngFor='let item of this.grades'>{{ item.name }} ({{ item.ewcCodes }})</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl class='newprice'
+                                    [class.is-invalid]='!this.newOtherItem.name || this.newOtherItem.name === ""'
+                                    [(ngModel)]='this.newOtherItem.name' class='form-control' type='text' />
+                            </td>
+                            <td>
+                                <select ngDefaultControl name='newunit'
+                                    [class.is-invalid]='this.newOtherItem.unitId === -1' class='form-control'
+                                    (change)='this.newOtherItem.unitId = +$event.target.value; this.newOtherItem.unit = {id: +this.newPriceListItem.unitId}'>
+                                    <option [selected]='this.newOtherItem.unitId === -1' value='1'>Select a unit
+                                    </option>
+                                    <option [selected]='this.newOtherItem.unitId === unit.id'
+                                        *ngFor='let unit of this.units' [value]='unit.id'>{{ unit.name }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='afterAmount' [(ngModel)]='newOtherItem.afterAmount'
+                                    type='number' class='form-control' />
+                            </td>
+                            <td>
+                                <input ngDefaultControl name='newqty' [class.is-invalid]='this.newOtherItem.price <= 0'
+                                    [(ngModel)]='this.newOtherItem.price' type='number' class='form-control' />
+                            </td>
+                            <td>
+                                <select ngDefaultControl name='newsite' class='form-control'
+                                    (change)='this.newOtherItem.siteId = +$event.target.value; this.newOtherItem.site = {id: +this.newPriceListItem.siteId}'>
+                                    <option selected value='-1'>All Sites</option>
+                                    <option [selected]='this.newOtherItem.siteId === site.id'
+                                        *ngFor='let site of this.sites' [value]='site.id'>{{ site.name }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input ngDefaultControl type='checkbox' name='checknew'
+                                    [(ngModel)]="this.newOtherItem.active" [ngModelOptions]="{standalone: true}" />
+                            </td>
+                            <td>
+                                <button ngDefaultControl class='btn btn-success' type='button'
+                                    (click)='saveOtherItem()'><i class="fas fa-plus"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </app-tab>
+</app-tabs>

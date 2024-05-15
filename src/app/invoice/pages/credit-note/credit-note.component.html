@@ -1,0 +1,29 @@
+
+                  <!-- modal comment by shujat -->
+<app-email-credit-note-modal [email]='this.customerEmail'
+  [creditNote]='this.currentCreditNote'></app-email-credit-note-modal>
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class='titleContainer'>
+            <h3 class='header'>All Credit Notes</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="CreditNotes">
+                <app-grid entity='credit-note' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+                [relationships]='["invoice", "invoice.account"]' [searchFilters]='this.searchFilters'
+                [searchFields]='this.searchFields'></app-grid>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

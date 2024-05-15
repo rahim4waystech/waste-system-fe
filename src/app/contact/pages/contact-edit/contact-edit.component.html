@@ -1,0 +1,14 @@
+<div class='fullcontainer'>
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <div class="alert alert-success" *ngIf='this.isSuccess'>Account was updated successfully</div>
+    <div class='sheet'>
+      <h1 class='header'>Edit Contact - {{ this.contact.firstName }} {{ this.contact.lastName }}</h1>
+      <app-audit-line [data]='this.contact'></app-audit-line>
+      <form (ngSubmit)='this.onSubmit()' method='post'>
+        <app-contact-form [contact]='this.contact'></app-contact-form>
+        <button type="submit" class="btn btn-success">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" routerLink='/contacts'>Cancel</button>
+      </form>
+    </div>
+  </div>

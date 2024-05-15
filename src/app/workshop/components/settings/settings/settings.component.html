@@ -1,0 +1,43 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <div class="row content-block-head ">
+            <div class="col-lg-5">
+              <h3>Settings</h3>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-lg-8 mx-auto">
+              <div class="row">
+                <div class="col-lg-4 mb-3" *ngFor='let navItem of this.items'>
+                  <div class="btn btn-white btn-animate">
+                  <div class="p-1 settings-icon " [class.active]='isActive(navItem.name)' *ngIf='navItem.enabled'
+                    routerLink='/4workshop{{navItem.link}}'>
+                    <i class="{{navItem.icon}} mb-1"></i>
+                    <hr class='my-1'>
+                    {{navItem.name}}
+                  </div>
+                </div>
+                  <div class="p-1 settings-icon-inactive" *ngIf='!navItem.enabled'>
+                    <i class="{{navItem.icon}} mb-1"></i>
+                    <hr class='my-1'>
+                    {{navItem.name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

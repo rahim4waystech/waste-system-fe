@@ -1,0 +1,74 @@
+<jw-modal id="stockViewModal">
+  <div class="row">
+    <div class="col">
+      <h5>Viewing {{part.name}}</h5>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <table class='table table-bordered'>
+        <thead class='thead-dark'>
+          <tr>
+            <th colspan='2'>Product Name</th>
+            <th>Manufacturer</th>
+            <th>Model</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan='2'>{{part.name}}</td>
+            <td>{{part.manufacturer}}</td>
+            <td>{{part.model}}</td>
+          </tr>
+        </tbody>
+        <thead class='thead-dark'>
+          <tr>
+            <th colspan='4'>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan='4'>{{part.description}}</td>
+          </tr>
+        </tbody>
+        <thead class='thead-dark'>
+          <tr>
+            <th>Quantity</th>
+            <th>Value</th>
+            <th>Total Value</th>
+            <th>Depot</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{part.qty}}</td>
+            <td>£{{part.value}}</td>
+            <td>£{{part.value * part.qty}}</td>
+            <td>{{part.depot.name}}</td>
+          </tr>
+        </tbody>
+        <thead class='thead-dark'>
+          <tr>
+            <th colspan='2'>Manufacturer Part No.</th>
+            <th>SKU</th>
+            <th>EAN</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan='2'>{{part.manufacturerPartNumber}}</td>
+            <td>{{part.sku}}</td>
+            <td>{{part.eanNumber}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button class='btn btn-danger' (click)='this.cancel()'>Close</button>
+    </div>
+  </div>
+</jw-modal>

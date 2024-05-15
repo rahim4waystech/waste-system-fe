@@ -1,0 +1,123 @@
+<jw-modal id='jobSignOffChargesOnlyModal'>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+
+  <h1 class='header'>Select Charges</h1>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <label for="inputEmail4">Reason for wasted journey</label>
+      <textarea class='form-control' [(ngModel)]='this.job.notes'></textarea>
+    </div>
+    </div>
+
+    <!-- <div class="form-group col-md-12">
+      <label for="inputEmail4">Chargeable</label>
+      <input type='checkbox' class='form-control'  [ngModelOptions]="{standalone: true}" [(ngModel)]='this.job.chargeable' />
+    </div> -->
+
+
+    <button class='btn btn-secondary' (click)='this.priceListType = "quote"; this.orderLines = []' [class.btn-success]='this.priceListType === "quote"' type='button'>Quote</button>&nbsp;&nbsp;
+    <button class='btn btn-secondary' (click)='this.priceListType = "pricelist"; this.orderLines = []' [class.btn-success]='this.priceListType === "pricelist"' type='button'>Price List</button>
+
+
+    <ng-container *ngIf='this.priceListType === "pricelist"'>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="inputEmail4">Price List</label>
+          <select class='form-control' (change)='this.onPriceListChanged($event)'>
+            <option value='-1'>Select a price list</option>
+            <option *ngFor='let item of this.priceLists' [value]='item.id'>{{ item.name }}</option>
+          </select>
+        </div>
+        </div>
+
+
+        <ng-container *ngIf='this.pricelistItems.length > 0'>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputEmail4">Price List Item</label>
+              <select class='form-control' (change)='this.priceListItemId = +$event.target.value;'>
+                <option value='-1'>Select a price list item</option>
+                <option *ngFor='let item of this.pricelistItems' [value]='item.id'>{{ item.name }} &pound;{{ item.price }} ( {{ item.unit.name }} )</option>
+              </select>
+            </div>
+          </div>
+
+          <button class='btn btn-secondary' (click)='onAddItemForPriceList()'>+ Add Item</button><br /><br />
+        </ng-container>
+
+        <table class="table" *ngIf='this.orderLines.length > 0'>
+          <thead>
+            <th>Name</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th>Base Price(&pound;)</th>
+            <th>Total Price(&pound;)</th>
+          </thead>
+          <tbody>
+            <tr *ngFor='let item of this.orderLines'>
+              <td>{{ item.name }}</td>
+              <td>
+                <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.qty'>
+              </td>
+              <td>
+                {{ item.unit.name }}(s)
+              </td>
+              <td>
+                {{ item.price }}
+              </td>
+              <td>
+                {{ getTotalPriceForOrderLine(item).toFixed(2) }}
+              </td>
+            </tr>
+          </tbody>
+    
+        </table>
+ 
+    
+    </ng-container>
+    <ng-container *ngIf='this.priceListType === "quote"'>
+      <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputEmail4">Quote</label>
+        <select class='form-control' (change)='this.onQuoteChanged($event)'>
+          <option value='-1'>Select a quote</option>
+          <option *ngFor='let item of this.quotes' [value]='item.id'>{{ item.name }}({{ item.quoteNumber }}))</option>
+        </select>
+      </div>
+      </div>
+  
+      <table class="table" *ngIf='this.quoteLines.length > 0'>
+        <thead>
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Unit</th>
+          <th>Base Price(&pound;)</th>
+          <th>Total Price(&pound;)</th>
+        </thead>
+        <tbody>
+          <tr *ngFor='let item of this.orderLines'>
+            <td>{{ item.quoteLine.product.name }}</td>
+            <td>
+              <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.qty'>
+            </td>
+            <td>
+              {{ item.quoteLine.product.unit.name }}(s)
+            </td>
+            <td>
+              {{ item.price }}
+            </td>
+            <td>
+              {{ getTotalPriceForOrderLine(item).toFixed(2) }}
+            </td>
+          </tr>
+        </tbody>
+  
+      </table>
+  
+    </ng-container>
+ 
+  <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='this.close()'>Cancel</button>
+</jw-modal>

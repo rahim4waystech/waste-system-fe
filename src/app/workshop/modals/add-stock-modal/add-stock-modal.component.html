@@ -1,0 +1,18 @@
+<jw-modal id="stockAddModal">
+  <div class="row">
+    <div class="col">
+      <h5>Add Stock Item  </h5>
+    </div>
+  </div>
+
+  <app-parts-form [part]='this.part'></app-parts-form>
+
+  <div class="row mt-1">
+    <div class="col-12 text-end">
+      <button class='btn btn-success' (click)='this.save()'>Save</button> &nbsp;
+      <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+    </div>
+  </div>
+
+
+</jw-modal>

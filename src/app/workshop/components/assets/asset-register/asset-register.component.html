@@ -1,0 +1,50 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <div class="">
+            <div class="row content-block-head">
+              <div class="col-lg-4 my-auto">
+                <h3>Asset Register</h3>
+              </div>
+              <div class="col-lg-4 ms-auto text-end">
+                <div class='btn-group'>
+                  <button class='btn btn-secondary' routerLink='/4workshop/assets'>New Asset</button> &nbsp;
+                  <button class='btn btn-info' routerLink='/vehicles/new'>New Vehicle Asset</button> &nbsp;
+                  <!-- <button class='btn btn-primary' (click)='this.openModal("stockAddModal",this.targetItem)'>New Part</button> -->
+                  <button class='btn btn-primary' (click)='stockAddModal()'>New Part</button>
+                </div>
+              </div> 
+            </div>
+       
+            
+              <hr> 
+            <div class="row my-3">
+              <div class="col">
+                <app-grid
+                  entity='asset-register'
+                  [filters]='this.filters'
+                  [columns]='this.columns'
+                  [buttons]='this.buttons'
+                  [searchFilters]='this.searchFilters'
+                  [searchFields]='this.searchFields'
+                  >
+                </app-grid>
+              </div>
+            </div> 
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+ <!-- modal comment by shujat -->
+  <app-add-stock-modal [part]='this.targetItem'></app-add-stock-modal>
+  <app-edit-stock-modal [part]='this.targetItem'></app-edit-stock-modal>
+  <app-view-stock-modal [part]='this.targetItem'></app-view-stock-modal>
+  <app-change-stock-modal [part]='this.targetItem'></app-change-stock-modal>

@@ -1,0 +1,52 @@
+         <!-- modal commented by shujat -->
+<app-set-weight-modal [job]='this.currentJob'></app-set-weight-modal>
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class='titleContainer'>
+                <h3 class='header'>Weighbridge</h3>
+              </div>
+            </div>
+            <div class="col-lg-6 my-auto text-end">
+              <div>
+                <button class='btn btn-sm btn-secondary' routerLink='/weighbridge/yard-trade/list'><i
+                    class="fas fa-plus"></i> Yard trade</button>&nbsp;
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body Weighbridge-date">
+          <div class='sheet'>
+
+            <div class='row mb-2'>
+              <div class="col-lg-8 my-auto">
+                <h4 class='header'>Tip site</h4>
+              </div>
+              <div class='form-group col-md-4 my-auto ms-auto'>
+                <select class='form-select' (change)='onTipChanged($event)'>
+                  <option>Please select a tip for weighbridge</option>
+                  <option *ngFor='let tip of this.tips' [value]='tip.id' [selected]='this.defaultTip === tip.id'>{{
+                    tip.name }}
+                  </option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+          <ng-container *ngIf='this.tipId !== -1'>
+            <app-grid entity='job' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+              [showDatePicker]='true' [displayDate]='this.displayDate' [searchFilters]='this.searchFilters'
+              [searchFields]='this.searchFields'
+              [relationships]='["jobAssignment", "jobAssignment.driver", "jobAssignment.vehicle", "jobAssignment.subcontractor"]'></app-grid>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

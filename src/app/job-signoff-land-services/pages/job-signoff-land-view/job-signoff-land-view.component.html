@@ -1,0 +1,540 @@
+<app-job-signoff-reschedule-modal [job]='this.job'></app-job-signoff-reschedule-modal>
+<app-job-signoff-charges-only [job]='this.job'></app-job-signoff-charges-only>
+<div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+<div class="alert alert-danger" *ngIf='this.isSaveDisabled'>Save has been disabled. This job has been invoiced.</div>
+<div [class.fullcontainer]='!this.isPopup'>
+  <div class='alert alert-danger'
+    *ngIf='this.isAllWeightsSupplied && this.getUnitName(this.orderLines[0].quoteLine ? this.orderLines[0].quoteLine.product.unitId : this.orderLines[0].unitId).name.toLowerCase() === "tonne" && this.mode !== "transport"'>
+    You have not supplied all weights for tickets</div>
+
+  <div class="sheet">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class='header'>Job Signoff 1- ID: {{ this.job.id }}</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <h4 class='header'>Job Details</h4>
+              </div>
+              </div>
+              <div class='row'>
+                <div class="form-group col-md-4">
+                  <label>Date</label>
+                  <input class='form-control' type='text' readonly [value]='this.job.date' />
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label>Customer</label>
+                  <input class='form-control' type='text' readonly [value]='this.job.order.account.name' />
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label>Site</label>
+                  <input class='form-control' type='text' readonly [value]='this.job.order.site.name' />
+                </div>
+                <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.driverId !== -1'>
+                  <label>Vehicle</label>
+                  <input class='form-control' type='text' readonly
+                    [value]='this.job.jobAssignment.vehicle.registration' />
+                </div>
+                <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.vehicleId !== -1'>
+                  <label>Driver</label>
+                  <input class='form-control' type='text' readonly
+                    [value]='this.job.jobAssignment.driver.firstName + " " + this.job.jobAssignment.driver.lastName' />
+                </div>
+                <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.vehicleId === -1'>
+                  <label>Subcontractor</label>
+                  <input class='form-control' type='text' readonly
+                    [value]='this.job.jobAssignment.subcontractor.name' />
+                </div>
+                <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.vehicleId === -1'>
+                  <label>Subcontractor Reg</label>
+                  <input class='form-control' type='text' [(ngModel)]='this.job.subcontractorReg' />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputEmail4">Grade</label>
+                  <select class='form-control' [class.is-invalid]='this.job.order.gradeId === -1'
+                    (change)='this.job.order.gradeId = +$event.target.value; this.job.order.grade.id = this.job.order.gradeId;'>
+                    <option value='-1'>Select a grade</option>
+                    <option *ngFor='let item of this.grades' [value]='item.id'
+                      [selected]='this.job.order.gradeId === item.id'>{{ item.name }}<ng-container
+                        *ngIf='item.ewcCodes && item.ewcCodes !== ""'>({{ item.ewcCodes }})</ng-container></option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputEmail4">PO Number</label>
+                  <input type="text" name='name' [(ngModel)]='this.job.order.poNumber'
+                    [class.is-invalid]='!this.job.order.poNumber' class="form-control" id="inputEmail4">
+                </div>
+                <!-- <div class="form-group col-md-4">
+                  <label for="inputEmail4">Qty</label>
+                  <input type="number" name='name' [(ngModel)]='this.job.qty' [class.is-invalid]='!this.job.qty'
+                    class="form-control" id="inputEmail4">
+                </div> -->
+                <div class="form-group col-md-4">
+                  <label for="inputEmail4">Tip Site</label>
+                  <select class='form-control' [class.is-invalid]='this.job.order.tipSiteId === -1'
+                    (change)='this.job.order.tipSiteId = +$event.target.value; this.job.order.tipSite = {}; this.job.order.tipSite.id = this.job.order.tipSiteId; this.loadTippingPrice()'>
+
+                    <option value='-1'>Select a tip site</option>
+                    <option *ngFor='let item of this.tips' [value]='item.id'
+                      [selected]='this.job.order.tipSiteId === item.id'>{{
+                      item.name }}</option>
+                  </select>
+                </div>
+
+                <ng-container *ngIf='this.invoiceItem !== null && this.invoiceItem !== undefined'>
+                  <div class="form-group col-md-4 " *ngIf='this.invoiceItem?.id !== -1'>
+                    <label for="inputEmail4">Invoice:</label>
+                    <div class="row">
+                      <div class="col-12">
+                        <!-- <button class='btn btn-primary' type='button' [routerLink]="'/invoices/edit/' + this.invoiceItem.invoiceId"> View Invoice {{ this.invoiceItem.invoiceId}}</button> -->
+                    <button class='btn btn-primary' type='button'
+                    (click)='this.createPDFFile(this.invoiceItem.invoiceId)'> View Invoice {{
+                    this.invoiceItem.invoiceId}}</button>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </ng-container>
+
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-12">
+                  <h4 class='header'>Material Uplift Charges</h4>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <table class='table table-bordered'>
+                    <thead class="table-dark">
+                      <th>Account</th>
+                      <th>Ticket Number</th>
+                      <th>Name</th>
+                      <th>Unit</th>
+                      <th>Qty</th>
+                      <th>Price</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor='let uplift of this.upliftTickets'>
+                        <td><ng-select [(ngModel)]="uplift.accountId"
+                            (change)='uplift.accountId= +$event; setAccount();'>
+                            <ng-option *ngFor='let item of this.tips' [selected]='uplift.accountId === item.id'
+                              [value]='item.id'>{{ item.name }}</ng-option>
+                          </ng-select></td>
+                        <td><input class='form-control' type='text' [(ngModel)]="uplift.ticketNumber" /></td>
+                        <td><input class='form-control' type='text' [(ngModel)]="uplift.name" /></td>
+                        <td><select class='form-control' (change)='uplift.unitId = +$event.target.value'>
+                            <option [value]='unit.id' [selected]='unit.id === uplift.unitId'
+                              *ngFor='let unit of this.units'>{{ unit.name }}</option>
+                          </select>
+                        <td><input class='form-control' type='number' [(ngModel)]="uplift.qty" /></td>
+                        <td><input class='form-control' type='number' [(ngModel)]="uplift.price" /></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-12">
+                  <h4 class='header'>Charges</h4>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <table class="table table-bordered" *ngIf='this.orderLines.length > 0'>
+                    <thead class="table-dark">
+                      <th>Name</th>
+                      <th>Qty</th>
+                      <th>Unit</th>
+                      <th>Base Price(&pound;)</th>
+                      <th>Total Price(&pound;)</th>
+                      <th></th>
+                      <th></th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor='let item of this.orderLines'>
+                        <td>{{ item.quoteLine ? item.quoteLine.product.name : item.name }}</td>
+                        <td>
+                          <ng-container
+                            *ngIf='this.getUnitName(item.quoteLine ? item.quoteLine.product.unitId : item.unitId).name.toLowerCase() === "tonne"'>
+                            Weights (sep with slash): <input type="text" min='0' name='name' class="form-control"
+                              (keyup)='this.setWeight();generateUpliftTicketsFromUplifts()' [(ngModel)]="this.weights">
+                            Total Weight: <input type="number" min='0' name='name' class="form-control" id="inputEmail4"
+                              [(ngModel)]='item.qty' [readOnly]='item.isPrimaryCharge'>
+
+                          </ng-container>
+                          <ng-container
+                            *ngIf='this.getUnitName(item.quoteLine ? item.quoteLine.product.unitId : item.unitId).name.toLowerCase() === "hour"'>
+                            Start Time: <input type='time' class='form-control' [(ngModel)]="this.startTime"
+                              (keyup)='this.setHours();this.updateNotesForTimeHire()'>
+                            End Time: <input type='time' class='form-control' [(ngModel)]="this.endTime"
+                              (keyup)='this.setHours();this.updateNotesForTimeHire()' />
+                            Break Time (minutes): <input type='number' class='form-control' [(ngModel)]="this.breakTime"
+                              (keyup)='this.setHours()' />
+                            Waiting Time (minutes): <input type='number' class='form-control'
+                              [(ngModel)]="this.waitingTime" (keyup)='this.setHours()' />
+                            Travel Time (minutes): <input type='number' class='form-control'
+                              [(ngModel)]="this.travelTime" (keyup)='this.setHours();this.updateNotesForTimeHire()' />
+                            Chargeable time: <input type="number" min='0' name='name' class="form-control"
+                              id="inputEmail4" [(ngModel)]='item.qty' [readOnly]='item.isPrimaryCharge'>
+                          </ng-container>
+                          <ng-container
+                            *ngIf='this.getUnitName(item.quoteLine ? item.quoteLine.product.unitId : item.unitId).name.toLowerCase() !== "hour" && this.getUnitName(item.quoteLine ? item.quoteLine.product.unitId : item.unitId).name.toLowerCase() !== "tonne"'>
+                            <input type="number" min='0' name='name' class="form-control" id="inputEmail4"
+                              [(ngModel)]='item.qty' [readOnly]='item.isPrimaryCharge'>
+                          </ng-container>
+                        </td>
+                        <td>
+                          {{ this.getUnitName(item.quoteLine ? item.quoteLine.product.unitId : item.unitId).name}}(s)
+                        </td>
+                        <td>
+                          <input type="number" min='0' name='name' class="form-control" id="inputEmail4"
+                            [(ngModel)]='item.price'>
+                        </td>
+                        <td>
+                          {{ getTotalPriceForOrderLine(item).toFixed(2) }}
+                        </td>
+                        <td>
+                          <input type='checkbox' [(ngModel)]="item.isPrimaryCharge"
+                            [ngModelOptions]="{standalone: true}" />&nbsp;
+                          Is Primary Charge?
+
+                          <!-- <input type='checkbox' [(ngModel)]="this.job.overridePrice"
+                      [ngModelOptions]="{standalone: true}" />&nbsp;
+                      Override for this job only? -->
+                        </td>
+
+                        <td>
+                          <button class='btn btn-danger' (click)='deleteOrderLine(item.id)'>Delete Item</button>
+                        </td>
+                      </tr>
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-12">
+                  <h4 class='header'>Tip Tickets</h4>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <table class='table table-bordered'>
+                    <thead class="table-dark">
+                      <th>Collection Ticket Number</th>
+                      <th>Tipped Ticket Number</th>
+                      <th>Qty</th>
+                      <th>Unit</th>
+                      <th>Cost</th>
+                      <th>&nbsp;</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor='let ticket of this.tipTickets'>
+                        <td><input class='form-control' type='text' [(ngModel)]='ticket.collectionTicketNumber' /></td>
+                        <td><input class='form-control' type='text' [(ngModel)]='ticket.ticketNo' /></td>
+                        <td><input class='form-control' type='number' [(ngModel)]='ticket.qty' /></td>
+                        <td>
+                          <select class='form-control' (change)='ticket.unitId = +$event.target.value'>
+                            <option [selected]='unit.id === ticket.unitId' *ngFor='let unit of this.units'
+                              [value]='unit.id'>{{ unit.name }}</option>
+                          </select>
+                        </td>
+                        <td><input class='form-control' type='number' [(ngModel)]='ticket.price' /></td>
+                        <td> <input type='checkbox' [(ngModel)]="ticket.isSignedOff"
+                            [ngModelOptions]="{standalone: true}" /> Signed off </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-12">
+                  <h4 class='header'>PODs</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <table class='table table-bordered'>
+                    <thead class="table-dark">
+                      <th>POD No</th>
+                      <th>Qty</th>
+                      <th>Driver</th>
+                      <th>Vehicle</th>
+                      <th>&nbsp;</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor='let pod of this.pods'>
+                        <td>{{ pod.id }}</td>
+                        <td>{{ pod.qty }}</td>
+                        <td>{{ this.job.jobAssignment.driver.firstName + " " + this.job.jobAssignment.driver.lastName }}
+                        </td>
+                        <td>{{ this.job.jobAssignment.vehicle.registration }}</td>
+                        <td>
+                          <a class='btn btn-warning' type='button' target='_blank'
+                            [href]='"/pods/view/" + pod.id'>Edit</a>&nbsp;
+                          <a class='btn btn-danger' type='button' target='_blank'
+                            [href]='"/pods/delete/" + pod.id'>Delete</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+           
+
+            <div class="row">
+              <div class="col-12">
+                <h4 class='header'>Notes</h4>
+
+              </div>
+              <div class="col-12">
+                <textarea (keyup)='this.setQtyTotal();generateUpliftTicketsFromUplifts();' class='form-control'
+                  [(ngModel)]="this.job.transportSignOffNotes"></textarea><br />
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12"></div>
+            </div>
+            <h4 class='header'>Signoff Details</h4>
+            <br />
+            <div class="row">
+              <div class="col-12"></div>
+            </div>
+            <div class='row' *ngIf='this.mode === "transport"'>
+              <div class="form-group col-md-4">
+                <label>Signoff Status</label>
+                <select class='form-control' (change)='onStatusChanged($event)'>
+                  <option value='-1'>Select a status</option>
+                  <option value='1' [selected]='this.job.jobSignOffStatusId === 1'>Not tipped</option>
+                  <option value='2' [selected]='this.job.jobSignOffStatusId === 2'>Rescheduled</option>
+                  <option value='3' [selected]='this.job.jobSignOffStatusId === 3'>Wasted Journey</option>
+                  <option value='4' [selected]='this.job.jobSignOffStatusId === 4'>Transport sign off</option>
+                  <option value='5' [selected]='this.job.jobSignOffStatusId === 5'>Contaminated Load</option>
+                  <option value='6' [selected]='this.job.jobSignOffStatusId === 6'>Rebate</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <ng-container *ngIf='this.showAdditionalDetails && false'>
+                  <div class='row'>
+                  </div>
+                  <div class='row' *ngIf='false'>
+                    <div class='form-group col-md-4'>
+                      <label>Manager Signoff?</label>
+                      <input type='checkbox' [(ngModel)]="this.job.jobManagerSignOff"
+                        [ngModelOptions]="{standalone: true}" />
+                    </div>
+                  </div>
+                  <div class='row' *ngIf='this.job.jobAssignment.vehicleId !== -1'>
+                    <div class='form-group col-md-4'>
+                      <label>Gross Weight</label>
+                      <input type='text' class='form-control' [(ngModel)]='this.job.weight' />
+                    </div>
+                  </div>
+                  <div class='row'>
+                    <div class='form-group col-md-4' *ngIf='this.job.jobAssignment.vehicleId !== -1'>
+                      <label>Tare Weight</label>
+                      <input type='text' class='form-control' readonly
+                        [value]='this.job.jobAssignment.vehicle.tareWeight' />
+                    </div>
+
+                    <div class='form-group col-md-4' *ngIf='this.job.jobAssignment.vehicleId !== -1'>
+                      <label>Net Weight</label>
+                      <input type='text' class='form-control'
+                        [value]='(this.job.weight - this.job.jobAssignment.vehicle.tareWeight).toFixed(2)' readonly />
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <button (click)='deleteAllExistingTickets()' style='display:none;'>Fix tickets</button>
+                <button (click)="bulkSaveMaterialUpliftTickets()" style="display:none;">Fix MUL</button>
+                <button type="submit" class="btn btn-success" (click)='save()'
+                  *ngIf='!this.isSaveDisabled'>Save</button>&nbsp;
+                <button type="button" class="btn btn-danger" (click)='this.cancel()'>Cancel</button>
+              </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div id='jobSignOffRescheduleModal'>
+              <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+              <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+              <h1 class='header'>Reschedule Job</h1>
+            
+              <div class='alert alert-danger'>
+                Warning! This will move this order to another day and remove the current job off the timeline. Make sure this is what you want before continuing.
+              </div>
+              <div class='row'>
+                <div class="form-group col-md-4">
+                  <label for="inputEmail4">Date *</label>
+                  <input type="date" name='name' [(ngModel)]='this.job.order.date' [class.is-invalid]='!this.job.order.date' class="form-control" id="inputEmail4">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputEmail4">Time *</label>
+                  <input type="time" name='name' [(ngModel)]='this.job.order.time' [class.is-invalid]='!this.job.order.time' class="form-control" id="inputEmail4">
+                </div>
+              </div>
+              <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+              <button class='btn btn-danger' (click)='this.close()' style='display:none;'>Cancel</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div id='jobSignOffChargesOnlyModal'>
+          <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+          <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+        
+          <h1 class='header'>Select Charges</h1>
+        
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputEmail4">Reason for wasted journey</label>
+              <textarea class='form-control' [(ngModel)]='this.job.notes'></textarea>
+            </div>
+            </div>
+        
+            <!-- <div class="form-group col-md-12">
+              <label for="inputEmail4">Chargeable</label>
+              <input type='checkbox' class='form-control'  [ngModelOptions]="{standalone: true}" [(ngModel)]='this.job.chargeable' />
+            </div> -->
+        
+        
+            <button class='btn btn-secondary' (click)='this.priceListType = "quote"; this.orderLines = []' [class.btn-success]='this.priceListType === "quote"' type='button'>Quote</button>&nbsp;&nbsp;
+            <button class='btn btn-secondary' (click)='this.priceListType = "pricelist"; this.orderLines = []' [class.btn-success]='this.priceListType === "pricelist"' type='button'>Price List</button>
+        
+        
+            <ng-container *ngIf='this.priceListType === "pricelist"'>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="inputEmail4">Price List</label>
+                  <select class='form-control' (change)='this.onPriceListChanged($event)'>
+                    <option value='-1'>Select a price list</option>
+                    <option *ngFor='let item of this.priceLists' [value]='item.id'>{{ item.name }}</option>
+                  </select>
+                </div>
+                </div>
+        
+        
+                <ng-container *ngIf='this.pricelistItems.length > 0'>
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="inputEmail4">Price List Item</label>
+                      <select class='form-control' (change)='this.priceListItemId = +$event.target.value;'>
+                        <option value='-1'>Select a price list item</option>
+                        <option *ngFor='let item of this.pricelistItems' [value]='item.id'>{{ item.name }} &pound;{{ item.price }} ( {{ item.unit.name }} )</option>
+                      </select>
+                    </div>
+                  </div>
+        
+                  <button class='btn btn-secondary' (click)='onAddItemForPriceList()'>+ Add Item</button><br /><br />
+                </ng-container>
+        
+                <table class="table" *ngIf='this.orderLines.length > 0'>
+                  <thead>
+                    <th>Name</th>
+                    <th>Qty</th>
+                    <th>Unit</th>
+                    <th>Base Price(&pound;)</th>
+                    <th>Total Price(&pound;)</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor='let item of this.orderLines'>
+                      <td>{{ item.name }}</td>
+                      <td>
+                        <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.qty'>
+                      </td>
+                      <td>
+                        {{ item.unit.name }}(s)
+                      </td>
+                      <td>
+                        {{ item.price }}
+                      </td>
+                      <td>
+                        {{ getTotalPriceForOrderLine(item).toFixed(2) }}
+                      </td>
+                    </tr>
+                  </tbody>
+            
+                </table>
+         
+            
+            </ng-container>
+            <ng-container *ngIf='this.priceListType === "quote"'>
+              <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="inputEmail4">Quote</label>
+                <select class='form-control' (change)='this.onQuoteChanged($event)'>
+                  <option value='-1'>Select a quote</option>
+                  <option *ngFor='let item of this.quotes' [value]='item.id'>{{ item.name }}({{ item.quoteNumber }}))</option>
+                </select>
+              </div>
+              </div>
+          
+              <table class="table" *ngIf='this.quoteLines.length > 0'>
+                <thead>
+                  <th>Name</th>
+                  <th>Qty</th>
+                  <th>Unit</th>
+                  <th>Base Price(&pound;)</th>
+                  <th>Total Price(&pound;)</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor='let item of this.orderLines'>
+                    <td>{{ item.quoteLine.product.name }}</td>
+                    <td>
+                      <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.qty'>
+                    </td>
+                    <td>
+                      {{ item.quoteLine.product.unit.name }}(s)
+                    </td>
+                    <td>
+                      {{ item.price }}
+                    </td>
+                    <td>
+                      {{ getTotalPriceForOrderLine(item).toFixed(2) }}
+                    </td>
+                  </tr>
+                </tbody>
+          
+              </table>
+          
+            </ng-container>
+         
+          <button class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+          <button class='btn btn-danger' (click)='this.close()'>Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+
+<div class="fullcontainer" >
+ <div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class='titleContainer my-auto'>
+              <h3 class='header my-auto'>All Quotes</h3>
+            </div>
+          </div>
+          <div class="col-lg-4 text-end my-auto">
+            <div class="my-auto">
+              <button class='btn btn-secondary' routerLink='/quoting/new/accounts'><i class="fas fa-plus"></i> New</button>&nbsp;
+              <button class='btn btn-secondary' routerLink='/quoting/products'><i class="fas fa-boxes"></i> Manage Products</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <div class="d-lg-flex">
+            <button class='btn blueHover'  (click)='this.setQuoteStatus("")' [class.btn-primary]='this.quoteStatusCurrent === ""' [class.btn-secondary]='this.quoteStatusCurrent !== ""'><i class="fa-fw fa-pound-sign fas"></i> All Quotes</button>&nbsp;
+            <button class='btn purpleHover'   (click)='this.setQuoteStatus("Pending")' [class.btn-info]='this.quoteStatusCurrent === "Pending"' [class.btn-secondary]='this.quoteStatusCurrent !== "Pending"'><i class="fas fa-question-circle"></i> Pending</button>&nbsp;
+            <button class='btn greenHover'  (click)='this.setQuoteStatus("Accepted")' [class.btn-success]='this.quoteStatusCurrent === "Accepted"' [class.btn-secondary]='this.quoteStatusCurrent !== "Accepted"'><i class="fas fa-check-circle"></i> Accepted</button>&nbsp;
+            <button class='btn redHover'  (click)='this.setQuoteStatus("Declined")'  [class.btn-danger]='this.quoteStatusCurrent === "Declined"' [class.btn-secondary]='this.quoteStatusCurrent !== "Declined"'><i class="fas fa-times-circle"></i> Declined</button>&nbsp;
+          </div>
+          </div>
+        </div>
+
+        <br />
+        <br />
+        <app-grid
+        entity='quote'
+        [filters]='this.filters'
+        [columns]='this.columns'
+        [buttons]='this.buttons'
+        [searchFilters]='this.searchFilters'
+        [searchFields]='this.searchFields'
+        ></app-grid>
+      </div>
+    </div>
+  </div>
+ </div>
+
+
+
+</div>

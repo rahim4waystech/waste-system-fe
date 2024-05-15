@@ -1,0 +1,44 @@
+<div class="fullcontainer" >
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-lg-6 my-auto">
+                <div class='titleContainer'>
+                  <h3 class='header' >Yard Trade Signoff</h3>
+                 
+                </div>
+              </div>
+              <div class="col-lg-6 my-auto text-end">
+                <div>
+                  <button class='btn btn-secondary' routerLink='/weighbridge/yard-trade/'><i class="fas fa-plus"></i> New</button>&nbsp;
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <button type='button' class='btn btn-primary' (click)='onSignOffButtonClicked()'>Sign off selected</button>
+<br />
+<br />
+    <app-grid
+  entity='yard-trade'
+  [filters]='this.filters'
+  [columns]='this.columns'
+  [buttons]='this.buttons'
+  [searchFilters]='this.searchFilters'
+  [searchFields]='this.searchFields'
+  [relationships]='["yardTradePricing", "grade"]'
+  [checkboxSelector]='true'
+  (checkboxSelected)='this.onCheckboxSelected($event)'
+  [backgroundSetter]='this.getRowColor'
+  ></app-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+   
+
+
+  

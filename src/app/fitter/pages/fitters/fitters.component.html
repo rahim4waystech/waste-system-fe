@@ -1,0 +1,44 @@
+<div class="fullcontainer" >
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class='titleContainer'>
+                <h3 class='header'>All Fitters</h3>
+                
+              </div>
+            </div>
+            <div class="col-lg-6 text-end my-auto">
+              <button class='btn btn-secondary' routerLink='/4workshop/fitters/new'><i class="fas fa-plus"></i> New</button>&nbsp;
+              <button class='btn btn-info' routerLink='/4workshop/fitters/absence'><i class="fas fa-business-time"></i> Manage Absence</button>&nbsp;
+              <button class='btn btn-primary' routerLink='/4workshop/fitters/hours'><i class="fas fa-calendar"></i> Manage Hours</button>&nbsp;
+          
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-12">
+          <app-grid
+          entity='fitter'
+          [filters]='this.filters'
+          [columns]='this.columns'
+          [buttons]='this.buttons'
+          [searchFilters]='this.searchFilters'
+          [searchFields]='this.searchFields'
+          ></app-grid>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+ 
+  
+ 

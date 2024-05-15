@@ -1,0 +1,72 @@
+<!-- modal comennt by shujat -->
+<app-timeline-transport-edit-job></app-timeline-transport-edit-job>
+<app-timeline-transport-add-note></app-timeline-transport-add-note>
+
+<bs-datepicker-inline *ngIf='this.isDatePickerVisible' (bsValueChange)='this.onDateSelected($event)' [bsValue]='this.date' class='datePicker'></bs-datepicker-inline>
+
+  <div class='timelineToolbarContainer'>
+    <div class="row">
+      <div class="col-lg-2">
+        <button class='btn btn-sm btn-secondary' (click)='addRow()'><i class="fas fa-plus"></i> New Unit</button>
+      </div>
+       <div class="col-lg-2 text-center">
+          <input type='date' class='form-control' [(ngModel)]="this.copyDate" />
+        </div>
+      <div class="col-lg-2"> 
+         <button class='btn btn-sm btn-secondary' (click)='copyJobs()'><i class="fas fa-copy"></i> Copy Jobs</button>
+        </div>
+      <div class="col-lg-6 text-lg-end">
+        <button  class='btn btn-sm btn-danger' data-toggle="tooltip" data-placement="top"
+        title="Remove Job" (click)='this.onDeletedJobClicked()'><i class="fas fa-ban"></i></button> &nbsp;
+        <button class='btn btn-sm btn-success' data-toggle="tooltip" data-placement="top"
+        title="Approve Job" (click)='this.onApproveJobClicked()'><i class="fas fa-check-circle"></i></button>&nbsp;
+        <button class='btn btn-sm btn-warning'  data-toggle="tooltip" data-placement="top"
+        title="Unapprove Job" (click)='this.onUnapproveJobClicked()'><i class="fas fa-undo"></i></button>&nbsp;
+        <button class='btn btn-sm btn-primary'  data-toggle="tooltip" data-placement="top"
+        title="Edit Job" (click)='onEditJobClicked()'><i class="fas fa-edit"></i></button>&nbsp;
+        <button class='btn btn-sm btn-info'  data-toggle="tooltip" data-placement="top"
+        title="Add note" (click)='onAddNoteClicked()'><i class="fas fa-fw fa-sticky-note"></i></button>
+        <button class='btn btn-sm btn-secondary'  data-toggle="tooltip" data-placement="top"
+        title="Undo" (click)='undoAction()'><i class="fas fa-fw fa-backward"></i></button>
+      </div>
+    </div>
+    <hr>
+    <div class="row my-3"> 
+      <div class="col-lg-8 caldrdiv">
+        <div class="dateSelectorContainer">
+          <button class="btn btn-sm btn-primary" (click)='this.prevDay()'><i class="fas fa-chevron-left"></i></button>
+          <div class="dateSelectorBox" (click)='this.isDatePickerVisible = !this.isDatePickerVisible'>
+             <span><i class="fas fa-calendar-alt" style='font-size: 0.8rem'></i>&nbsp;&nbsp; {{ getFormattedDate() }}</span>
+          </div>
+          <button class="btn btn-sm btn-primary" (click)='this.nextDay()'><i class="fas fa-chevron-right"></i></button>
+       </div>
+      </div>
+      <div class="col-lg-4  ms-auto text-end">
+        <div class='vehicleTypeSelector'>
+          <select class='form-select' (change)='this.onOrderTypeChanged($event)'>
+            <option *ngFor='let vType of vehicleTypes' [value]='vType.value'>{{vType.type}}</option>
+          </select>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="row" >
+  <div class="col-lg-12 mx-auto text-center">
+<div class='colorCodeContainer' style='color:white;font-weight: bold;'>
+  <button class='btn btn-sm btn-secondary' (click)='this.showVorAndAbsence()'><i class="fas fa-wrench"></i> View VORs and Absence</button>&nbsp;
+  <span class="legends">Key:</span>
+  <span style='padding: 0.5rem; background: #636e72;width:0.5rem; color: var(--primary);'></span>
+  <span class="legends">Pending</span> 
+  <span style='padding: 0.5rem; background: rgb(39, 174, 96);width:0.5rem; color: var(--primary);'></span>
+  <span class="legends">Approved</span> 
+  <span style='padding: 0.5rem; background: rgb(155, 89, 182);width:0.5rem;color: var(--primary);'></span>
+   <span class="legends">Completed</span> 
+  <span style='padding: 0.5rem; background: #2980b9;width:0.5rem;color: var(--primary);'></span>
+   <span class="legends">Invoiced</span> 
+  <!-- <span style='padding: 0.5rem; background: pink;width:0.5rem;'></span> Previous day's job -->
+
+<!-- <button class='btn btn-secondary'><i class="fas fa-fw fa-truck-loading"></i> Show Accepted Orders</button>&nbsp; -->
+  </div>
+</div>
+</div>
+ 

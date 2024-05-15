@@ -1,0 +1,41 @@
+<jw-modal id='calendarAddEventModal'>
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <h1 class='header'>Add Event</h1>
+    <div class="form-row">
+    <div class="col-md-12 form-group">
+        <label>Name</label>
+        <input type='text' [class.is-invalid]='!this.calendarEvent.name' class='form-control' [(ngModel)]="this.calendarEvent.name" />
+    </div>
+
+    <div class="col-md-12 form-group">
+        <label>Date</label>
+        <input type='date'  [class.is-invalid]='!this.calendarEvent.date' class='form-control' [(ngModel)]="this.calendarEvent.date" />
+    </div>date
+      <div class="col-md-12 form-group" *ngIf='!this.calendarEvent.isFullDay'>
+          <label>Start Time</label>
+          <input type='time' class='form-control' [(ngModel)]="this.calendarEvent.startTime" />
+      </div>
+      <div class="col-md-12 form-group" *ngIf='!this.calendarEvent.isFullDay'>
+        <label>End Time</label>
+        <input type='time' class='form-control' [(ngModel)]="this.calendarEvent.endTime" />
+    </div>
+    <div class="col-md-12 form-group">
+        <div class='form-group'>
+            <label>is full day event?</label>
+            <input type='checkbox'
+            [(ngModel)]="this.calendarEvent.isFullDay"
+            [ngModelOptions]="{standalone: true}"/>
+          </div>
+    </div>
+    <div class="col-md-12 form-group">
+        <div class='form-group'>
+            <label>Description</label>
+            <textarea class='form-control' [(ngModel)]="this.calendarEvent.description" ></textarea>
+          </div>
+    </div>
+    </div>
+
+    <button type='button' class='btn btn-success' (click)='this.save()'>Save</button>&nbsp;
+    <button type='button' class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+</jw-modal>

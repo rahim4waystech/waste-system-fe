@@ -1,0 +1,34 @@
+<div class="fullcontainer" >
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class='titleContainer'>
+                <h3 class='header'>All Users</h3>
+               
+              </div>
+            </div>
+            <div class="col-lg-6 my-auto text-end">
+              <div>
+                <button class='btn btn-secondary' routerLink='/settings/users/new'><i class="fas fa-plus"></i> New</button>&nbsp;
+                <button class='btn btn-secondary' routerLink='/settings'><i class="fas fa-arrow-left"></i> Back</button>&nbsp;
+          </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-grid
+          entity='user'
+          [filters]='this.filters'
+          [columns]='this.columns'
+          [buttons]='this.buttons'
+          [searchFilters]='this.searchFilters'
+          [searchFields]='this.searchFields'
+          ></app-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

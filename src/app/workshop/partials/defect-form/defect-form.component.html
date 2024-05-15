@@ -1,0 +1,182 @@
+<div class="row mt-3 p-3">
+  <div class="col-lg-4 content-block">
+    <ng-container *ngIf='this.vehicleTypes.length > 0'>
+      <label>Vehicle Type</label>
+      <input type="text" class='form-control' readOnly [(ngModel)]='this.tempVehicleType' *ngIf='!this.editToggle'>
+      <select
+      *ngIf='this.editToggle'
+      class='form-control'
+      [class.is-invalid]='this.vehicleType === -1'
+      [class.is-valid]='this.vehicleType > 0'
+      (change)='this.changeVehicleType($event)'
+      >
+        <option value='-1'>Select a Vehicle Type</option>
+        <option
+          *ngFor='let item of this.vehicleTypes'
+          [value]='item.id'
+          [selected]='this.vehicleType === item.id'>
+          {{ item.name }}
+        </option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf='this.vehicleType > 0'>
+      <label>Vehicle</label>
+      <input type="text" class='form-control' readOnly [(ngModel)]='this.tempVehicle' *ngIf='!this.editToggle'>
+      <select
+      *ngIf='this.editToggle'
+      class='form-control'
+      [class.is-invalid]='this.defect.vehicleId === -1'
+      [class.is-valid]='this.defect.vehicleId > 0'
+      (change)='this.changeVehicle($event)'
+      >
+        <option value='-1'>Select a Vehicle</option>
+        <option
+          *ngFor='let item of this.vehicles'
+          [value]='item.id'
+          [selected]='this.defect.vehicleId === item.id'
+        >
+          {{ item.registration }}
+        </option>
+      </select>
+    </ng-container>
+  </div>
+  <div class="content-block">
+    <ng-container *ngIf='this.defect.vehicleId > 0'>
+      <div class="row">
+        <div class="col-lg-4 form-group">
+          <label for="vehicleCheckArea">Defect Area</label>
+          <input type="text" class='form-control' readOnly [(ngModel)]='this.tempCheckArea' *ngIf='!this.editToggle'>
+          <select
+          *ngIf='this.editToggle'
+          class='form-control'
+          [class.is-invalid]='this.defect.vehicleCheckAreaId === -1'
+          [class.is-valid]='this.defect.vehicleCheckAreaId > 0'
+          (change)='this.changeVehicleCheckArea($event)'
+          >
+            <option value='-1'>Select a Defect Area</option>
+            <option *ngFor='let item of this.checkAreas' [value]='item.id' [selected]='this.defect.vehicleCheckAreaId === item.id'>{{ item.name }}</option>
+          </select>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label for="vehicleCheckArea">Severity</label>
+          <input type="text" class='form-control' readOnly [(ngModel)]='this.tempSeverity' *ngIf='!this.editToggle'>
+          <select
+          *ngIf='this.editToggle'
+          class='form-select'
+          [class.is-invalid]='this.defect.vehicleSeverityId === -1'
+          [class.is-valid]='this.defect.vehicleSeverityId > 0'
+          (change)='this.changeSeverity($event)'
+          >
+          <option value='-1'>How Severe is the Defect?</option>
+          <option *ngFor='let item of this.severities' [value]='item.id' [selected]='this.defect.vehicleSeverityId === item.id'>
+            {{ item.severity }} ({{item.notes}})
+          </option>
+        </select>
+      </div>
+      <div class="col-lg-4 form-group">
+        <label for="inspections">Assigned Inspection Intervals</label>
+        <input type="text" class='form-control' readOnly [(ngModel)]='this.tempInspection' *ngIf='!this.editToggle'>
+        <select
+        *ngIf='this.editToggle'
+        class='form-select'
+        (change)='this.changeInspection($event)'
+        >
+          <option value='-1'>Not a Scheduled Inspection Interval</option>
+          <option *ngFor='let item of this.inspections' [value]='item.vehicleInspectionIntervalId' [selected]='this.defect.vehicleInspectionIntervalsId === item.vehicleInspectionIntervalId'>
+            {{ item.vehicleInspectionInterval.name }} ({{item.vehicleInspectionIntervalId}})
+          </option>
+        </select>
+      </div>
+      <div class="col-lg-4 form-group">
+        <label for="subcontractor">Where is this Defect being Resolved?</label>
+        <input type="text" class='form-control' readOnly [(ngModel)]='this.tempSubbieToggle' *ngIf='!this.editToggle'>
+        <select
+        *ngIf='this.editToggle'
+        class='form-select'
+        [class.is-invalid]='this.defect.depotId === -1 && this.defect.workshopSubcontractorsId === -1'
+        [class.is-valid]='this.defect.depotId > 0 || this.defect.workshopSubcontractorsId > 0'
+        (change)='this.changeTarget($event)'
+        >
+          <option value='-1' [selected]='this.defect.workshopSubcontractorsId === -1 || this.isSubcontractor === -1'>Select...</option>
+          <option value='0' [selected]='this.defect.workshopSubcontractorsId === 0 || this.defect.workshopSubcontractorsId === null || this.isSubcontractor === 0'>In-House</option>
+          <option value='1' [selected]='this.defect.workshopSubcontractorsId > 0 || this.isSubcontractor === 1'>Subcontractor</option>
+        </select>
+        </div>
+        <div class="col-lg-4 form-group" *ngIf='this.isSubcontractor === 1'>
+          <label for="inspections">Subcontractors</label>
+          <input type="text" class='form-control' readOnly [(ngModel)]='this.tempSubcontractor' *ngIf='!this.editToggle'>
+          <select
+          *ngIf='this.editToggle'
+          class='form-select'
+          [class.is-invalid]='this.defect.depotId === -1 && this.defect.workshopSubcontractorsId === -1'
+          [class.is-valid]='this.defect.depotId > 0 || this.defect.workshopSubcontractorsId > 0'
+          (change)='this.changeSubcontractor($event)'
+          >
+          <option value='-1'>Select a Subcontractor</option>
+          <option *ngFor='let item of this.subcontractors' [value]='item.id' [selected]='this.subcontractorId === item.id'>
+            {{ item.name }}
+          </option>
+        </select>
+        </div>
+        <div class="col-lg-4 form-group" *ngIf='this.subcontractorId > 0'>
+          <label for="inspections">Subcontractor Depot</label>
+          <input type="text" class='form-control' readOnly [(ngModel)]='this.tempSubcontractorDepot' *ngIf='!this.editToggle'>
+          <select
+          *ngIf='this.editToggle'
+          class='form-select'
+          [class.is-invalid]='this.defect.depotId === -1 && this.defect.workshopSubcontractorsId === -1'
+          [class.is-valid]='this.defect.depotId > 0 || this.defect.workshopSubcontractorsId > 0'
+          (change)='this.changeSubcontractorDepot($event)'
+          >
+          <option value='-1'>Select a Depot</option>
+          <option *ngFor='let item of this.subcontractorDepots' [value]='item.id' [selected]='this.defect.depotId === item.id'>
+            {{ item.name }} {{item.id}}
+          </option>
+        </select>
+        </div>
+        <div class="col-lg-4 form-group" *ngIf='this.isSubcontractor === 0'>
+          <label for="inspections">{{this.companyName}} Depot</label>
+          <input type="text" class='form-control' readOnly [(ngModel)]='this.tempSubcontractorDepot' *ngIf='!this.editToggle'>
+          <select
+          *ngIf='this.editToggle'
+          class='form-select'
+          [class.is-invalid]='this.defect.depotId === -1 && this.defect.workshopSubcontractorsId === -1'
+          [class.is-valid]='this.defect.depotId > 0 || this.defect.workshopSubcontractorsId > 0'
+          (change)='this.changeSubcontractorDepot($event)'
+          >
+          <option value='-1'>Select a Depot</option>
+          <option *ngFor='let item of this.ownDepots' [value]='item.id' [selected]='this.defect.workshopSubcontractorsId === item.id'>
+            {{ item.name }} {{item.city}}
+          </option>
+        </select>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label>Book For Date (ignore if not for specific date)</label>
+          <input [readOnly]='!this.editToggle' type="date" class='form-control' [(ngModel)]='this.defect.bookedFor'>
+        </div>
+        <div class="col-6 form-group">
+          <label>Description</label>
+          <textarea
+            class='form-control'
+            [readOnly]='!this.editToggle'
+            [class.is-invalid]='this.defect.description === "" || this.defect.length === 0'
+            [class.is-valid]='this.defect.description.length > 0'
+            [(ngModel)]='this.defect.description'>
+          </textarea>
+        </div>
+        <div class="col-6 form-group">
+          <label>PO Numbers</label>
+          <textarea
+            class='form-control'
+            [readOnly]='!this.editToggle'
+            [(ngModel)]='this.defect.poNumber'>
+          </textarea>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<!--
+bookedFor: string = '';
+workshopSubcontractorsId: number = -1;
+depotId: number = -1; -->

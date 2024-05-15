@@ -1,0 +1,140 @@
+                      <!-- modal comment by shujat -->
+<app-lead-account-modal (selectedAccounts)='this.onSelectedAccounts($event)'></app-lead-account-modal>
+<app-new-contact-modal (selectedContact)='this.onSelectedContacts($event)'></app-new-contact-modal>
+                     <!-- modal comment by shujat -->
+<app-contact-modal (selectedContacts)='this.onSelectedContacts($event)'></app-contact-modal>
+
+<app-tabs>
+  <app-tab title='Main Details'>
+
+    <div class="row">
+
+      <ng-container *ngIf='this.opportunity.accountId === -1 || this.opportunity.accountId === null'>
+        <div class="form-group col-md-4 my-auto">
+          <button class='btn btn-sm  btn-secondary' type='button' (click)='this.openModal("leadAccountModal")'>Add/Create
+            Account</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf='this.opportunity.accountId !== -1 && this.opportunity.accountId !== null'>
+        <div class="form-group col-md-4 mt-auto">
+          <label>Account</label>
+          <input class='form-control' readonly [(ngModel)]='this.opportunity.account.name' />
+          <button class='btn btn-sm btn-info' type='button' (click)='this.openModal("leadAccountModal")'>Change
+            Account</button>
+          <button class='btn btn-sm  btn-danger' type='button' (click)='this.deleteAccount()'>Remove Account</button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf='this.environment.crmOptions.showLeads'>
+        <ng-container *ngIf='this.opportunity.leadId !== -1 && this.opportunity.leadId !== null'>
+          <div class="form-group col-md-4">
+            <label>Lead</label>
+            <input type='text' [(ngModel)]='this.opportunity.lead.subject' readOnly class='form-control' />
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf='this.opportunity.leadId === -1 && this.opportunity.leadId !== null'>
+
+          <div class="form-group col-md-4">
+            <label>Lead</label>
+            <select class="form-select" (change)='changeLead($event)'>
+              <option value="-1" [selected]='this.opportunity.leadId === -1'>Select a Lead...</option>
+              <option *ngFor='let lead of this.leads' [value]="lead.id"
+                [selected]='lead.id === this.opportunity.leadId'>{{lead.subject}}</option>
+            </select>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf='this.opportunity.contactId === -1 || this.opportunity.contactId === null'>
+        <div class="form-group col-md-4 my-auto">
+          <button class='btn btn-sm btn-info' type='button' (click)='this.openModal("contactModal")'>Find/Create
+            Contact</button>
+          <h6 *ngIf='this.opportunity.contactId !== -1 && this.opportunity.contactId !== null'>
+            {{this.opportunity.contact.firstName}} {{this.opportunity.contact.lastName}}</h6>
+        </div>
+      </ng-container>
+      <ng-container *ngIf='this.opportunity.contactId !== -1 && this.opportunity.contactId !== null'>
+        <div class="form-group col-md-4">
+          <label>Contact</label>
+          <input class='form-control' readonly [(ngModel)]='this.contactName' />
+          <button class='btn btn-sm  btn-info' type='button' (click)='this.openModal("contactModal")'>Change Contact</button>
+          <button class='btn btn-sm  btn-danger' type='button' (click)='this.deleteContact()'>Remove Contact</button>
+        </div>
+      </ng-container>
+
+      <div class="form-group col-md-4">
+        <label>Owner</label>
+
+        <select class="form-select" (change)='changeOwner($event)' [class.is-invalid]='this.opportunity.ownerId === -1'
+          [class.is-valid]='this.opportunity.ownerId > 0'>
+          <option value="-1" [selected]='this.opportunity.ownerId === -1'>Select an Owner...</option>
+          <option *ngFor='let user of this.users' [value]="user.id" [selected]='user.id === this.opportunity.ownerId'>
+            {{user.firstName}} {{user.lastName}}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-4">
+        <label>Opportunity Name</label>
+        <input type='text' [(ngModel)]='this.opportunity.opportunityName'
+          [class.is-invalid]='this.opportunity.opportunityName === ""'
+          [class.is-valid]='this.opportunity.opportunityName.length > 1 && this.opportunity.opportunityName !== " "'
+          class='form-control' />
+      </div>
+      <div class="form-group col-md-4">
+        <label>Description</label>
+        <textarea rows="1"  [(ngModel)]='this.opportunity.description'
+          [class.is-invalid]='this.opportunity.description === "" || this.opportunity.description.length === 0'
+          [class.is-valid]='this.opportunity.description.length > 0' class='form-control'>
+    </textarea>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Phone Number</label>
+        <input type='text' [(ngModel)]='this.opportunity.phone' class='form-control' />
+      </div>
+      <div class="form-group col-md-4">
+        <label>Email</label>
+        <input type='text' [(ngModel)]='this.opportunity.email' class='form-control' />
+      </div>
+      <div class="form-group col-md-4">
+        <label>Opportunity Status</label>
+        <select class="form-select" (change)='changeStatus($event)'
+          [class.is-invalid]='this.opportunity.statusId === -1' [class.is-valid]='this.opportunity.statusId > 0'>
+          <option value="-1" [selected]='this.opportunity.statusId === -1'>Select an Opportunity Status...</option>
+          <option *ngFor='let status of this.statuses' [value]="status.id"
+            [selected]='status.id === this.opportunity.statusId'>{{status.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-4">
+        <label>Estimated Close Date</label>
+        <input type='date' [(ngModel)]='this.opportunity.estimatedCloseDate'
+          [class.is-invalid]='this.opportunity.estimatedCloseDate === ""'
+          [class.is-valid]='this.opportunity.estimatedCloseDate.length > 1' class='form-control' />
+      </div>
+      <div class="form-group col-md-4">
+        <label>Actual Close Date</label>
+        <input type='date' [(ngModel)]='this.opportunity.actualClosedDate' class='form-control' />
+      </div>
+      <div class="form-group col-md-4">
+        <label>Actual Revenue</label>
+        <input type='number' [(ngModel)]='this.opportunity.actualRevenue'
+          [class.is-invalid]='this.opportunity.actualRevenue < 0' [class.is-valid]='this.opportunity.actualRevenue >= 0'
+          class='form-control' />
+      </div>
+    </div>
+
+    <div class="row" *ngIf='this.incumbents.length !== 0'>
+      <div class="col content-block p-3">
+        <h3>Incumbents</h3>
+        <hr>
+        <ul>
+          <li *ngFor='let incumbent of this.incumbents'>{{incumbent.incumbent.name}}</li>
+        </ul>
+      </div>
+    </div>
+  </app-tab>
+  <app-tab title='Discussion' *ngIf='this.opportunity.id !== -1'>
+    <app-discussion [data]='this.opportunity' entity='opportunity'></app-discussion>
+  </app-tab>
+</app-tabs>

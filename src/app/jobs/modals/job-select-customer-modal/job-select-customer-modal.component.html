@@ -1,0 +1,30 @@
+<jw-modal id='jobEditSelectCustomerModal'>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+
+  <h1 class='header' *ngIf='!this.showSites'>Select a customer</h1>
+
+  <h1 class='header' *ngIf='this.showSites'>Select a site</h1>
+
+  <app-grid [hidden]='this.showSites'
+  entity='account'
+  [filters]='this.filters'
+  [columns]='this.columns'
+  [buttons]='this.buttons'
+  [searchFilters]='this.searchFilters'
+  [searchFields]='this.searchFields'
+  [amount]='10'
+  ></app-grid>
+
+  <app-grid [hidden]='!this.showSites'
+  entity='account'
+  [filters]='this.filtersSite'
+  [columns]='this.columnsSite'
+  [buttons]='this.buttonsSite'
+  [searchFilters]='this.searchFiltersSite'
+  [searchFields]='this.searchFieldsSite'
+  [amount]='10'
+  ></app-grid>
+
+  <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+</jw-modal>

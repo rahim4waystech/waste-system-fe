@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="form-group col-md-6">
+    <label for="inputEmail4">Name</label>
+    <input type="text" name='name' [(ngModel)]='this.userGroup.name' [class.is-invalid]='!this.userGroup.name'
+      class="form-control" id="inputEmail4">
+  </div>
+  <div class='form-group col-md-6'>
+    <label>Permissions</label>
+    <ng-multiselect-dropdown [settings]="dropdownSettings" [placeholder]="'Select permissions'"
+      [data]="this.permissions" [(ngModel)]="this.userGroupPermissions.permissions">
+    </ng-multiselect-dropdown>
+  </div>
+</div>
+

@@ -1,0 +1,42 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header"><app-workshop-nav></app-workshop-nav></div>
+        <div class="card-body">
+          <div class="row   content-block-head">
+            <div class="col-12 ">
+              <h3>All Documents</h3>
+            </div>
+          </div>
+          <hr>
+          <app-image-view-modal [image]='this.image'></app-image-view-modal>
+          <div class="row mt-3">
+            <div class="col">
+              <app-grid
+                entity='documents'
+                [filters]='this.filters'
+                [columns]='this.columns'
+                [buttons]='this.buttons'
+                [searchFilters]='this.searchFilters'
+                [searchFields]='this.searchFields'
+                >
+              </app-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--<div class="p-3">
+   
+   
+     <div class="row">
+      <div class="col">
+        <button class='btn btn-block btn-success' (click)='openModal("documentUploadModal")'>Upload Document</button>
+      </div>
+      <app-document-upload-modal [vehicleId]='this.vehicleId'></app-document-upload-modal>
+    </div>  
+  </div>-->
+</div>

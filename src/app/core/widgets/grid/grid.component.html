@@ -1,0 +1,269 @@
+<app-grid-columns-manage [gridColumns]='this.columns'></app-grid-columns-manage>
+<app-grid-save-search (saved)='this.onGridSavedSearchModalSaved($event)'></app-grid-save-search>
+
+<div class="gridContainer">
+  <!-- <div class="searchFiltersContainer" *ngIf='this.searchFilters.length > 0'> -->
+  <div class="searchFiltersContainer" *ngIf='this.simpleSearch === false && this.showSearch'>
+    <div class="row mb-3">
+      <div class="col-lg-3 my-auto">
+        <h3>Advanced Search</h3>
+      </div>
+      <div class='col-lg-3 ms-auto my-auto text-end'>
+        <button class='btn btn-primary btn-block' (click)='this.simpleSearch = true'>Quick Search</button>
+      </div>
+    </div>
+    <div class="searchFilter mb-2">
+    <div class="row">
+      <div class="col-lg-3 my-auto">
+        <h6>Saved Searches</h6>
+        <select class='form-select'  (change)='this.selectedSavedSearchId = +$event.target.value'>
+          <option value='-1'>Select a saved search</option>
+          <option *ngFor='let search of this.savedSearches.items' [value]='search.id'>{{ search.name }}</option>
+        </select>
+      </div>
+      <div class="col-lg-3 mt-auto">
+        <button class='btn btn-primary' (click)='loadSearch()'>Load Search</button>&nbsp;
+        <button class='btn btn-success' (click)='saveSearch()'>Save Search</button>
+      </div>
+    </div>
+    </div>
+    <div class="searchFilter">
+      <div class='row' *ngFor='let filterRecord of this.selectedFilters; let i = index'>
+        <div class="col-lg-3">
+          <select class="form-select" (change)='onFieldSelected($event, filterRecord)'>
+            <option value="-1">Select a field</option>
+            <option *ngFor="let filter of this.searchFilters" [value]="filter.field"
+              [selected]='filter.field === filterRecord.field'>
+              {{ filter.label }}</option>
+          </select>
+        </div>
+        <div class="col-lg-3">
+          <select class="form-select" (change)='onConditionSelected($event, filterRecord)'>
+            <option [selected]='filterRecord.condition === "-1"' value="-1">Select a condition</option>
+            <option [selected]='filterRecord.condition === "eq"' value="eq">Equals</option>
+            <option [selected]='filterRecord.condition === "ne"' value="ne">Not equal to</option>
+            <option [selected]='filterRecord.condition === "gt"' value="gt">Greater than</option>
+            <option [selected]='filterRecord.condition === "lt"' value="lt">Less than</option>
+            <option [selected]='filterRecord.condition === "starts"' value="starts">Starts with</option>
+            <option [selected]='filterRecord.condition === "ends"' value="ends">Ends with</option>
+            <option [selected]='filterRecord.condition === "cont"' value="cont">Contains</option>
+          </select>
+        </div>
+        <div class="col-lg-3">
+          <input [type]="this.getSearchFilterType(filterRecord.field)" [(ngModel)]='filterRecord.value'
+            (ngModelChange)='onValueChanged()' class="form-control" />
+        </div>
+
+        <div class='col-lg-3'>
+          <button class='btn btn-danger' type='button' (click)='deleteSelectedFilter(i)'>X</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <select class="form-control" (change)='onFieldSelected($event, null)'>
+            <option value="-1">Select a field</option>
+            <option *ngFor="let filter of this.searchFilters" [value]="filter.field"
+              [selected]='this.newSearchFilter.field === filter.field'>
+              {{ filter.label }}</option>
+          </select>
+        </div>
+        <div class="col">
+          <select class="form-control" (change)='onConditionSelected($event, null)'>
+            <option [selected]='this.newSearchFilter.condition === "-1"' value="-1">Select a condition</option>
+            <option [selected]='this.newSearchFilter.condition === "eq"' value="eq">Equals</option>
+            <option [selected]='this.newSearchFilter.condition === "ne"' value="ne">Not equal to</option>
+            <option [selected]='this.newSearchFilter.condition === "gt"' value="gt">Greater than</option>
+            <option [selected]='this.newSearchFilter.condition === "lt"' value="lt">Less than</option>
+            <option [selected]='this.newSearchFilter.condition === "starts"' value="starts">Starts with</option>
+            <option [selected]='this.newSearchFilter.condition === "ends"' value="ends">Ends with</option>
+            <option [selected]='this.newSearchFilter.condition === "cont"' value="cont">Contains</option>
+          </select>
+        </div>
+        <div class="col">
+          <input [type]="this.currentSearchFilterType" [(ngModel)]='this.newSearchFilter.value' class="form-control" />
+        </div>
+
+        <div class='col'>
+          <button type='button' class='btn btn-success' (click)='addSelectedFilter($event)'>+</button>
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+  <div class="searchFiltersContainer" *ngIf='this.simpleSearch === true && this.showSearch'>
+    <!-- <input class='form-control' (keyup)='this.onSearchKeyUp($event)' [(ngModel)]='this.search' type='text' placeholder="🔎 Search..."/> -->
+    <div class="row">
+      <div class="col-lg-3 my-auto">
+        <h4 class="my-auto">Quick Search</h4>
+      </div>
+      <div class="col-lg-3 ms-auto text-end">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text paddingcustomsearch">🔎</div>
+          </div>
+          <input type="text" (keyup)="this.onSearchKeyUp($event)" [(ngModel)]="this.search" class="form-control"
+            placeholder="Search..." />
+        </div>
+      </div>
+      <div class="col-lg-2 text-end">
+        <button class='btn  btn-primary btn-block' (click)='this.simpleSearch = false'>Advanced Search</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row" *ngIf='this.showDatePicker'>
+    <div class="col-lg-6">
+    <bs-datepicker-inline *ngIf='this.isDatePickerVisible' (bsValueChange)='this.onDateSelected($event)'
+      [bsValue]='this.getFormatDate(this.displayDate)' class='datePicker'></bs-datepicker-inline>
+    <div class="row btn-group w-100 my-2">
+      <div class="col-md-4 my-auto">
+        <button class='btn btn-sm btn-primary' (click)='this.dateChange("yesterday")'><i class="fas fa-angle-double-left"></i>
+          {{this.yesterdayDate}}</button>
+      </div>
+      <div class="col-md-4 my-auto">
+        <button class='btn btn-sm btn-success' (click)='this.isDatePickerVisible = !this.isDatePickerVisible'><i
+            class="fas fa-calendar"></i> {{this.getFormatDate(this.displayDate)}}</button>
+          </div>
+      <div class="col-md-4 my-auto">
+        
+      <button class='btn btn-sm btn-primary' (click)='this.dateChange("tomorrow")'>{{this.tomorrowDate}} <i
+        class="fas fa-angle-double-right"></i></button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+ 
+  <div class="tbl-div">
+<div class="row">
+  <div class="col-12 text-end">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-cog"></i>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" (click)='this.exportToCSV()'>Export to CSV</a>
+        <!-- <a class="dropdown-item" href="#">Import CSV</a> -->
+        <a class='dropdown-item' (click)='this.openModal("gridManageColumns")'>Manage Columns</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 my-2">
+    <div class="table-responsive">
+      <table class="table  table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th *ngIf='this.checkboxSelector'>
+              <input type='checkbox' (click)='selectAll($event)' />
+            </th>
+            <th *ngIf='this.radioSelector'>
+              &nbsp;
+            </th>
+            <th [style.color]='this.textColor' *ngFor="let column of this.getActiveColumns()"
+              [class.inverse]='this.inverse'>
+              <a href="#" (click)="this.onColumnHeaderClicked(column); $event.preventDefault();">{{
+                this.getLabelForColumn(column) }}
+                {{ this.getColumnSortMarker(column) }}</a>
+            </th>
+    
+            <th *ngIf="this.buttons.length > 0">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr [attr.title]='this.getHoverText(record)' *ngFor="let record of this.records">
+    
+            <td *ngIf='this.radioSelector'>
+              <input [checked]='this.defaultRadioValue === record.id' type='radio' name='radio_group_grid[]'
+                (click)='this.onRadioClicked(record)' [value]='record.id' />
+            </td>
+    
+            <td *ngIf='this.checkboxSelector'>
+              <input type='checkbox' name='checkbox_group_grid[]' [checked]='isChecked(record.id)'
+                (click)='this.onCheckboxClicked($event,record)' [value]='record.id' />
+            </td>
+            <td [style.color]='this.textColor' class="" *ngFor="let column of this.getActiveColumns()"
+              [innerHTML]=' this.getColumnValueForField(column, record)'>
+            </td>
+            <td class="px-0 py-0" style='text-align: center;' *ngIf="this.buttons.length > 0">
+              <button class="btn-sm" *ngFor="let button of this.buttons" [class]="this.getButtonClass(button)"
+                [disabled]='this.isButtonDisabled(button, record)' (click)="this.buttonClicked(button, record)"
+                [innerHTML]="this.getButtonContent(button)" [hidden]='!this.isButtonVisible(button, record)'
+                type='button'></button>
+            </td>
+          </tr>
+        </tbody>
+        <!-- <tfoot>
+          <tr>
+            <td colspan='80'>
+              <div class='gridStatusLine'>
+                <div class="pagesLine">
+                  {{ this.getOffsetStart() }}-{{ this.getOffsetEnd() }} of
+                  {{ this.getTotalRecords() }} item(s) Page: <input type='form-control' [(ngModel)]="this.newPage"
+                    (keyup)='this.onPaginationPageClicked(+this.newPage)' />
+                </div>
+                <div class="amountLine">
+                  Result(s) per page
+                  <select class="resultsPerPageSelect form-control" (change)="onPaginationAmountChanged($event)">
+                    <option [selected]="this.amount === 5" value="5">5</option>
+                    <option [selected]="this.amount === 10" value="10">10</option>
+                    <option [selected]="this.amount === 20" value="20">20</option>
+                    <option [selected]="this.amount === 50" value="50">50</option>
+                    <option [selected]="this.amount === 100" value="100">100</option>
+                  </select>
+                </div>
+              </div>
+    
+            </td>
+          </tr>
+    
+        </tfoot> -->
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+  <div class="gridPagination">
+    <ul>
+      <li *ngIf="this.isPrevActive()">
+        <button class="btn btn-secondary" type="button" name="button"
+          (click)="onPaginationPageClicked(this.getCurrentPage() - 1)">
+          &lt;
+        </button>
+      </li>
+
+      <ng-container *ngIf='this.paginationService.getTotalPages() <= 30'>
+        <li *ngFor="let page of this.getPagesArray()">
+          <button class="btn btn-secondary" type="button" name="button" (click)="onPaginationPageClicked(page)"
+            [class.active]="page === this.getCurrentPage()">
+            {{ page }}
+          </button>
+        </li>
+      </ng-container>
+
+      <ng-container *ngIf='this.paginationService.getTotalPages() > 30'>
+
+        <ng-container
+          *ngFor="let page of this.paginationService.getShortPagesRange(this.paginationService.getPage(), this.paginationService.getTotalPages())">
+          <li *ngIf='page !== "..."'>
+            <button class="btn btn-secondary" type="button" name="button" (click)="onPaginationPageClicked(page)"
+              [class.active]="page === this.getCurrentPage()">
+              {{ page }}
+            </button>
+          </li>
+          <span *ngIf='page === "..."'>...</span>
+        </ng-container>
+
+      </ng-container>
+      <li *ngIf="this.isNextActive()">
+        <button class="btn btn-secondary" type="button" name="button"
+          (click)="onPaginationPageClicked(this.getCurrentPage() + 1)">
+          &gt;
+        </button>
+      </li>
+
+    </ul>
+  </div>

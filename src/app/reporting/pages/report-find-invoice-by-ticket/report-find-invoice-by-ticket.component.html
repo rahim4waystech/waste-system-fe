@@ -1,0 +1,79 @@
+<div class="fullcontainer">
+   
+    <div class='sheet'>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class='titleContainer'>
+                            <h3 class='header'>Report - Find Invoice by ticket number</h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class='row'>
+                            <div class='col-md-4'>
+                                <label>Ticket Number (one only)</label>
+                                <input type='text' [(ngModel)]="this.searchFilters.ticketNumber" class='form-control' />
+                            </div>
+                            <div class='col-md-4 mt-auto text-end'>
+                                <button class='btn btn-primary' (click)='this.loadReport()'>Run Report</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+        <!-- <button class='btn btn-secondary' (click)='exportToCSV()'>Export to CSV</button> -->
+    </div>
+
+    <div class='sheet'>
+      
+        <div class='titleContainer' *ngIf='this.results.length > 0'>
+           
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class='titleContainer'>
+                                <h3 class='header'>{{ this.results.length }} Results found</h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class='table'>
+                                <thead class="table-dark">
+                                    <th>Order</th>
+                                    <th>Job</th>
+                                    <th>Job Date</th>
+                                    <th>Customer</th>
+                                    <th>Site</th>
+                                    <th>Tip Site</th>
+                                    <th>Tickets</th>
+                                    <th>Invoice</th>
+                                    <th>Vehicle Reg</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor='let result of this.results'>
+                                        <td><button class='btn btn-warning' [routerLink]='"/job-signoff/land/view/"+ result.jobId +"/manager"'>View Job: {{ result.jobId }}</button></td>
+                                        <td><button class='btn btn-warning' [routerLink]='"/orders/edit/" + result.orderId'>View Order: {{ result.orderId }}</button></td>
+                                        <td>{{ result.jobDate }}</td>
+                                        <td>{{ result.accountName }}</td>
+                                        <td>{{ result.siteName }}</td>
+                                        <td>{{ result.tipSiteName }}</td>
+                                        <td>{{ result.tickets }}</td>
+                                        <td><button class='btn btn-warning' [routerLink]='"/invoices/edit/" + result.invoiceId'>View Invoice: {{ result.invoiceId }}</button>
+                                            <button class='btn btn-primary' (click)='this.createPDFFile(result.invoiceId)'>Print Invoice: {{ result.invoiceId }}</button></td>
+                                        <td>{{ result.registration }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>

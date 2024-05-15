@@ -1,0 +1,29 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class='titleContainer'>
+            <h3 class='header'>New Lead</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="content-block">
+            <app-lead-form [lead]='this.lead'></app-lead-form>
+          </div>
+          <div class="content-block">
+            <div class='row mt-3'>
+              <div class="col-12 text-end">
+              <button class='btn btn-success' (click)='save()'>Save</button> &nbsp;
+              <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+
+ 
+</div>

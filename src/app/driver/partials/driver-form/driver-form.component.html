@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="form-group col-md-4">
+    <label for="inputEmail4">First Name</label>
+    <input type="text" name='name' [(ngModel)]='this.driver.firstName' class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Middle Name</label>
+    <input type="text" name='registration' [(ngModel)]='this.driver.middleName' class="form-control"
+      id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Last Name</label>
+    <input type="text" name='vinNumber' [(ngModel)]='this.driver.lastName' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Driver type</label>
+    <select class='form-control'
+      (change)='this.driver.driverTypeId = +$event.target.value; this.driver.driverType.id = this.driver.driverTypeId'>
+      <option value='-1'>Select a driver type</option>
+      <option *ngFor='let item of this.types' [value]='item.id' [selected]='this.driver.driverTypeId === item.id'>{{
+        item.name }}</option>
+    </select>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Personal Phone Number</label>
+    <input type="text" name='contact' [(ngModel)]='this.driver.contact' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Work Phone Number</label>
+    <input type="text" name='contact' [(ngModel)]='this.driver.workNumber' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Employee Number</label>
+    <input type="text" name='make' [(ngModel)]='this.driver.employeeNumber' class="form-control" id="inputPassword4">
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Bonus Level</label>
+    <select class='form-control' (change)='this.driver.driverBonusLevelId = +$event.target.value;'>
+      <option value='-1'>No Bonus</option>
+      <option *ngFor='let item of this.levels' [value]='item.id'
+        [selected]='this.driver.driverBonusLevelId === item.id'>{{ item.name }}</option>
+    </select>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Depot</label>
+    <select class='form-control'
+      (change)='this.driver.depotId = +$event.target.value; this.driver.depot = {}; this.driver.depot.id = this.driver.depotId'>
+      <option value='-1'>Select a depot</option>
+      <option *ngFor='let item of this.depots' [value]='item.id' [selected]='this.driver.depotId === item.id'>{{
+        item.name }}</option>
+    </select>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Notes</label>
+    <textarea rows="1" name='notes' [(ngModel)]='this.driver.notes' class="form-control"></textarea>
+  </div>
+  <div class='form-group col-md-4 mt-auto'>
+    <input type='checkbox' [(ngModel)]="this.driver.active" [ngModelOptions]="{standalone: true}" /> &nbsp;
+    <label>Active?</label>
+  </div>
+
+
+  <!-- <div class="form-group col-md-4">
+  <label for="inputPassword4">Preferred Vehicle</label>
+  <ng-select [(ngModel)]="this.driver.vehicleId" (change)='this.driver.vehicleId = +$event; this.driver.vehicle = {}; this.driver.vehicle.id = this.driver.vehicleId'>
+    <ng-option *ngFor='let item of this.vehicles' [value]='item.id'>{{ item.registration }} ({{item.vehicleType.name}})</ng-option>
+  </ng-select>
+</div> -->
+
+  <!-- <div class="form-group col-md-4">
+  <label for="inputPassword4">Preferred Trailer</label>
+  <ng-select [(ngModel)]="this.driver.trailerId" (change)='this.driver.trailerId = +$event; this.driver.trailer = {}; this.driver.trailer.id = this.driver.trailerId'>
+    <ng-option *ngFor='let item of this.trailers' [value]='item.id'>{{ item.registration }} (VIN: {{item.vinNumber}})</ng-option>
+  </ng-select>
+</div> -->
+
+</div>

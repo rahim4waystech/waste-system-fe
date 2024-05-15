@@ -1,0 +1,25 @@
+<div class="row m-0">
+  <div class="col text-center">
+    <b>Sales per Salesperson</b>
+    <hr>
+  </div>
+</div>
+
+<ngx-charts-pie-chart
+  [view]="view"
+  [scheme]="colorScheme"
+  [results]="dataPie"
+  [gradient]="gradient"
+  [legend]="showLegendPie"
+  [legendPosition]="legendPosition"
+  [labels]="showLabels"
+  [doughnut]="isDoughnut"
+  *ngIf='!errorReport'
+  >
+</ngx-charts-pie-chart>
+
+<div class="alert alert-danger" role="alert" *ngIf='this.errorReport'>
+  There was a problem loading Sales per Salesperson
+  <hr>
+  {{this.errorMessage.error.statusCode}}: {{this.errorMessage.error.message}}
+</div>

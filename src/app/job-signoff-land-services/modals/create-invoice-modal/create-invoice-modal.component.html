@@ -1,0 +1,120 @@
+<jw-modal id='createInvoiceModal'>
+
+  <h1 class='header'>Create Invoice</h1>
+
+  <p style='font-size:2rem' *ngIf='this.jobs.length > 0'>
+    <strong>Total Amount: {{ this.getSummaryDetails().total }} Total Qty: {{ this.getSummaryDetails().qty }} Total
+      Price: {{this.getSummaryDetails().price }}</strong>
+  </p>
+  <div class="row">
+    <div class="form-group col-lg-3 col-md-4">
+      <label for="invoiceSplitByPO">Invoice Number</label>
+      <input class='form-control' type='text' [(ngModel)]="this.invoiceNumber" />
+    </div>
+
+    <div class="form-group  col-lg-3 col-md-4">
+      <label for="invoiceSplitByPO">Invoice Date</label>
+      <input class='form-control' type="date" name='name' [(ngModel)]='this.date' id="invoiceSplitByPO">
+    </div>
+    <div class='form-group col-lg-3 col-md-4'>
+      <label>Invoice POD Type</label>
+      <select (change)='this.ticketType = +$event.target.value' class='form-select'>
+        <option value='1'>Paper</option>
+        <option value='2'>Electronic</option>
+      </select>
+    </div>
+    <!-- <div class="form-group col-md-4"> -->
+    <!-- <label for="invoiceperiod">Invoice Period</label>
+        <select class='form-control' (change)='this.customerDetails.invoicePeriodId = +$event.target.value'>
+          <option value='-1'>Select an invoice period</option>
+          <option value='1' [selected]='this.customerDetails.invoicePeriodId === 1'>Weekly</option>
+          <option value='2' emailInvoiceModal[selected]='this.customerDetails.invoicePeriodId === 2'>2 Weekly</option>
+          <option value='3' [selected]='this.customerDetails.invoicePeriodId === 3'>Monthly</option>
+          <option value='4' [selected]='this.customerDetails.invoicePeriodId === 4'>Quarterly</option>
+          <option value='5' [selected]='this.customerDetails.invoicePeriodId === 5'>Yearly</option>
+        </select>
+      </div> -->
+    <div class="form-group col-lg-3 col-md-4 ">
+      <label for="invoiceMethod">Invoice Method</label>
+      <select class='form-select' (change)='this.customerDetails.invoiceMethodId = +$event.target.value;'>
+        <option value='-1'>Select an invoice method</option>
+        <option value='1' [selected]='this.customerDetails.invoiceMethodId === 1'>Email</option>
+        <option value='2' [selected]='this.customerDetails.invoiceMethodId === 2'>Post</option>
+      </select>
+    </div>
+    <div class="form-group col-lg-3 col-md-4 mt-auto">
+
+      <input type="checkbox" name='name' [ngModelOptions]="{standalone: true}"
+        [(ngModel)]='this.customerDetails.invoiceSplitByPO' id="invoiceSplitByPO">
+      &nbsp; <label for="invoiceSplitByPO">Split Invoices By PO</label>
+    </div>
+    <div class="form-group col-lg-3 col-md-4">
+
+      <input type="checkbox" name='name' [ngModelOptions]="{standalone: true}"
+        [(ngModel)]='this.customerDetails.invoiceSplitBySite' id="invoiceSplitBySite">
+      &nbsp; <label for="invoiceSplitBySite">Split Invoices By Site</label>
+    </div>
+    <div class="form-group col-lg-3 col-md-4">
+
+      <input type="checkbox" name='name' [ngModelOptions]="{standalone: true}"
+        [(ngModel)]='this.customerDetails.invoiceSplitByOrderType' id="invoiceSplitByOrderType">
+      &nbsp;
+      <label for="invoiceSplitByOrderType">Split Invoices By Order Type</label>
+    </div>
+
+    <div class="form-group col-lg-3 col-md-4">
+
+      <input type="checkbox" name='name' [ngModelOptions]="{standalone: true}" [(ngModel)]='this.confirmation'
+        id="invoiceSplitByOrderType">
+      &nbsp;
+      <label for="invoiceSplitByOrderType">Create Invoice Confirmation</label>
+    </div>
+
+    <div class='form-group col-lg-3 col-md-4'>
+
+      <input type='checkbox' [(ngModel)]="this.sendEmail" [ngModelOptions]="{standalone: true}" /> &nbsp;
+      <label>Send email?</label>
+    </div>
+    <div class='form-group col-lg-3 col-md-4'>
+
+      <input type='checkbox' [(ngModel)]="this.showPODS" [ngModelOptions]="{standalone: true}" /> &nbsp;
+      <label>Include PODs?</label>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p>Note you can send an email after generating if you wish from the preview screen instead.</p>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+
+
+    <div class="form-group col-md-4" *ngIf='this.sendEmail'>
+      <label>Message</label>
+      <textarea [(ngModel)]='this.message' style='height: 10rem' class='form-control'>Hi,
+    Please find attached your requested invoices.
+
+    Regards,
+    The Management team
+        </textarea>
+    </div>
+
+    <div class="form-row col-md-4" *ngIf='this.sendEmail'>
+      <div class="form-group col-md-4">
+        <label>Send to</label>
+        <input type='text' class='form-control' [(ngModel)]='this.email.email' />
+      </div>
+    </div>
+
+  </div>
+  <div class="row my-3">
+    <div class="col-12 text-end">
+      <button class='btn btn-success' (click)='this.save()'>Generate</button>&nbsp;
+      <button class='btn btn-info' (click)='this.preview()'>Preview</button>&nbsp;
+      <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+    </div>
+  </div>
+
+</jw-modal>

@@ -1,0 +1,247 @@
+.unitHeader{
+  border-bottom: 1px dashed #000;
+}
+
+.unitTimeline{
+
+}
+
+h4 {
+  border-bottom: 2px solid black;
+}
+
+.jobBlock{
+  border: 1px solid black;
+
+  .jobBlockTop {
+    border-bottom: 2px dashed black;
+    span {
+      font-weight: bold;
+    }
+  }
+
+  .infoBlock {
+    border-bottom: 1px dashed black;
+
+    span {
+      font-weight: bold;
+    }
+  }
+}
+
+.whiteBg {
+  background:RGBA(255,255,255,0.7);
+
+  h4{
+    cursor:pointer;
+  }
+
+  .anim-collapse{
+    transition: all 300ms ease-in;
+  }
+}
+
+.jobBg{
+  border: 1px solid gray;
+  background: RGBA(200,200,200,0.4);
+}
+
+.toolbar {
+}
+
+.driverBlock{
+  text-align: center;
+  font-weight: bold;
+  background: RGBA(200,200,200,0.8);
+  cursor: pointer;
+  border-radius:15px;
+  border:2px solid black;
+}
+
+.subbieBlock{
+  text-align: center;
+  font-weight: bold;
+  background: RGBA(50,50,50,0.8);
+  color: #fff;
+  cursor: pointer;
+  border-radius:15px;
+  border:2px solid black;
+}
+
+.unavailableBlock {
+  text-align: center;
+  font-weight: bold;
+  background: RGBA(180,0,0,0.4);
+  color: #000;
+  border: 2px dashed red;
+  border-radius: 15px;
+  span {
+    font-weight: bold;
+  }
+}
+
+.dropZone{
+  pointer-events: none;
+  text-align: center;
+  font-weight: bold;
+  background: #cebd95;
+}
+
+.orderBlock{
+  text-align: center;
+  font-weight: bold;
+  background: RGBA(200,200,200,0.8);
+  cursor: pointer;
+  border-radius:15px;
+  border:2px solid black;
+
+  span {
+    font-size: 10px;
+  }
+}
+
+.timelineBlock{
+  pointer-events: none;
+  text-align: center;
+  font-weight: bold;
+  background: #cebd95;
+}
+
+.timeBlock{
+  text-align: center;
+  font-weight: bold;
+  background: RGBA(200,200,200,0.8);
+  border-radius:15px;
+  border:2px solid black;
+}
+
+.emptyBlock {
+  pointer-events: none;
+  span{
+    pointer-events: none;
+  }
+  border: 1px dotted #000;
+  border-radius: 15px;
+}
+
+.emptyTimeBlock {
+  border: 1px dotted #000;
+  border-radius: 15px;
+  width:150px;
+  padding:0;
+  margin:0;
+}
+
+.incompleteRoute{
+  border: 2px solid red;
+}
+
+.completeRoute{
+  border: 2px solid green;
+}
+
+.collapsedJobBlock {
+  border:1px solid black;
+  font-size: 10px;
+}
+
+.collapsedJobBlockPending {
+  background: RGBA(0,0,0,0.4);
+  color: #fff;
+}
+
+.collapsedJobBlockSent {
+  background: RGBA(0,180,0,0.4);
+  color: #000;
+}
+
+.collapsedJobBlockDeleted {
+  background: RGBA(180,0,0,0.4);
+  color: #000;
+}
+
+.collapsedJobBlockSigned {
+  background: RGBA(0,0,180,0.4);
+  color: #fff;
+}
+
+.iconBlock {
+  color: #000;
+  text-align: right;
+
+  i:hover {
+    cursor: pointer;
+  }
+}
+
+.datePicker {
+  display: inline-block;
+  position: absolute;
+  left: 30rem;
+  top: 3rem;
+}
+.timelineToolbarContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width:100%;
+}
+
+.dateSelectorContainer {
+  display: flex;
+  flex-flow: row wrap;
+  text-align:center;
+
+  button {
+    // background: transparent;
+    // border: 0;
+    // box-shadow: none;
+  }
+
+  i {
+    // font-size: 1rem;
+
+    &:hover {
+      // color: #2196f3;
+      cursor: pointer;
+    }
+  }
+
+  .dateSelectorBox {
+    background-color: RGBA(255,255,255,0.6);
+    // padding: 0.3rem;
+    width: 70%;
+    font-size: 1.2rem;
+    text-align: center;
+    // margin-top: 0.7rem;
+    color: #34495e;
+    font-weight: bold;
+
+    &:hover {
+      color:#2196f3;
+      cursor: pointer;
+    }
+  }
+}
+
+.qtyBox {
+  text-align: center;
+  font-weight: bold;
+  border-left: 1px dashed black;
+}
+
+.jobDetails {
+  span {
+    font-weight: bold;
+  }
+}
+
+.routeName{
+  font-size:12px;
+  font-weight:bold;
+  // border-bottom:1px solid black;
+}
+
+.pink {
+  background: pink;
+}

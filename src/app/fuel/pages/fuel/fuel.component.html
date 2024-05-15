@@ -1,0 +1,29 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class='sheet'>
+        <div class="alert alert-danger" *ngIf='this.isError'>Something went wrong. Please try again later.</div>
+        <div class="alert alert-success" *ngIf='this.isSuccess'>Driver hours was updated successfully</div>
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class='titleContainer'>
+                <h2 class='header'>Daily Fuel for {{ this.currentDate }}</h2>
+                </div>
+            </div>
+            <div class="col-lg-6 my-auto text-end">
+              <div>
+                <button class='btn btn-secondary' routerLink='/fuel/prices'><i class="fas fa-money-bill-wave"></i> Manage Fuel Prices</button> &nbsp;
+                <button class='btn btn-secondary' routerLink='/fuel/advanced'><i class="fas fa-cog"></i> Advanced</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+   
+  </div>
+  </div>

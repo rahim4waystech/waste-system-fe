@@ -1,0 +1,130 @@
+<app-tabs>
+  <app-tab title="Asset">
+    <div class="row ">
+      <div class="col-md-4 form-group">
+        <label for="asset">Asset Name / Registration</label>
+        <input type="text" name='asset' [(ngModel)]='this.vehicle.registration'
+          class="form-control" [readOnly]='!this.editToggle' id="asset">
+      </div>
+      <div class="col-md-4 form-group">
+        <label for="assetSerial">Serial No.</label>
+        <input type="text" name='assetSerial' [(ngModel)]='this.vehicle.asset.assetSerial' class="form-control"
+          [readOnly]='!this.editToggle' id="assetSerial">
+      </div>
+      <div class="col-md-4 form-group" *ngIf='!this.formSettings.isVehicle'>
+        <label for="make">Make</label>
+        <input type="text" name='make' [(ngModel)]='this.vehicle.asset.make' class="form-control"
+          [readOnly]='!this.editToggle' id="make">
+      </div>
+      <div class="col-md-4 form-group" *ngIf='!this.formSettings.isVehicle'>
+        <label for="model">Model</label>
+        <input type="text" name='model' [(ngModel)]='this.vehicle.asset.model' class="form-control"
+          [readOnly]='!this.editToggle' id="model">
+      </div>
+      <div class="col-md-4 form-group">
+        <label for="description">Description</label>
+        <textarea name="description" rows="1" class='form-control' [(ngModel)]='this.vehicle.asset.description'></textarea>
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Asset Category</label>
+        <ng-container *ngIf='this.formSettings.isVehicle || this.vehicle.asset.categoryId === 1'>
+          <input class='form-control' type="text" value='Vehicle' readOnly />
+        </ng-container>
+        <ng-container *ngIf='!this.formSettings.isVehicle && this.vehicle.asset.categoryId !== 1'>
+          <select class='form-control' [class.is-invalid]='this.vehicle.asset.categoryId === -1'
+            (change)='this.changeCategory($event)'>
+            <option value='-1'>Select a Category</option>
+            <ng-container *ngFor='let item of this.categories'>
+              <option [disabled]='item.id === 1' [value]='item.id'
+                [selected]='this.vehicle.asset.categoryId === item.id'>{{ item.name }}</option>
+            </ng-container>
+          </select>
+        </ng-container>
+      </div>
+      <div class="col-md-4 form-group">
+        <label for="value">Value (£)</label>
+        <input type="number" name='value' [(ngModel)]='this.vehicle.asset.value' class="form-control"
+          [readOnly]='!this.editToggle' id="value">
+      </div>
+      <div class="col-md-4 form-group" *ngIf='!this.formSettings.isVehicle'>
+        <label for="dateOfRegistration">Date of First Registration</label>
+        <input type="date" name='dateOfRegistration' [(ngModel)]='this.vehicle.asset.dateOfRegistration'
+          class="form-control" [readOnly]='!this.editToggle' id="dateOfRegistration">
+      </div>
+      <div class="col-md-4 form-group" *ngIf='!this.formSettings.isVehicle'>
+        <label for="purchaseDate">Purchase Date</label>
+        <input type="date" name='purchaseDate' [(ngModel)]='this.vehicle.asset.purchaseDate' class="form-control"
+          [readOnly]='!this.editToggle' id="purchaseDate">
+      </div>
+      <div class="col-md-4 form-group" *ngIf='!this.formSettings.isVehicle'>
+        <label>Depot</label>
+        <select class='form-control' (change)='this.changeDepot($event)'>
+          <option value='-1'>No Depot</option>
+          <option *ngFor='let depot of this.depots' [value]='depot.id'
+            [selected]='this.vehicle.asset.depotId === depot.id'>
+            {{ depot.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </app-tab>
+  <app-parts-view [defectId]='-1' [vehicleId]='this.vehicle.id' [allowLink]='this.allowLink'></app-parts-view>
+</app-tabs>
+
+
+<!-- <div class="row">
+  <div class="col-9">
+
+
+  </div>
+  <div class="col-3 border-left"> -->
+<!-- <h5>Paired Assets</h5>
+    <p>Assets can be Linked in Asset Register</p>
+    <ng-container *ngIf='!this.formSettings.allowLink && this.linkedAssets.length > 0'>
+      <table class='table table-bordered'>
+        <thead class='thead-dark'>
+          <tr>
+            <th>Asset</th>
+            <th>Description</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor='let item of this.linkedAssets'>
+            <td>{{item.asset}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.category.name}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <ng-container *ngIf='this.formSettings.allowLink'>
+      <ng-container *ngIf='this.vehicle.asset.id !== null && this.vehicle.asset.id !== -1'>
+        <ng-container *ngIf='this.vehicle.asset.categoryId === 1 || this.vehicle.asset.categoryId === 4' style='overflow-y:hidden;'>
+          <ng-multiselect-dropdown
+          [settings]="dropdownSettings"
+          [itemsShowLimit]=3
+          [placeholder]="'Select Child Assets'"
+          [data]="this.assetList"
+          (onSelect)="onItemSelect($event)"
+          (onSelectAll)="onSelectAll($event)"
+          [(ngModel)]="this.linkedAssets.data">
+          </ng-multiselect-dropdown>
+        </ng-container>
+        <ng-container *ngIf='this.vehicle.asset.categoryId !== 1 && this.vehicle.asset.categoryId !== 4'>
+          You can only add assets to a Vehicle.<br/>
+        </ng-container>
+        <ng-container *ngIf='this.vehicle.asset.parentId !== -1 && this.parentAsset !== undefined'>
+          Assigned to <br/>
+          <button class='btn btn-block btn-info' (click)='this.openAsset(this.parentAsset.id)'>{{this.parentAsset.asset}}</button>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf='this.vehicle.asset.id === null || this.vehicle.asset.id === -1'>
+        Please Save asset to Pair other assets.
+      </ng-container>
+    </ng-container>
+  </div> -->
+<!-- </div> -->

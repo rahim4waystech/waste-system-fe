@@ -1,0 +1,121 @@
+          <!-- comment modal by shujat -->
+ <app-contact-account-modal (selectedAccounts)='this.onSelectedAccounts($event)'></app-contact-account-modal>
+<app-tabs>
+    <app-tab title='Main Details'>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label>Title</label>
+                <select class='form-control' (change)='this.contact.title = $event.target.default'>
+                    <option value='-1'>Select a title</option>
+                    <option [selected]='this.contact.title === ""' value="">Mr</option>
+                    <option [selected]='this.contact.title === "Mrs"' value="Mrs">Mrs</option>
+                    <option [selected]='this.contact.title === "Miss"' value="Miss">Miss</option>
+                    <option [selected]='this.contact.title === "Ms"' value="Ms">Ms</option>
+                    <option [selected]='this.contact.title === "Dr"' value="Dr">Dr</option>
+                    <option [selected]='this.contact.title === "Sir"' value='Sir'>Sir</option>
+                    <option [selected]='this.contact.title === "Professor"' value="Professor">Professor</option>
+                    <option [selected]='this.contact.title === "Lord"' value="Lord">Lord</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label>First Name</label>
+                <input type='text' [class.is-invalid]='!this.contact.firstName' class='form-control' [(ngModel)]='this.contact.firstName' />
+            </div>
+            <div class="form-group col-md-4">
+                <label>Last Name</label>
+                <input type='text' [class.is-invalid]='!this.contact.lastName' class='form-control' [(ngModel)]='this.contact.lastName' />
+            </div>
+            <div class="form-group col-md-4">
+                <label>Job Title</label>
+                <input type='text' class='form-control' [(ngModel)]='this.contact.jobTitle' />
+            </div>
+            <div class="form-group col-md-4">
+                <label>Job Role</label>
+                <select [class.is-invalid]='this.contact.roleId === -1' class='form-control' (change)='this.contact.roleId = $event.target.value; this.contact.role = {id: this.contact.roleId}'>
+                    <option value='-1'>Select a job role</option>
+                    <option [selected]='this.contact.roleId === role.id' *ngFor='let role of this.roles' [value]='role.id'>{{ role.name }}</option>
+                </select>
+            </div>
+            <div class='form-group col-md-4'>
+                <label>Remarks/Notes</label>
+                <textarea rows="1" class='form-control' [(ngModel)]="this.contact.remarks"></textarea>
+            </div>
+        </div>
+        
+    </app-tab>
+    <app-tab title='Contact Details'>
+        <div class='row'>
+            <div class='form-group col-md-4'>
+                <label>Phone Number</label>
+                <input type='text' [class.is-invalid]='!this.contact.businessPhone' [(ngModel)]="this.contact.businessPhone" class='form-control'/>
+            </div>
+            <div class='form-group col-md-4'>
+                <label>Mobile</label>
+                <input type='text' [(ngModel)]="this.contact.mobile" class='form-control' />
+            </div>
+            <div class='form-group col-md-4'>
+                <label>Fax</label>
+                <input type='text' [(ngModel)]="this.contact.fax" class='form-control' />
+            </div>
+            <div class='form-group col-md-4'>
+                <label>Email</label>
+                <input type='text' [(ngModel)]="this.contact.email" class='form-control' />
+            </div>
+        </div>
+<hr>
+       <div class="row">
+        <div class="col-12">
+        <h3 class='title'>Address details</h3>
+    </div>
+        <div class="form-group col-md-4">
+        <label for="billing1">Address Line 1</label>
+        <input type="text" name='name' [(ngModel)]='this.contact.address1' class="form-control" id="billing1">
+        </div>
+        <div class="form-group col-md-4">
+        <label for="billing2">Address Line 2</label>
+        <input type="text" name='name' [(ngModel)]='this.contact.address2' class="form-control" id="billing2">
+        </div>
+        <div class="form-group col-md-4">
+        <label for="billing3">City</label>
+        <input type="text" name='name' [(ngModel)]='this.contact.city' class="form-control" id="billing3">
+        </div>
+        <div class="form-group col-md-4">
+        <label for="billing4">Country</label>
+        <input type="text" name='name' [(ngModel)]='this.contact.country' class="form-control" id="billing4">
+        </div>
+        <div class="form-group col-md-8">
+        <label for="billing5">Postcode</label>
+        <div class="row">
+            <div class="col-lg-6">
+                <input type="text" name='name' [(ngModel)]='this.contact.postCode' class="form-control" id="billing5">
+            </div>
+            <div class="col-lg-6">
+                <app-address-picker [postcode]='this.contact.postCode' (onAddressFound)='this.addressFound($event)'></app-address-picker>
+            </div>
+        </div>
+        
+        
+        </div>
+    </div>
+    </app-tab>
+    <app-tab title='Accounts'>
+        <button class='btn btn-secondary' type='button' (click)='this.openModal("contactAccountModal")'>Link Account</button>
+        <br />
+        <br />
+        <table *ngIf='this.contact.accounts.length > 0'>
+            <thead>
+                <th>Account Name</th>
+                <th></th>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of this.contact.accounts'>
+                    <td>{{ item.name }}({{ item.accountRef }})</td>
+                    <td><button class='btn btn-danger' type='button' (click)='deleteAccountLink(item)'><i class="fas fa-trash-alt"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </app-tab>
+    <app-tab title='Discussion' *ngIf='this.contact.id !== -1'>
+      <app-discussion [data]='this.contact' entity='contact'></app-discussion>
+    </app-tab>
+</app-tabs>

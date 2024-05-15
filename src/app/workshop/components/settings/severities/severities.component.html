@@ -1,0 +1,88 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <app-workshop-nav></app-workshop-nav>
+        </div>
+        <div class="card-body">
+          <div class="">
+            <div class="row content-block-head">
+              <div class="col-12">
+                <div class="row">
+                  <h4>Vehicle Check Areas</h4>
+                </div>
+              </div>
+            </div>
+            <div class="row content-block">
+              <div class="col-12">
+                <table class='table table-bordered table-hover'>
+                  <thead class='table-dark'>
+                    <tr>
+                      <th>Severity Level</th>
+                      <th>Name</th>
+                      <th>Is VOR?</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor='let severity of this.severities'>
+                      <td>{{severity.severity}}</td>
+                      <td>{{severity.notes}}</td>
+                      <td *ngIf='severity.isVor'>Failure is Auto-VOR</td>
+                      <td *ngIf='!severity.isVor'>Failure is not Auto-VOR</td>
+                      <td>
+                        <button class='btn btn-light disabled' *ngIf='severity.severity === 1'
+                          [class.disabled]='this.disableButtons'><i class="far fa-caret-square-up"></i></button> &nbsp;
+                        <button class='btn btn-info' *ngIf='severity.severity > 1'
+                          [class.disabled]='this.disableButtons' (click)='this.moveUp(severity.severity)'><i
+                            class="far fa-caret-square-up"></i></button> 
+                        <button class='btn btn-light disabled' *ngIf='severity.severity === this.severities.length'
+                          [class.disabled]='this.disableButtons'><i class="far fa-caret-square-down"></i></button>
+                        &nbsp;
+                        <button class='btn btn-info' *ngIf='severity.severity < this.severities.length'
+                          [class.disabled]='this.disableButtons' (click)='this.moveDown(severity.severity)'><i
+                            class="far fa-caret-square-down"></i></button>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf='!addRow'>
+                      <td colspan='4'>
+                        <button class='btn btn-success btn-block' [class.disabled]='this.disableButtons'
+                          (click)='addNewRow()'><i class="far fa-plus-square"></i></button>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf='addRow'>
+                      <td>{{this.newRow.severity}}</td>
+                      <td>
+                        <label>Name</label>
+                        <input type='text' [(ngModel)]='this.newRow.notes' class='form-control'
+                          [class.is-valid]='this.newRow.notes !== ""' [class.is-invalid]='this.newRow.notes === ""' />
+                      </td>
+                      <td>
+                        <label>Is VOR?</label>
+                        <select (change)='changeDropdown($event)' class='form-control'>
+                          <option [value]='0' [selected]='this.newRow.isVor === false'>No</option>
+                          <option [value]='1' [selected]='this.newRow.isVor === true'>Yes</option>
+                        </select>
+                      </td>
+                      <td align="center">
+                        <button class='btn btn-success' [class.disabled]='this.disableButtons'
+                          (click)='this.save()'>Save</button> &nbsp;
+                        <button class='btn btn-warning' [class.disabled]='this.disableButtons'
+                          (click)='cancel()'>Cancel</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

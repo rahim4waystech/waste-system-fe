@@ -1,0 +1,35 @@
+
+<div class="fullcontainer" >
+ <div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-lg-6 my-auto">
+            <div class='titleContainer'>
+              <h2 class='header'>Job Sign off</h2>
+            </div>
+          </div>
+          <div class="col-lg-6 my-auto text-end">
+            <div>
+              <!-- <button class='btn btn-secondary' routerLink='/quoting/new/accounts'><i class="fas fa-plus"></i> New</button>&nbsp;
+              <button class='btn btn-secondary' routerLink='/quoting/products'><i class="fas fa-boxes"></i> Manage Products</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <app-tabs (tabClicked)='this.onTabClicked($event)' [inverse]='true'>
+          <app-tab  [active]='this.activeTab === "transport"' title='Transport Sign off'>
+        <app-job-signoff-transport-land></app-job-signoff-transport-land>
+          </app-tab>
+          <app-tab [active]='this.activeTab === "manager"' title='Manager Sign off'>
+        <app-job-signoff-manager-land></app-job-signoff-manager-land>
+          </app-tab>
+        </app-tabs>
+      </div>
+    </div>
+  </div>
+ </div>
+
+

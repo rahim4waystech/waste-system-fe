@@ -1,0 +1,157 @@
+<ng-container *ngIf='this.edit'>
+  <div class="alert alert-info" *ngIf='!this.editToggle'>Editing is disabled. Enable it in Edit Tab if required.</div>
+  <div class="alert alert-warning" *ngIf='this.editToggle'>Please use caution, editing is enabled and can affect active
+    vehicles. Disable it in Edit Tab.</div>
+</ng-container>
+
+<!-- <app-tabs class='mt-3'>
+  <app-tab title='Extra Details'> -->
+<div class="row">
+  <div class="col-lg-3 form-group">
+    <label for="fleetNo">Fleet Number</label>
+    <input type="text" name='fleetNo' [(ngModel)]='this.vehicleDetails.fleetNo' class="form-control"
+      [readOnly]='!this.editToggle' id="fleetNo">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="yearOfManufacture">Year of Manufacture</label>
+    <input type="text" name='yearOfManufacture' [(ngModel)]='this.vehicleDetails.yearOfManufacture' class="form-control"
+      [readOnly]='!this.editToggle' id="yearOfManufacture">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="dateOfFirstRegistration">Date of First Registration</label>
+    <input type="date" name='dateOfFirstRegistration' [(ngModel)]='this.vehicleDetails.dateOfFirstRegistration'
+      class="form-control" [readOnly]='!this.editToggle' id="dateOfFirstRegistration">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="engineCylinderCapacity">Engine Capacity (CC)</label>
+    <input type="text" name='engineCylinderCapacity' [(ngModel)]='this.vehicleDetails.engineCylinderCapacity'
+      class="form-control" [readOnly]='!this.editToggle' id="engineCylinderCapacity">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="co2Emissions">CO2 Emissions</label>
+    <input type="text" name='co2Emissions' [(ngModel)]='this.vehicleDetails.co2Emissions' class="form-control"
+      [readOnly]='!this.editToggle' id="co2Emissions">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="typeApproval">Type Approval</label>
+    <input type="text" name='typeApproval' [(ngModel)]='this.vehicleDetails.typeApproval' class="form-control"
+      [readOnly]='!this.editToggle' id="typeApproval">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="wheelPlan">Wheel Plan</label>
+    <input type="text" name='wheelPlan' [(ngModel)]='this.vehicleDetails.wheelPlan' class="form-control"
+      [readOnly]='!this.editToggle' id="wheelPlan">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="doorPlan">Door Plan</label>
+    <input type="text" name='doorPlan' [(ngModel)]='this.vehicleDetails.doorPlan' class="form-control"
+      [readOnly]='!this.editToggle' id="doorPlan">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="doorPlanLiteral">Literal Door Plan</label>
+    <input type="text" name='doorPlanLiteral' [(ngModel)]='this.vehicleDetails.doorPlanLiteral' class="form-control"
+      [readOnly]='!this.editToggle' id="doorPlanLiteral">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="engineNumber">Engine Number</label>
+    <input type="text" name='engineNumber' [(ngModel)]='this.vehicleDetails.engineNumber' class="form-control"
+      [readOnly]='!this.editToggle' id="engineNumber">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="seatingCapacity">Seating Capacity</label>
+    <input type="number" name='seatingCapacity' [(ngModel)]='this.vehicleDetails.seatingCapacity' class="form-control"
+      [readOnly]='!this.editToggle' id="seatingCapacity">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="transmission">Transmission</label>
+    <input type="text" name='transmission' [(ngModel)]='this.vehicleDetails.transmission' class="form-control"
+      [readOnly]='!this.editToggle' id="transmission">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="transmissionCode">Transmission Code</label>
+    <input type="text" name='transmissionCode' [(ngModel)]='this.vehicleDetails.transmissionCode' class="form-control"
+      [readOnly]='!this.editToggle' id="transmissionCode">
+  </div>
+  <div class="col-lg-3 form-group">
+    <label for="transmissionType">Transmission Type</label>
+    <input type="text" name='transmissionType' [(ngModel)]='this.vehicleDetails.transmissionType' class="form-control"
+      [readOnly]='!this.editToggle' id="transmissionType">
+  </div>
+
+
+<!-- </app-tab> -->
+<!-- <app-tab title='Inspections'> -->
+<div class=" row" *ngIf='this.vehicleDetails.id > 0'>
+  <div class="col-12 mt-3">
+  <div class="tbl-div">
+  <div class="table-responsive">
+    <table class='table table-bordered'>
+      <thead class='table-dark'>
+        <tr>
+          <th>Inspection</th>
+          <th>Interval</th>
+          <th>Last Date</th>
+          <th>Next Due Date</th>
+          <th *ngIf='this.editToggle'>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let inspection of this.inspectionAssignments.intervals'>
+          <td>{{inspection.name}}</td>
+          <td>{{inspection.number}} {{inspection.unit}}</td>
+          <td *ngIf='inspection.lastDate !== ""'>{{this.niceDate(inspection.lastDate)}}</td>
+          <td *ngIf='inspection.lastDate === ""'>
+            <div class="input-group">
+              <input [(ngModel)]='inspection.lastDate' (ngModelChange)='addDateToInspection(inspection)'
+                class='form-control' type='date' />
+              <div class="input-group-append">
+                <button class='btn btn-success' (click)='addDateToInspection(inspection)'>Add Date</button>
+              </div>
+            </div>
+          </td>
+          <td *ngIf='inspection.lastDate !== ""'>{{this.nextDate(inspection)}}</td>
+          <td *ngIf='this.editToggle'>
+            <button class='btn-sm btn-block btn-danger'
+              (click)='$event.preventDefault();deleteInspectionAssignment(inspection.id);'><i
+                class="fas fa-times"></i></button>
+          </td>
+        </tr>
+        <tr *ngIf='this.editToggle'>
+          <td colspan='4' *ngIf='!this.addIntervalToggle'>
+          <td colspan='4' *ngIf='this.addIntervalToggle'>
+            <select class='form-control' (change)='this.addInterval($event)'>
+              <option value='-1'>Select an Interval</option>
+              <option *ngFor='let item of this.inspectionIntervals' [disabled]='this.alreadySelected(item.id)'
+                [value]='item.id'>
+                {{ item.name }}
+              </option>
+            </select>
+          </td>
+          <td *ngIf='!this.addIntervalToggle'><button class='btn-sm btn-block btn-success'
+              (click)='$event.preventDefault();this.addIntervalToggle = true;'><i class="fas fa-plus"></i></button></td>
+          <td *ngIf='this.addIntervalToggle'><button class='btn-sm btn-block btn-danger'
+              (click)='$event.preventDefault();this.addIntervalToggle = false;'><i class="fas fa-times"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>
+</div>
+<div class="form-group row" *ngIf='this.vehicleDetails.id === -1'>
+  <p>Inspections cannot be added until the Vehicle has been created</p>
+</div>
+<!--  </app-tab>
+  <app-tab title='Edit' *ngIf='this.edit'>
+    <div class="row">
+      <div class="col">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="customSwitch1" [(ngModel)]='this.editToggle'>
+          <label *ngIf='!this.editToggle' class="custom-control-label" for="customSwitch1">Editing Disabled</label>
+          <label *ngIf='this.editToggle' class="custom-control-label" for="customSwitch1">Editing Enabled</label>
+        </div>
+      </div>
+    </div>
+  </app-tab>
+</app-tabs> -->

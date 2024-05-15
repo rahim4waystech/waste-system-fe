@@ -1,0 +1,146 @@
+            <!--modal comment by shujat -->
+<app-quote-add-product [products]='this.products'></app-quote-add-product>
+<app-tabs>
+  <app-tab title='Main Details'>
+    <div class="row mt-4">
+      <div class="col-12 text-end">
+        <button class='btn btn-sm btn-secondary' (click)='this.showAccount();$event.preventDefault()'>
+          <strong>Customer: {{ this.customer.name }} <i class="fas fa-info-circle"></i></strong>
+        </button>
+      </div>
+    </div>
+   
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label>Name</label>
+        <input [class.is-invalid]='!this.contract.name' type='text' class='form-control'
+          [(ngModel)]="this.contract.name" />
+      </div>
+
+      <div class="form-group col-md-4">
+        <label>Start Date</label>
+        <input [class.is-invalid]='!this.contract.startDate' type='date' class='form-control'
+          [(ngModel)]="this.contract.startDate" />
+      </div>
+      <div class="form-group col-md-4">
+        <label>End Date</label>
+        <input [class.is-invalid]='!this.contract.endDate' type='date' class='form-control'
+          [(ngModel)]="this.contract.endDate" />
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contract Ref</label>
+        <input type='text' class='form-control' [(ngModel)]="this.contract.contractRef">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contract Number</label>
+        <input type='number' class='form-control' [(ngModel)]="this.contract.contractNumber" (keyup)='populateRef()' />
+      </div>
+      <div class='form-group col-md-4'>
+        <label>Type</label>
+        <select [class.is-invalid]='this.contract.contractTypeId === -1' class='form-control'
+          (change)='this.contract.contractTypeId = +$event.target.value'>
+          <option value='-1'>Select a type</option>
+          <option *ngFor='let type of this.types' [value]='type.id'
+            [selected]='this.contract.contractTypeId === type.id'>{{ type.name }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Number of Bags</label>
+        <input type='text' class='form-control' [(ngModel)]="this.contract.bagsNo">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Number of Cabinet</label>
+        <input type='text' class='form-control' [(ngModel)]="this.contract.cabinetNo">
+      </div>
+      <div class='form-group col-md-4'>
+        <label>Status</label>
+        <select [class.is-invalid]='this.contract.contractStatusId === -1' class='form-control'
+          (change)='this.contract.contractStatusId = +$event.target.value'>
+          <option value='-1'>Select a status</option>
+          <option *ngFor='let status of this.status' [value]='status.id'
+            [selected]='this.contract.contractStatusId === status.id'>{{ status.name }}</option>
+        </select>
+      </div>
+      <div class='form-group col-md-4'>
+        <label>Risk Level</label>
+        <select class='form-select' (change)='this.contract.riskLevel = +$event.target.value'>
+          <option value='-1'>Select a risk level</option>
+          <option value='1' [selected]='this.contract.riskLevel === 1'>Low</option>
+          <option value='2' [selected]='this.contract.riskLevel === 2'>Medium</option>
+          <option value='3' [selected]='this.contract.riskLevel === 3'>High</option>
+        </select>
+      </div>
+    </div>
+  </app-tab>
+  <app-tab title='Recurrence'>
+    <div class="row mt-4">
+      <div class="col-12 ">
+    <app-intervaliser [entity]='this.contract'></app-intervaliser>
+  </div>
+</div>
+  </app-tab>
+
+  <app-tab title='Pricing'>
+    <div class="row my-3">
+      <div class="col-12 text-end">
+        <button class='btn btn-secondary' type="button" (click)='this.openModal("quoteAddProductModal")'><i
+          class="fas fa-plus"></i></button>
+      </div>
+    </div>
+   <div class="recurrence-div">
+    <div class="table-responsive">
+      <table class="table table-bordered" *ngIf='this.contractProducts.contractProducts.length > 0'>
+        <thead class="table-dark">
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Unit</th>
+          <th>Base Price(&pound;)</th>
+          <th>Total Price(&pound;)</th>
+          <th></th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor='let item of this.contractProducts.contractProducts; let i = index;'>
+            <td>{{ item.product.name }}</td>
+            <td>
+              <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.qty'>
+            </td>
+            <td>
+              {{ item.product.unit.name }}(s)
+            </td>
+            <td>
+              <input type="number" min='0' name='name' class="form-control" id="inputEmail4" [(ngModel)]='item.price'>
+            </td>
+            <td>
+              {{ getTotalPriceForProduct(item) }}
+            </td>
+            <td>
+              <!-- <button class='btn btn-warning' type="button"><i class="fas fa-pencil-alt"></i></button> -->
+              <button class='btn btn-danger' type="button" (click)='this.deleteContractProduct(i)'><i
+                  class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-responsive">
+      <table lass='table table-bordered' style='width:100%;'>
+        <tbody>
+          <tr>
+            <td colspan='3'><strong>Net total</strong></td>
+            <td>&pound;{{ this.getNetTotal().toFixed(2) }}</td>
+          </tr>
+          <tr>
+            <td colspan='3'><strong>VAT total @ 20%</strong></td>
+            <td>&pound;{{ this.getVatTotal().toFixed(2) }}</td>
+          </tr>
+          <tr>
+            <td colspan='3'><strong>Gross total</strong></td>
+            <td>&pound;{{ (this.getNetTotal() + this.getVatTotal()).toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </app-tab>
+</app-tabs>

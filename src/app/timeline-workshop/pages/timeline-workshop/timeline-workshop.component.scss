@@ -1,0 +1,35 @@
+// .timelineLineContainer {
+//   display: flex;
+//   flex-flow: row wrap;
+
+// }
+
+// .timelineMainContainer {
+// }
+
+// .fullcontainer {
+//   padding-left: 15rem;
+
+// }
+.subright-div  {
+    height: 68vh !important;
+    overflow: auto;
+    padding: 10px;
+}
+.left-side {
+    box-shadow: var(--box-shadow-1) inset;
+    
+}
+.date-div {
+    position: relative !important;
+}
+
+.date-div .datePicker {
+    display: inline-block;
+    position: absolute;
+    z-index: 200 !important;
+    right: 0% !important;
+    left: unset !important;
+    top: 2rem !important;
+    background-color: #f3f6f9 !important;
+}

@@ -1,0 +1,66 @@
+<jw-modal id='printInvoiceModal'>
+  <h1 class='header'>Print Invoice 1</h1>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Invoice type</label>
+      <select name='depot' class='form-control' (change)='this.invoiceType === +$event.target.value'>
+        <option selected value='1'>Headed</option>
+        <option value='2'>Non-headed</option>
+      </select>
+    </div>
+  </div>
+
+
+
+  <div class='form-group'>
+    <label>Print PODs?</label>
+    <input type='checkbox'
+    [(ngModel)]="this.pods"
+    [ngModelOptions]="{standalone: true}"/>
+  </div>
+
+  <div class='form-group'>
+    <label>Post Invoices?</label>
+    <input type='checkbox'
+    [(ngModel)]="this.posted"
+    [ngModelOptions]="{standalone: true}"/>
+  </div>
+
+
+  <div class='form-group'>
+    <label>Send email?</label>
+    <input type='checkbox'
+    [(ngModel)]="this.sendEmail"
+    [ngModelOptions]="{standalone: true}"/>
+  </div>
+
+  <div class='form-group'>
+    <label>Show tip checks?</label>
+    <input type='checkbox'
+    [(ngModel)]="this.showTipCheck"
+    [ngModelOptions]="{standalone: true}"/>
+  </div>
+
+  <div class="form-group col-md-4" *ngIf='this.sendEmail'>
+    <label>Message</label>
+    <textarea [(ngModel)]='this.message' style='height: 10rem' class='form-control'>Hi,
+Please find attached your requested invoices.
+
+Regards,
+The Management team
+    </textarea>
+  </div>
+
+<div class="form-row" *ngIf='this.sendEmail'>
+  <div class="form-group col-md-4">
+    <label>Send to</label>
+    <input type='text' class='form-control' [(ngModel)]='this.email.email'/>
+  </div>
+</div>
+
+
+
+  <button class='btn btn-secondary' (click)='this.print()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='cancel()'>Cancel</button>
+</jw-modal>

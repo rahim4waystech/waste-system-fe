@@ -1,0 +1,33 @@
+<jw-modal id='newFolderModal'>
+  <div class="row">
+    <div class="col">
+      <h3>{{this.currentFolder.folderName}} > New Folder</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>Folder Name</label>
+      <input
+        type="text"
+        class='form-control'
+        [(ngModel)]='this.folder.folderName'
+        [class.is-valid]='this.folder.folderName !== ""'
+        [class.is-invalid]='this.folder.folderName === ""'
+      />
+    </div>
+    <div class="col">
+      <label>Description</label>
+      <textarea [(ngModel)]='this.folder.description' class='form-control'></textarea>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="btn-group">
+        <button class='btn btn-success' (click)='this.save()'>Save</button>
+        <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+      </div>
+    </div>
+  </div>
+</jw-modal>

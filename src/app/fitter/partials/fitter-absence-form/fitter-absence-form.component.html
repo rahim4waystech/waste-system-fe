@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Fitter</label>
+      <select class='form-control' [class.is-invalid]='this.fitterAbsence.fitterId === -1' (change)='this.fitterAbsence.fitterId = +$event.target.value; this.fitterAbsence.fitter.id = this.fitterAbsence.fitterId'>
+        <option value='-1'>Select a fitter</option>
+        <option *ngFor='let item of this.fitters' [value]='item.id' [selected]='this.fitterAbsence.fitterId === item.id'>{{ item.firstName }} {{ item.lastName }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Absence type</label>
+      <select class='form-control' [class.is-invalid]='this.fitterAbsence.fitterAbsenceTypeId === -1' (change)='this.fitterAbsence.fitterAbsenceTypeId = +$event.target.value; this.fitterAbsence.fitterAbsenceType.id = this.fitterAbsence.fitterAbsenceTypeId'>
+        <option value='-1'>Select a absence type</option>
+        <option *ngFor='let item of this.types' [value]='item.id' [selected]='this.fitterAbsence.driverAbsenceTypeId === item.id'>{{ item.name }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Start date</label>
+      <input type="date" name='make' [class.is-invalid]='this.fitterAbsence.startDate === ""' [(ngModel)]='this.fitterAbsence.startDate' class="form-control" id="inputPassword4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">End Date</label>
+      <input type="date" name='make' [class.is-invalid]='this.fitterAbsence.endDate === ""'  [(ngModel)]='this.fitterAbsence.endDate' class="form-control" id="inputPassword4">
+    </div>
+    <div class="form-group col-md-8">
+      <label for="inputPassword4">Notes</label>
+      <textarea rows="1" name='notes' [(ngModel)]='this.fitterAbsence.notes' class="form-control"></textarea>
+    </div>
+  </div>
+  

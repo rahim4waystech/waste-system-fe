@@ -1,0 +1,24 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class='row titleContainer my-auto'>
+                <h3 class='header my-auto'>All Opportunities</h3>
+              </div>
+            </div>
+            <div class="col-lg-3 ms-auto text-end">
+              <button class='btn btn-secondary' routerLink='/opportunities/new'><i class="fas fa-plus"></i>
+                &nbsp;  New</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-grid entity='opportunity' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+            [searchFilters]='this.searchFilters' [searchFields]='this.searchFields'></app-grid>
+        </div>
+      </div>
+    </div>
+  </div>

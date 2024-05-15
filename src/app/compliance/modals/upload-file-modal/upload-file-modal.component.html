@@ -1,0 +1,21 @@
+<jw-modal id='uploadFileSystemModal'>
+  <div class="row">
+    <div class="col">
+      <h3>Upload File</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <app-uploader [entityId]='this.currentFolder.id' [type]='"folder"'></app-uploader>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="btn-group">
+        <!-- <button class='btn btn-success' (click)='this.save()'>Save</button> -->
+        <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+      </div>
+    </div>
+  </div>
+</jw-modal>

@@ -1,0 +1,118 @@
+<div class="fullcontainer">
+  <div class='sheet'>
+    <div class="alert alert-danger" *ngIf='this.isError'>Something went wrong. Please try again later.</div>
+    <div class="alert alert-success" *ngIf='this.isSuccess'>Driver hours was updated successfully</div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class='titleContainer'>
+                  <h3 class='header'>Daily Driver Hours for {{ this.currentDate }}</h3>
+                </div>
+
+              </div>
+              <div class="col-lg-3 text-end my-auto ms-auto">
+                <div>
+                  <button class='btn btn-secondary' routerLink='/drivers'><i class="fas fa-arrow-left"></i>
+                    Back</button>&nbsp;
+                  <button class='btn btn-secondary' routerLink='/drivers/hours/advance'><i class="fas fa-cog"></i>
+                    Advanced</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class='searchContainer'>
+              <div class='formRow'>
+                <div class="row">
+                  <div class="form-group col-lg-4">
+                    <input [(ngModel)]='this.newDate' type="date" name='name' class="form-control" id="inputEmail4">
+                  </div>
+                  <div class="col-lg-4 ms-auto my-auto text-end">
+                    <button class='btn btnSearch btn-sm btn-primary' (click)='updateCurrentDate()'>Search</button>
+                    <button class='btn btnSearch btn-sm btn-secondary' (click)='prevDay()'>Previous Day</button>
+                    <button class='btn btnSearch btn-sm btn-primary' (click)='nextDay()'>Next Day</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <p><strong></strong></p>
+            <div class="row">
+              <div class="col-12">
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead class="table-dark">
+                      <th>&nbsp;&nbsp;</th>
+                      <th style='width:30%'>Start Time</th>
+                      <th style='width:30%'>End Time</th>
+                      <th style='width:30%'>Lunch Break</th>
+                      <th style='width:30%'>Chargable Hours</th>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor='let item of this.hours'>
+                        <tr *ngIf='this.getAbsenceByDriverId(item.driverId) === null'>
+                          <td class='nameCol'>{{ item.driver.firstName }} {{ item.driver.lastName }} </td>
+                          <td>
+                            <div class="form-row">
+                              <div class="form-group">
+                                <input (keyup)='updateTotalHours(item)' type="time" name='name' class="form-control"
+                                  id="inputEmail4" [(ngModel)]='item.startTime'>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="form-row">
+                              <div class="form-group">
+                                <input (keyup)='updateTotalHours(item)' type="time" name='name' class="form-control"
+                                  id="inputEmail4" [(ngModel)]='item.endTime'>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="form-row">
+                              <div class="form-group">
+                                <input (keyup)='updateTotalHours(item)' type="number" name='name' class="form-control"
+                                  id="inputEmail4" [(ngModel)]='item.lunchBreak'>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="form-row">
+                              <div class="form-group">
+                                <input type="number" name='name' class="form-control" id="inputEmail4"
+                                  [(ngModel)]='item.chargeableHours'>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr *ngIf='this.getAbsenceByDriverId(item.driverId) !== null'>
+                          <td class='nameCol'>{{ item.driver.firstName }} {{ item.driver.lastName }} </td>
+                          <td colspan='90'>
+                            <div class='alert alert-warning'>{{
+                              this.getAbsenceByDriverId(item.driverId).driverAbsenceType.name }} - <strong>{{
+                                this.getAbsenceByDriverId(item.driverId).notes }}</strong></div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div> 
+            <div class="row mt-3">
+              <div class="col-12 text-end">
+            <button type="submit" class="btn btn-success" (click)='this.onSaveClicked()'>Save</button>&nbsp;
+            <button type="button" class="btn btn-danger" routerLink='/drivers'>Cancel</button>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

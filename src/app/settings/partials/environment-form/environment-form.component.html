@@ -1,0 +1,146 @@
+<div class="row">
+  <div class="col-12">
+    <div class="content-block-head">
+      <h4>Company Settings</h4>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label>Company Name</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.companyName'
+          [class.is-valid]='this.environment.companyName !== ""'
+          [class.is-invalid]='this.environment.companyName === ""' />
+      </div>
+      <div class="col-md-6">
+        <label>Company Number</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.comnpanyNumber'
+          [class.is-valid]='this.environment.comnpanyNumber !== ""'
+          [class.is-invalid]='this.environment.comnpanyNumber === ""' />
+      </div>
+      <div class="col-md-6">
+        <label>QR Code Colour (Colour name or Hexcode - https://htmlcolorcodes.com/)</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.qrFillColor' />
+      </div>
+      <div class="col-md-6">
+        <label>QR Watermark Image (base64 encoded) - https://www.base64-image.de/</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.qrImage' />
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-12">
+    <div class="content-block-head">
+      <h4>System Settings</h4>
+    </div>
+    <div class="row">
+      <div class="col-md-4 form-group">
+        <label>Default Tare Weight Unit</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.defaultTareWeightUnit' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Quotenumber Prefix</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.defaultQuoteNoPrefix' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Employee Number Prefix</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.defaultEmployeeNoPrefix' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Default Weighbridge Depot</label>
+        <select class='form-select' (change)='this.environment.defaultWeighbridgeDepot = +$event.target.value;'>
+          <option value='-1'>No Default Depot...</option>
+          <option *ngFor='let item of this.depots' [value]='item.id'
+            [selected]='this.environment.defaultWeighbridgeDepot === item.id'>{{ item.name }}</option>
+        </select>
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Default Vehicle Depot</label>
+        <select class='form-select' (change)='this.environment.defaultVehicleDepot = +$event.target.value;'>
+          <option value='-1'>No Default Depot...</option>
+          <option *ngFor='let item of this.depots' [value]='item.id'
+            [selected]='this.environment.defaultVehicleDepot === item.id'>{{ item.name }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-12">
+    <div class="content-block-head">
+      <h4>Invoicing Settings</h4>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 form-group">
+        <label>Invoice Prefix</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.invoicePrefix' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Invoice Terms</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.invoiceTerms' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Invoice Comments</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.invoiceComments' />
+      </div>
+
+
+
+      <div class="col-md-4 form-group">
+        <label>Address 1</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.address1'
+          [class.is-valid]='this.environment.address1 !== ""' [class.is-invalid]='this.environment.address1 === ""' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Address 2</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.address2'
+          [class.is-valid]='this.environment.address2 !== ""' [class.is-invalid]='this.environment.address2 === ""' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Town/City</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.addressCity' />
+      </div>
+      <div class="col-md-4">
+        <label>Country</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.addressCountry' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Postcode</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.addressPostcode'
+          [class.is-valid]='this.environment.addressPostcode !== ""'
+          [class.is-invalid]='this.environment.addressPostcode === ""' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Contact Email</label>
+        <input class='form-control' type="email" [(ngModel)]='this.environment.addressEmail'
+          [class.is-valid]='this.environment.addressEmail !== ""'
+          [class.is-invalid]='this.environment.addressEmail === ""' />
+      </div>
+      <div class="col-md-4 form-group">
+        <label>Phone</label>
+        <input class='form-control' type="text" [(ngModel)]='this.environment.addressPhone'
+          [class.is-valid]='this.environment.addressPhone !== ""'
+          [class.is-invalid]='this.environment.addressPhone === ""' />
+      </div>
+
+      <div class="col-md-12">
+        <hr>
+        <span>
+          To insert company name, use %REPLACE%. HTML tags can be used for formatting.
+        </span>
+      </div>
+
+      <div class="col-md-6 form-group">
+        <label>Waste Transfer Terms (Left Block)</label>
+        <textarea class='form-control' rows='3' [(ngModel)]='this.environment.wasteTransferTermsBlockA'></textarea>
+      </div>
+      <div class="col-md-6 form-group">
+        <label>Waste Transfer Terms (Right Block)</label>
+        <textarea class='form-control' rows='3' [(ngModel)]='this.environment.wasteTransferTermsBlockB'></textarea>
+      </div>
+    </div>
+  </div>
+</div>

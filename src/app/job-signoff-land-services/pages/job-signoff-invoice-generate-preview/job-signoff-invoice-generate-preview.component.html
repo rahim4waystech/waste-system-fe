@@ -1,0 +1,13 @@
+<app-email-invoice-modal [mode]='"generate"' [email]='this.customerEmail' [selectedInvoices]='this.selectedInvoices'></app-email-invoice-modal>
+<br />
+<br />
+<br />
+<br />
+<br />
+<div style='margin-left:5rem'>
+    <button class='btn btn-secondary' (click)='this.openModal("emailInvoiceModal")'><i class='fa fa-envelope fas'></i> Email</button>&nbsp;
+    <button class='btn btn-secondary' [routerLink]='"/job-signoff/land"'><i class="fas fa-sign-out-alt"></i> Exit</button>
+</div>
+<br />
+<br />
+<iframe *ngIf='isLoaded' [src]='this.url' style='width:100%;height:100vh'></iframe>

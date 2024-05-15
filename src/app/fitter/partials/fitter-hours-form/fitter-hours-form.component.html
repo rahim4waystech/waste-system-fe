@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Fitter</label>
+      <select class='form-control' [class.is-invalid]='this.fitterHours.fitterId === -1' (change)='this.fitterHours.fitterId = +$event.target.value; this.fitterHours.fitter.id = this.fitterHours.fitterId'>
+        <option value='-1'>Select a fitter</option>
+        <option *ngFor='let item of this.fitters' [value]='item.id' [selected]='this.fitterHours.fitterId === item.id'>{{ item.firstName }} {{ item.lastName }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Date</label>
+      <input type="date" name='name' [(ngModel)]='this.fitterHours.date' [class.is-invalid]='!this.fitterHours.date' class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Start Time</label>
+      <input (keyup)='updateTotalHours()' type="time" name='name' [(ngModel)]='this.fitterHours.startTime' [class.is-invalid]='!this.fitterHours.startTime' class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">End Time</label>
+      <input (keyup)='updateTotalHours()' type="time" name='registration' [(ngModel)]='this.fitterHours.endTime' [class.is-invalid]='!this.fitterHours.endTime'  class="form-control" id="inputPassword4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Lunch Break</label>
+      <input (keyup)='updateTotalHours()'type="number" name='vinNumber' [(ngModel)]='this.fitterHours.lunchBreak' class="form-control" id="inputPassword4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Chargeable Hours</label>
+      <input type="number" name='make' [(ngModel)]='this.fitterHours.chargeableHours' [class.is-invalid]='!this.fitterHours.endTime'  class="form-control" id="inputPassword4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputPassword4">Notes</label>
+      <textarea rows="1" name='notes' [(ngModel)]='this.fitterHours.notes' class="form-control"></textarea>
+    </div>
+  </div>
+  
+  

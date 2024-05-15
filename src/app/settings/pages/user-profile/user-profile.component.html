@@ -1,0 +1,105 @@
+<div class="fullcontainer">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class="alert alert-success" *ngIf='this.isSuccess'>User profile successfully updated.</div>
+
+  <div class='sheet'>
+    <div class="card">
+      <div class="card-header">
+        <h3 class='header m-0 p-0'>User Profile</h3>
+      </div>
+      <div class="card-body">
+        <app-tabs>
+          <app-tab title='User Details'>
+            <div class='row'>
+              <div class="form-group col-lg-5 ms-auto">
+                <label for="inputEmail4">First Name</label>
+                <input type="text" name='name' [(ngModel)]='this.user.firstName'
+                  [class.is-invalid]='!this.user.firstName' class="form-control" id="inputEmail4">
+              </div>
+              <div class="form-group col-lg-5 me-auto">
+                <label for="inputPassword4">Middle Name</label>
+                <input type="text" name='registration' [(ngModel)]='this.user.middleName' class="form-control"
+                  id="inputPassword4">
+              </div>
+            </div>
+            <div class='row'>
+              <div class="form-group col-lg-5 ms-auto">
+                <label for="inputPassword4">Last Name</label>
+                <input type="text" name='vinNumber' [(ngModel)]='this.user.lastName'
+                  [class.is-invalid]='!this.user.lastName' class="form-control" id="inputPassword4">
+              </div>
+              <div class="form-group col-lg-5 me-auto">
+                <label for="inputPassword4">New Password (Leave blank to keep current password)</label>
+                <input type="password" name='vinNumber' [(ngModel)]='this.user.password'
+                  [class.is-invalid]='!this.user.password && this.user.id === -1' class="form-control"
+                  id="inputPassword4">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-10 mx-auto text-end mt-1">
+                <button type="submit" class="btn btn-success" (click)='saveProfile();$event.preventDefault();'>Save
+                  Profile</button>&nbsp;
+                <button type="button" class="btn btn-danger" routerLink='/home'>Cancel</button>
+              </div>
+            </div>
+
+          </app-tab>
+          <app-tab  title='Personalisation Settings'>
+            <app-personalisation-form class="Personalisationbtns"
+              [personalisationSettings]='this.personalisationSettings'></app-personalisation-form>
+              <div class="row">
+                <div class="col-lg-12 text-end">
+                  <button type="submit" class="btn btn-success" (click)='savePersonalisation();$event.preventDefault();'>Save
+                    Timeline Settings</button>&nbsp;
+                  <button type="button" class="btn btn-danger" routerLink='/home'>Cancel</button>
+                </div>
+              </div>
+           
+          </app-tab>
+          <app-tab title='Dashboard Settings'>
+            <!-- Available blocks | Set blocks | edit order / items -->
+             <div class="row">
+              <div class="col-lg-6 mx-auto">
+                <table class='table table-bordered'>
+                  <thead class='thead-dark'>
+                    <tr>
+                      <th colspan='3'>Current Dashboard</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor='let item of this.currentDashboard'>
+                      <tr *ngIf='item !== undefined'>
+                        <td>{{item.display}}</td>
+                        <td>
+                          <button class='btn btn-block btn-danger' (click)='removeItem(item.id)'><i
+                              class="fas fa-times"></i></button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                    <tr *ngIf='this.currentDashboard.length < 6'>
+                      <td colspan="2">
+                        <select class='form-control' (change)='this.addItem($event)'>
+                          <option value='-1' [selected]='this.selectOption === -1'>Select an Item...</option>
+                          <optgroup *ngFor='let group of this.dashboardOptions' [label]="group.section">
+                            <option *ngFor='let tile of group.items' [selected]='this.selectOption === tile.id'
+                              [disabled]='alreadyUsed(tile.id) || !tile.active' [value]='tile.id'>{{tile.display}}</option>
+    
+                          </optgroup>
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+             </div>
+          
+          </app-tab>
+        </app-tabs>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class='sheet' style='padding: 0.5rem;'>
+    <div class='row'>
+       <div class='col-md-4'>
+          <label>Start Date</label>
+          <input [(ngModel)]="this.searchFilters.startDate" class='form-control' type='date' />
+       </div>
+       <div class='col-md-4'>
+          <label>End Date</label>
+          <input [(ngModel)]="this.searchFilters.endDate"  class='form-control' type='date' />
+       </div>
+       <div class='col-md-4'>
+          <label>Vehicle</label>
+          <input [(ngModel)]="this.searchFilters.vehicle"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Driver</label>
+          <input [(ngModel)]="this.searchFilters.driver"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Subcontractor</label>
+          <input [(ngModel)]="this.searchFilters.subcontractor"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Customer</label>
+          <input [(ngModel)]="this.searchFilters.customer"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Order REF</label>
+          <input [(ngModel)]="this.searchFilters.orderRef"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+          <label>Job Number</label>
+          <input [(ngModel)]="this.searchFilters.jobNumber"  class='form-control' type='text' />
+       </div>
+       <div class='col-md-4'>
+         <label>Status</label>
+         <select class='form-control' (change)='this.searchFilters.status = $event.target.value'>
+            <option [selected]='this.searchFilters.status === "" || !this.searchFilters.status' value=''>All Jobs</option>
+            <option [selected]='this.searchFilters.status === "not"' value='not'>Not Signed off</option>
+            <option [selected]='this.searchFilters.status === "signed"' value='signed'>Signed off</option>
+         </select>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12 text-end">
+    <button class='btn btn-primary' type='button' (click)='search()'>Search</button>&nbsp;
+    <button class='btn btn-danger' type='button' (click)='clear()'>Clear</button>
+ </div>
+</div>
+</div>
+
+ 
+
+<app-grid
+entity='job'
+[filters]='this.filters'
+[columns]='this.columns'
+[buttons]='this.buttons'
+[showSearch]='false'
+[searchFilters]='this.searchFiltersGrid'
+[searchFields]='this.searchFields'
+[relationships]='["order.orderLines", "jobAssignment", "jobAssignment.driver", "jobAssignment.vehicle", "jobAssignment.subcontractor"]'
+[backgroundSetter]='this.getRowColor'
+></app-grid>

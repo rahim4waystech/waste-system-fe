@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col">
+    <button class='btn btn-info' (click)='newContact()'>New Contact</button>
+  </div>
+</div>
+
+<div class="bg-primary pb-3">
+  <app-grid
+  entity='contact'
+  [filters]='this.contactFilters'
+  [columns]='this.contactColumns'
+  [buttons]='this.contactButtons'
+  [searchFilters]='this.contactSearchFilters'
+  [searchFields]='this.contactSearchFields'
+  ></app-grid>
+</div>

@@ -1,0 +1,28 @@
+
+<div class="fullcontainer" >
+  <br />
+  <br />
+<div class='titleContainer'>
+  <h2 class='header'>Artic Job Sign off</h2>
+
+
+  <div>
+    <!-- <button class='btn btn-secondary' routerLink='/quoting/new/accounts'><i class="fas fa-plus"></i> New</button>&nbsp;
+    <button class='btn btn-secondary' routerLink='/quoting/products'><i class="fas fa-boxes"></i> Manage Products</button> -->
+  </div>
+
+</div>
+
+<br />
+<br />
+
+<app-tabs [inverse]='true'>
+  <app-tab [active]='true' title='Transport Sign off'>
+    <app-job-signoff-artic-transport></app-job-signoff-artic-transport>
+  </app-tab>
+  <app-tab  title='Manager Sign off'>
+    <app-job-signoff-artic-manager></app-job-signoff-artic-manager>
+  </app-tab>
+</app-tabs>
+
+

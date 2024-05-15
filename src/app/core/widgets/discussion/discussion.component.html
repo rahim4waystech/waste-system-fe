@@ -1,0 +1,26 @@
+<div class='discussionContainer'>
+  <div class='discussionItem' *ngFor='let item of this.discussions'>
+      <div class='discussAvatar' style='text-align:center;'>
+        <img src='https://eu.ui-avatars.com/api/?name={{ item.user.firstName }}}+{{ item.user.lastName }}&size=100'><br />
+        <strong>{{ item.user.firstName }} {{ item.user.lastName }}</strong>
+      </div>
+      <div class='discussMessage'>
+        <strong>{{ this.getAgo(item.createdAt) }}</strong><br />
+
+        {{ item.message  }}
+      </div>
+     
+  </div>
+  <hr />
+  <div class='newDiscussionPost'>
+    <h4 class='header'>Add a comment </h4>
+    <div class="row">
+      <div class="col-lg-6">
+        <textarea rows="1" class='form-control' [(ngModel)]="this.newDiscussion.message"></textarea>
+      </div>
+      <div class="col-lg-6"> <button class='btn btn-primary' type='button' (click)='post()'>Post</button> </div>
+    </div>
+    
+   
+  </div>
+</div>

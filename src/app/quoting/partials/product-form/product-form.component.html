@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="form-group col-md-4">
+    <label for="inputEmail4">Name</label>
+    <input type="text" name='name' [(ngModel)]='this.product.name' [class.is-invalid]='!this.product.name' class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputEmail4">Display Name</label>
+    <input type="text" name='name' [(ngModel)]='this.product.displayName' class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Unit</label>
+    <select class='form-select' [class.is-invalid]='this.product.unitId === -1' (change)='this.product.unitId = +$event.target.value; this.product.unit.id = this.product.unitId'>
+      <option value='-1'>Select a unit</option>
+      <option *ngFor='let item of this.units' [value]='item.id' [selected]='this.product.unitId === item.id'>{{ item.name }}</option>
+    </select>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputEmail4">Price</label>
+    <input type="number" name='name' [(ngModel)]='this.product.price' [class.is-invalid]='!this.product.price' class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4 mt-auto">
+   
+    <input type="checkbox" name='name' [(ngModel)]='this.product.active'  id="inputEmail4" value='1'>
+    &nbsp;  <label for="inputEmail4">Active</label>
+  </div>
+</div>

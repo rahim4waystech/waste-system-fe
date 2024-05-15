@@ -1,0 +1,14 @@
+<jw-modal id='defectImageModal'>
+  <div class="row">
+    <div class="col-6" *ngFor='let doc of this.documents'>
+      <img src='data:{{doc.filetype}};base64,{{doc.data}}' *ngIf='doc.data !== undefined'/>
+      <hr>
+      {{doc.originalFilename}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button class='btn btn-warning' (click)='this.close()'>Close</button>
+    </div>
+  </div>
+</jw-modal>

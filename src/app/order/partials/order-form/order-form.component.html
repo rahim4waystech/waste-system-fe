@@ -1,0 +1,469 @@
+<app-order-price-list-custom-item-modal></app-order-price-list-custom-item-modal>
+<app-order-add-grade></app-order-add-grade>
+<app-order-material-uplift></app-order-material-uplift>
+<app-order-price-list-add-item [account]='this.account' [site]='this.site'></app-order-price-list-add-item>
+<app-tabs>
+  <app-tab title='Main Details' [invalid]="!this.isTabComplete('main')">
+    <div class="row">
+      <div class="col-12">
+        <p class="mt-3"><strong>Customer: {{ this.account.name }}</strong></p>
+      </div>
+      <div class="col-12">
+        <p><strong>Site: {{ this.site.name }}</strong></p>
+      </div>
+      <div class="col-12 text-end">
+        <p *ngIf="!this.isCopy"><button class='btn btn-sm btn-secondary' type='button' *ngIf='this.order.id !== -1'
+          [routerLink]='"/orders/change/"+ this.order.id +"/accounts/"'>Edit Customer & Site</button></p>
+      </div>
+      <div class="col-12 text-end">
+        <p *ngIf="this.isCopy"><button class='btn btn-sm btn-secondary' type='button' *ngIf='this.order.id !== -1'
+          [routerLink]='"/orders/copy/change/"+ this.order.id +"/accounts/"'>Edit Customer & Site</button></p>
+      </div>
+    </div>
+    <!-- <p class="mt-3"><strong>Customer: {{ this.account.name }}</strong></p>
+    <p><strong>Site: {{ this.site.name }}</strong></p>
+    <p *ngIf="!this.isCopy"><button class='btn btn-primary' type='button' *ngIf='this.order.id !== -1'
+        [routerLink]='"/orders/change/"+ this.order.id +"/accounts/"'>Edit Customer & Site</button></p>
+    <p *ngIf="this.isCopy"><button class='btn btn-sm btn-secondary' type='button' *ngIf='this.order.id !== -1'
+        [routerLink]='"/orders/copy/change/"+ this.order.id +"/accounts/"'>Edit Customer & Site</button></p>
+    <br /> -->
+
+    <div class='row'>
+      <div class="form-group col-md-4">
+        <label>From Time</label>
+        <input (keyup)='setTimeBasedOnRange()' [(ngModel)]='this.fromTime' type="time" name='name' class="form-control"
+          [disabled]="['AM', 'PM', this.getAnyTimeOption()].indexOf(this.order.time) !== -1">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label>To Time</label>
+        <input (keyup)='setTimeBasedOnRange()' [(ngModel)]='this.toTime' type="time" name='name' class="form-control"
+          [disabled]="['AM', 'PM', this.getAnyTimeOption()].indexOf(this.order.time) !== -1">
+      </div>
+
+      <div class="form-group col-md-4 mt-auto">
+
+        <input type='radio' name='group[]' value='1'
+          [checked]="['AM', 'PM', getAnyTimeOption()].indexOf(this.order.time) === -1"
+          (change)='onTimeOptionClicked($event)' /><label>Time Window</label> &nbsp;
+        <input type='radio' name='group[]' value='AM' [checked]='this.order.time === "AM"'
+          (change)='onTimeOptionClicked($event)' /><label>AM</label> &nbsp;
+        <input type='radio' name='group[]' value='PM' [checked]='this.order.time === "PM"'
+          (change)='onTimeOptionClicked($event)' /><label>PM</label> &nbsp;
+        <input type='radio' name='group[]' [value]='getAnyTimeOption()'
+          [checked]='this.order.time === getAnyTimeOption()' (change)='onTimeOptionClicked($event)' /><label>{{
+          this.getAnyTimeOption() }}</label>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label>Date</label>
+        <input type="date" name='name' [(ngModel)]='this.order.date' [class.is-invalid]='!this.order.date'
+          class="form-control">
+      </div>
+
+      <div class="form-group col-md-4">
+        <div class="row">
+          <div class="col-lg-7 my-auto"><label>PO Number </label></div>
+          <div class="col-lg-5 my-auto text-end">
+            <button class='btn btn-sm btn-primary py-0' type='button' (click)='this.copyPOToSite()'>Copy to
+              Site</button>
+          </div>
+        </div>
+        
+        <input type="text" name='name' [(ngModel)]='this.order.poNumber' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Order Number</label>
+        <input type="text" name='name' [(ngModel)]='this.order.orderNumber' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Collection Number</label>
+        <input type="text" name='name' [(ngModel)]='this.order.collectionNumber' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Unique Reference Number</label>
+        <input type="text" name='name' [(ngModel)]='this.order.uniqueReference' class="form-control">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label>Order Type</label>
+        <select class='form-control' [class.is-invalid]='this.order.orderTypeId === -1'
+          (change)='this.updateOrderDetails($event)'>
+          <option value='-1'>Select a order type</option>
+          <option *ngFor='let item of this.types' [value]='item.id' [selected]='this.order.orderTypeId === item.id'>{{
+            item.name }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4" [hidden]='this.order.orderTypeId !== 8'>
+        <label>Contract</label>
+        <select class='form-control' (change)='this.order.contractId = +$event.target.value;'>
+          <option value='-1'>Select a contract</option>
+          <option *ngFor='let item of this.contracts' [value]='item.id' [selected]='item.id === this.order.contractId'>
+            {{ item.name }}</option>
+        </select>
+      </div>
+      <!-- if skip order then select skip order type -->
+      <div class="form-group col-md-4" *ngIf='this.order.orderTypeId === 1'>
+        <label>Skip Order Type</label>
+        <select class='form-control' [class.is-invalid]='this.order.skipOrderTypeId === -1'
+          (change)='this.order.skipOrderTypeId = +$event.target.value; this.order.skipOrderType.id = this.order.skipOrderTypeId'>
+          <option value='-1'>Select a skip order type</option>
+          <option *ngFor='let item of this.skipOrderTypes' [value]='item.id'
+            [selected]='this.order.skipOrderTypeId === item.id'>{{ item.name }}</option>
+        </select>
+      </div>
+      <!-- if skip order then select skip order type -->
+      <div class="form-group col-md-4" *ngIf='this.order.orderTypeId === 8'>
+        <label>Shredder Order Type</label>
+        <select class='form-control' [class.is-invalid]='this.order.shredderOrderTypeId === -1'
+          (change)='this.order.shredderOrderTypeId = +$event.target.value; this.order.shredderOrderType.id = this.order.shredderOrderTypeId'>
+          <option value='-1'>Select a shredder order type</option>
+          <option *ngFor='let item of this.shredderTypes' [value]='item.id'
+            [selected]='this.order.shredderOrderTypeId === item.id'>{{ item.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-4" *ngIf='this.order.orderTypeId === 1'>
+        <label>Container Size</label>
+        <select class='form-control' [class.is-invalid]='this.order.containerSizeTypeId === -1'
+          (change)='this.order.containerSizeTypeId = +$event.target.value; this.order.containerSizeType.id = this.order.containerSizeTypeId;'>
+          <option value='-1'>Select a container size</option>
+          <ng-container *ngFor='let item of this.containerSizes'>
+            <option *ngIf='item.vehicleTypeId === 1 || item.vehicleTypeId === 2' [value]='item.id'
+              [selected]='this.order.containerSizeTypeId === item.id'>{{ item.size + ' ' + item.unit.name }}</option>
+          </ng-container>
+        </select>
+      </div>
+      <div class="form-group col-md-4" *ngIf='this.order.orderTypeId === 1 || this.order.orderTypeId === 8'>
+        <label>Container type</label>
+        <select class='form-control' [class.is-invalid]='this.order.containerTypeId === -1'
+          (change)='this.order.containerTypeId = +$event.target.value; this.order.containerType.id = this.order.containerTypeId;'>
+          <option value='-1'>Select a container type</option>
+          <ng-container *ngFor='let item of this.containerTypes'>
+            <option
+              [hidden]='((item.name.toLowerCase() === "bag" || item.name.toLowerCase() === "cabinet") && this.order.orderTypeId !== 8) || ((item.name.toLowerCase() !== "bag" && item.name.toLowerCase() !== "cabinet") && this.order.orderTypeId === 8)'
+              [value]='item.id' [selected]='this.order.containerTypeId === item.id'>{{ item.name }}</option>
+          </ng-container>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Grade</label>
+        <div class="row">
+          <div class="col-lg-8 my-auto">
+            <ng-select [(ngModel)]="this.order.gradeId" class='form-control' [class.is-invalid]='this.order.gradeId === -1'
+          (change)='this.order.gradeId = +$event; this.order.grade = {}; this.order.grade.id = this.order.gradeId;'>
+          <ng-option *ngFor='let item of this.grades' [value]='item.id' [selected]='this.order.gradeId === item.id'>{{
+            item.name }}<ng-container *ngIf='item.ewcCodes && item.ewcCodes !== ""'>({{ item.ewcCodes
+              }})</ng-container></ng-option>
+        </ng-select>
+          </div>
+          <div class="col-lg-4 my-auto text-end">
+            <button class='btn btn-sm btn-primary' type='button' (click)='this.openModal("orderAddGradeModal");'>+ Add
+              grade</button>
+          </div>
+        </div>
+        
+       
+      </div>
+      <div class="form-group col-md-4">
+        <label>{{ getTipName() }}</label>
+        <ng-container>
+          <ng-select [(ngModel)]="this.order.tipSiteId" class='form-control'
+            [class.is-invalid]='this.order.tipSiteId === -1'
+            (change)='this.order.tipSiteId = +$event; this.order.tipSite = {}; this.order.tipSite.id = this.order.tipSiteId;'>
+            <ng-option *ngFor='let item of this.tips' [value]='item.id'>{{ item.name }}</ng-option>
+          </ng-select>
+        </ng-container>
+      </div>
+      <div class="form-group col-md-4" *ngIf='this.order.orderTypeId === 3 || this.order.orderTypeId === 4'>
+        <label>Tip fee (if zero fee is not required)</label>
+        <input type="number" name='name' [(ngModel)]='this.order.tipFee' class="form-control">
+      </div>
+      <div class="form-group col-md-4"
+        *ngIf='(this.order.orderTypeId === 3 || this.order.orderTypeId === 4) && this.order.tipFee > 0'>
+        <label>Tip unit</label>
+        <select class='form-control' (change)='this.order.tipUnitId = +$event.target.value'>
+          <option *ngFor='let item of this.units' [selected]='item.id === this.order.tipUnitId' [value]='item.id'>{{
+            item.name }}</option>
+        </select>
+      </div>
+      <div class='form-group col-md-4 mt-auto'> 
+        <input type='checkbox' [(ngModel)]="this.order.isContract" [ngModelOptions]="{standalone: true}" /> &nbsp;
+        <label>is contract order?</label>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputPassword4">Description </label>
+        <textarea rows="2" name='notes' [(ngModel)]='this.order.description' class="form-control"></textarea>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputPassword4">Driver Notes </label>
+        <textarea rows="2" name='notes' [(ngModel)]='this.order.driverNotes' class="form-control"></textarea>
+      </div>
+     
+    </div>
+
+ 
+
+    <ng-container *ngIf='this.order.id === -1'>
+      <button class='btn btn-primary' (click)='this.isRepeat = true' *ngIf='!this.isRepeat'>Select additional
+        dates</button>
+
+      <h2 class='header' *ngIf='this.isRepeat'>Select additional dates</h2>
+      <span *ngIf='this.isRepeat'>Click on the datepicker below to select additional dates, you may select between
+        months.</span>
+
+      <div id="datepicker" data-language='en' data-multiple-dates="true" [hidden]='!this.isRepeat'></div>
+      <br />
+      <br />
+    </ng-container>
+  </app-tab>
+
+  <app-tab title='Product Details' [invalid]="this.orderLines.orderLines.length === 0">
+    
+<div class="row">
+  <div class="col-lg-12 my-2 text-end">
+    <button *ngIf='!isTipperEdit()' class='btn btn-secondary'
+    (click)='this.priceListType = "quote"; this.orderLines.orderLines = []'
+    [class.btn-success]='this.priceListType === "quote"' type='button'>Quote</button>&nbsp;&nbsp;
+  <button *ngIf='!isTipperEdit()' class='btn btn-secondary'
+    (click)='this.priceListType = "pricelist"; this.orderLines.orderLines = []'
+    [class.btn-success]='this.priceListType === "pricelist"' type='button'>Price List</button>
+  </div>
+</div>
+    <ng-container *ngIf='this.priceListType === "pricelist"'>
+      <h3>Price Lists</h3>
+<div class="row my-2">
+  <div class="col-12 text-end">
+    <button class='btn btn-secondary' (click)='this.openModal("orderPriceListAddItemModal")'><i
+      class="fas fa-plus"></i> Add From Price List 1</button>&nbsp;&nbsp;
+  <button type='button' class='btn btn-secondary' (click)='this.openModal("orderCustomItemModal")'><i
+      class="fas fa-plus"></i> Add Custom Item</button>
+
+  </div>
+</div>
+    
+
+
+      <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Unit</th>
+          <th>Base Price(&pound;)</th>
+          <th>Total Price(&pound;)</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor='let orderLine of this.orderLines.orderLines'>
+            <td><input class='form-control' type='text' [(ngModel)]="orderLine.name"></td>
+            <td><input class='form-control' type='number' [(ngModel)]='orderLine.qty' [readOnly]='isTipperEdit()'></td>
+            <td>
+              <select class='form-control' (change)='orderLine.unitId = +$event.target.value'
+                [readOnly]='isTipperEdit()'>
+                <option [selected]='unit.id === orderLine.unitId' *ngFor='let unit of this.units' [value]='unit.id'>{{
+                  unit.name }}</option>
+              </select>
+            </td>
+            <td><input class='form-control' type='number' [(ngModel)]="orderLine.price"></td>
+            <td>{{ orderLine.price * orderLine.qty }}</td>
+            <td>
+              <input type='checkbox' [(ngModel)]="orderLine.isPrimaryCharge"
+                [ngModelOptions]="{standalone: true}" />&nbsp;
+              Is Primary Charge?
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <ng-container *ngIf='this.priceListType === "quote"'>
+      <h3>Quote Pricing</h3>
+
+      <div class='alert alert-danger' *ngIf='this.orderLines.orderLines.length === 0'>
+        Please select at least one product for this order
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label>Quote</label>
+          <select class='form-control' (change)='this.onQuoteChanged($event)'>
+            <option value='-1'>Select a quote</option>
+            <option [selected]='this.quoteId === item.id' *ngFor='let item of this.quotes' [value]='item.id'>{{
+              item.name }}({{ item.quoteNumber }}))</option>
+          </select>
+        </div>
+      </div>
+
+      <table class="table" *ngIf='this.quoteLines.length > 0'>
+        <thead>
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Unit</th>
+          <th>Base Price(&pound;)</th>
+          <th>Total Price(&pound;)</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor='let item of this.orderLines.orderLines'>
+            <td>{{ item.quoteLine.product.name }}</td>
+            <td>
+              <input type="number" min='0' name='name' class="form-control" [(ngModel)]='item.qty'
+                [readOnly]='item.isPrimaryCharge'>
+            </td>
+            <td>
+              {{ item.quoteLine.product.unit.name }}(s)
+            </td>
+            <td>
+              {{ item.price }}
+            </td>
+            <td>
+              {{ getTotalPriceForOrderLine(item).toFixed(2) }}
+            </td>
+            <td>
+              <input type='checkbox' [(ngModel)]="item.isPrimaryCharge" [ngModelOptions]="{standalone: true}" />&nbsp;
+              Is Primary Charge?
+
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </ng-container>
+
+
+  </app-tab>
+
+  <app-tab title='Other Charges'>
+
+    <button class='btn btn-secondary' type='button' (click)='this.openModal("orderMaterialUpliftModal")'><i
+        class="fas fa-plus"></i> Add Material Uplift charge</button>&nbsp;&nbsp;
+
+    <br />
+    <br />
+    <div class='row'>
+      <div class='col-md-4'>
+        <label>Employee wage cost</label>
+        <input type='number' class='form-control' [(ngModel)]="this.order.employeeWageCost" />
+      </div>
+    </div>
+    <br />
+    <br />
+
+    <h3>Material Uplift Charges</h3>
+    <table class='table'>
+      <thead class="table-dark">
+        <th>Account</th>
+        <th>Name</th>
+        <th>Unit</th>
+        <th>Qty</th>
+        <th>Price</th>
+      </thead>
+      <tbody>
+        <tr *ngFor='let uplift of this.materialUplifts.materialUplifts'>
+          <td><ng-select [(ngModel)]="uplift.accountId" (change)='uplift.accountId= +$event; setAccount();'>
+              <ng-option *ngFor='let item of this.accounts' [value]='item.id'>{{ item.name }}</ng-option>
+            </ng-select></td>
+          <td><input class='form-control' type='text' [(ngModel)]="uplift.name" /></td>
+          <td><select class='form-control' (change)='uplift.unitId = +$event.target.value'>
+              <option [value]='unit.id' [selected]='unit.id === uplift.unitId' *ngFor='let unit of this.units'>{{
+                unit.name }}</option>
+            </select>
+          <td><input class='form-control' type='number' [(ngModel)]="uplift.qty" /></td>
+          <td><input class='form-control' type='number' [(ngModel)]="uplift.price" /></td>
+        </tr>
+      </tbody>
+    </table>
+  </app-tab>
+
+  <app-tab title='Site Contact Details' [invalid]="!this.isTabComplete('contact')">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label>Company Name</label>
+        <input type="text" name='name' [(ngModel)]='this.order.companyName' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contact Name</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactName' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contact Telephone</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactTelephone' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contact Email</label>
+        <input type="email" name='name' [(ngModel)]='this.order.contactEmail' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contact Address Line 1</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactAddressLine1' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contact Address Line 2</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactAddressLine2' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contact Address Line 3</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactAddressLine3' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contact City</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactCity' class="form-control">
+      </div>
+      <div class="form-group col-md-8">
+        <label>Contact Country</label>
+        <input type="text" name='name' [(ngModel)]='this.order.contactCountry' class="form-control">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Site Contact Postcode</label>
+        <div class="row">
+          <div class="col-lg-6">
+            <input type="text" name='name' [(ngModel)]='this.order.contactPostCode' class="form-control">
+          </div>
+          <div class="col-lg-6">
+            <app-address-picker [postcode]='this.order.contactPostCode'
+          (onAddressFound)='this.foundContactAddress($event)'></app-address-picker>
+          </div>
+        </div>
+        
+        
+      </div>
+    </div>
+
+    <!-- if skip and not saved allow sending of confirmation email -->
+    <div class='row' *ngIf='this.order.orderTypeId === 1 && this.order.id === -1'>
+      <div class='form-group'>
+        <label>Send confirmation email?</label>
+        <input type='checkbox' [(ngModel)]="this.order.sendConfirmationEmail" [ngModelOptions]="{standalone: true}" />
+      </div>
+    </div>
+
+  </app-tab>
+
+
+
+  <app-tab title='History' *ngIf='this.order.id > 0'>
+    <table class="table">
+      <thead class="table-dark">
+        <th>Person</th>
+        <th>Status</th>
+        <th>Message</th>
+        <th>When</th>
+      </thead>
+      <tbody>
+        <tr *ngFor='let item of this.history'>
+          <td>{{ item.createdBy === -1 ? 'System' : item.user.firstName + ' ' + item.user.lastName }}</td>
+          <td>{{ item.orderStatus.name }}</td>
+          <td>{{ item.notes }}</td>
+          <td>{{ item.createdAt }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </app-tab>
+  <app-tab title='Discussion' *ngIf='this.order.id !== -1'>
+    <app-discussion [data]='this.order' entity='order'></app-discussion>
+  </app-tab>
+</app-tabs>

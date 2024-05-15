@@ -1,0 +1,15 @@
+<div class="fullcontainer">
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <div class="alert alert-success" *ngIf='this.isSuccess'>Driver Absence was updated successfully</div>
+    <div class='sheet'>
+      <h1 class='header'>Edit Fitter Absence - {{ this.fitterAbsence.fitter.firstName }} {{ this.fitterAbsence.fitter.lastName }}</h1>
+      <app-audit-line [data]='this.fitterAbsence'></app-audit-line>
+      <form (ngSubmit)='this.onSubmit()' method='post'>
+        <app-fitter-absence-form [fitterAbsence]='this.fitterAbsence'></app-fitter-absence-form>
+        <button type="submit" class="btn btn-success">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" routerLink='/4workshop/fitters/absence'>Cancel</button>
+      </form>
+    </div>
+  </div>
+  

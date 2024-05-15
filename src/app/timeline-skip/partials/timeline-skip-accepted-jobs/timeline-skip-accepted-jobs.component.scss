@@ -1,0 +1,69 @@
+.header {
+  background-color: white;
+  color: white;
+  border-top: 3px solid #27ae60;
+  padding: 0.3rem;
+  background: #34495e;
+}
+
+// .bodyContainer {
+//   background-color: white;
+//   height: 95%;
+//   min-height: 50rem;
+// }
+.bodyContainer{
+  background-color: white;
+  height: 80vh;
+  overflow: auto;
+  box-shadow: var(--box-shadow-1) inset;
+  padding: 5px;
+}
+.acceptedOrdersContainer {
+  // position: fixed;
+  // width: 17rem;
+  font-size: 0.65rem;
+  // min-height: 50rem;
+  // top: 3rem;
+  // left: 3rem;
+
+  .btn-small {
+    width:2rem;
+  }
+}
+
+.orderContainer {
+  background-color:#bdc3c7;
+
+  &.old {
+    background-color: pink;
+  }
+  width:100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: grab;
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  z-index:  -1;
+}
+
+
+.dragging {
+  opacity: .5;
+  transform: scale(.8);
+}
+
+.gridPagination {
+  width:100%;
+    ul {
+      display: table;
+      margin: 0 auto;
+        list-style-type: none;
+    }
+
+    li {
+        display: inline-block;
+
+        a.active {
+            text-decoration: underline;
+        }
+    }
+}

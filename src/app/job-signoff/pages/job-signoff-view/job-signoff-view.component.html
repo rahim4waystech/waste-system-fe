@@ -1,0 +1,211 @@
+<app-job-signoff-reschedule-modal [job]='this.job'></app-job-signoff-reschedule-modal>
+<app-job-signoff-charges-only [job]='this.job'></app-job-signoff-charges-only>
+<div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+<div class="fullcontainer">
+  <div class="sheet">
+    <h1 class='header'>Job Signoff 1- ID: {{ this.job.id }}</h1>
+    <hr />
+
+    <h2 class='header'>Job Details</h2>
+    <br />
+
+
+    <div class="form-group col-md-4" >
+      <label>Date</label>
+      <input class='form-control' type='text' readonly [value]='this.job.date' />
+    </div>
+
+    <div class="form-group col-md-4" >
+      <label>Customer</label>
+      <input class='form-control' type='text' readonly [value]='this.job.order.account.name' />
+    </div>
+
+    <div class="form-group col-md-4" >
+      <label>Site</label>
+      <input class='form-control' type='text' readonly [value]='this.job.order.site.name' />
+    </div>
+
+    <div class='form-row'>
+        <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.driverId !== -1'>
+          <label>Vehicle</label>
+          <input class='form-control' type='text' readonly [value]='this.job.jobAssignment.vehicle.registration'/>
+        </div>
+        <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.vehicleId !== -1'>
+          <label>Driver</label>
+          <input class='form-control' type='text' readonly [value]='this.job.jobAssignment.driver.firstName + " " + this.job.jobAssignment.driver.lastName'/>
+        </div>
+        <div class="form-group col-md-4" *ngIf='this.job.jobAssignment.vehicleId === -1'>
+          <label>Subcontractor</label>
+          <input class='form-control' type='text' readonly [value]='this.job.jobAssignment.subcontractor.name'/>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="inputEmail4">PO Number</label>
+          <input type="text" name='name' [(ngModel)]='this.job.order.poNumber' [class.is-invalid]='!this.job.order.poNumber' class="form-control" id="inputEmail4">
+        </div>
+        <!-- if skip order then select skip order type -->
+        <div class="form-group col-md-4" *ngIf='this.job.order.orderTypeId === 1'>
+          <label for="inputEmail4">Skip Order Type</label>
+          <select class='form-control' [class.is-invalid]='this.job.order.skipOrderTypeId === -1' (change)='this.job.order.skipOrderTypeId = +$event.target.value; this.job.order.skipOrderType.id = this.job.order.skipOrderTypeId'>
+            <option value='-1'>Select a skip order type</option>
+            <option *ngFor='let item of this.skipOrderTypes' [value]='item.id' [selected]='this.job.order.skipOrderTypeId === item.id'>{{ item.name }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4" *ngIf='this.job.order.orderTypeId === 1'>
+          <label for="inputEmail4">Container Size</label>
+          <select class='form-control' [class.is-invalid]='this.job.order.containerSizeTypeId === -1' (change)='this.job.order.containerSizeTypeId = +$event.target.value; this.job.order.containerSizeType.id = this.job.order.containerSizeTypeId;'>
+            <option value='-1'>Select a container size</option>
+            <option *ngFor='let item of this.containerSizes' [value]='item.id' [selected]='this.job.order.containerSizeTypeId === item.id'>{{ item.size + ' ' + item.unit.name }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4" *ngIf='this.job.order.orderTypeId === 1'>
+          <label for="inputEmail4">Container type</label>
+          <select class='form-control' [class.is-invalid]='this.job.order.containerTypeId === -1' (change)='this.job.order.containerTypeId = +$event.target.value; this.job.order.containerType.id = this.job.order.containerTypeId;'>
+            <option value='-1'>Select a container type</option>
+            <option *ngFor='let item of this.containerTypes' [value]='item.id' [selected]='this.job.order.containerTypeId === item.id'>{{ item.name }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4" *ngIf='this.job.order.orderTypeId === 1'>
+          <label for="inputEmail4">Grade</label>
+          <select class='form-control' [class.is-invalid]='this.job.order.gradeId === -1' (change)='this.job.order.gradeId = +$event.target.value; this.job.order.grade.id = this.job.order.gradeId;'>
+            <option value='-1'>Select a grade</option>
+            <option *ngFor='let item of this.grades' [value]='item.id' [selected]='this.job.order.gradeId === item.id'>{{ item.name }}({{ item.ewcCodes }})</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputEmail4">Tip Site</label>
+          <select class='form-control' [class.is-invalid]='this.job.order.tipSiteId === -1' (change)='this.job.order.tipSiteId = +$event.target.value; this.job.order.tipSite = {}; this.job.order.tipSite.id = this.job.order.tipSiteId; this.loadTippingPrice()'>
+
+            <option value='-1'>Select a tip site</option>
+            <option *ngFor='let item of this.tips' [value]='item.id' [selected]='this.job.order.tipSiteId === item.id'>{{ item.name }}</option>
+          </select>
+        </div>
+
+    </div>
+
+    <p><input ngDefaultControl name='check' type='checkbox'
+    [(ngModel)]="this.job.hasOverweight"
+    [ngModelOptions]="{standalone: true}"/> Overweight Applys</p>
+
+
+    <ng-container *ngIf='this.job.complianceIssue'>
+      <h2 class='header' style='color:#1367a5 !important'>Compliance issues</h2>
+      <div class='alert alert-danger'>
+        {{ this.job.complianceNotes }}
+      </div>
+      <img *ngFor='let image of this.images' style="height:12rem" src='data:{{this.image.filetype}};base64,{{this.image.data}}'/>
+    </ng-container>
+
+    <!-- smart waste breakdown -->
+    <ng-container *ngIf='this.jobSmartWaste.length > 0'>
+      <h2 class='header' style='color:#1367a5 !important'>Smart Waste Breakdowns</h2>
+      <table class='table'>
+        <thead>
+          <th>Grade</th>
+          <th>Percentage</th>
+          <th>Notes</th>
+        </thead>
+        <tbody>
+          <tr *ngFor='let item of this.jobSmartWaste'>
+            <td>{{ item.ewcCode.name }}</td>
+            <td>{{ item.percentage }}</td>
+            <td>{{ item.notes }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    
+
+    <h2 class='header' style='color:#1367a5 !important'>PODs</h2>
+      <table class='table'>
+        <thead>
+          <th>POD No</th>
+          <th>Qty</th>
+          <th>Driver</th>
+          <th>Vehicle</th>
+          <th>&nbsp;</th>
+        </thead>
+        <tbody>
+          <tr *ngFor='let pod of this.pods'>
+            <td>{{ pod.id  }}</td>
+            <td>{{ pod.qty }}</td>
+            <td>{{ this.job.jobAssignment.driver.firstName + " " + this.job.jobAssignment.driver.lastName }}</td>
+            <td>{{ this.job.jobAssignment.vehicle.registration }}</td>
+            <td>
+              <a class='btn btn-warning' type='button' target='_blank' [href]='"/pods/view/" + pod.id'>Edit</a>&nbsp;
+              <a class='btn btn-danger' type='button' target='_blank' [href]='"/pods/delete/" + pod.id'>Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+    <h2 class='header'>Signoff Details</h2>
+    <br />
+    <div class='form-row'>
+      <div class="form-group col-md-4">
+        <label>Signoff Status</label>
+        <select class='form-control' (change)='onStatusChanged($event)'>
+          <option value='-1'>Select a status</option>
+          <option value='1' [selected]='this.job.jobSignOffStatusId === 1'>Not tipped</option>
+          <option value='2' [selected]='this.job.jobSignOffStatusId === 2'>Rescheduled</option>
+          <option value='3' [selected]='this.job.jobSignOffStatusId === 3'>Wasted Journey</option>
+          <option value='4' [selected]='this.job.jobSignOffStatusId === 4'>Transport sign off</option>
+          <option value='5' [selected]='this.job.jobSignOffStatusId === 5'>Contaminated Load</option>
+          <option value='6' [selected]='this.job.jobSignOffStatusId === 6'>Rebate</option>
+        </select>
+      </div>
+    </div>
+
+    <ng-container *ngIf='this.showAdditionalDetails'>
+      <div class='form-row'>
+        <div class='form-group col-md-4'>
+          <label>Container In</label>
+          <select class='form-control' (change)='this.job.containerInId = +$event.target.value'>
+            <option value='-1'>Select a container</option>
+            <option *ngFor='let item of this.containers' [value]='item.id' [selected]='this.job.containerInId === item.id'>{{ !item.serialNumber ? item.name : item.serialNumber }}</option>
+          </select>
+        </div>
+        <div class='form-group col-md-4' *ngIf='[1].indexOf(this.job.order.skipOrderTypeId) !== -1'>
+          <label>Container Out</label>
+          <select class='form-control' (change)='this.job.containerOutId = +$event.target.value'>
+            <option value='-1'>Select a container</option>
+            <option *ngFor='let item of this.containers' [selected]='this.job.containerOutId === item.id' [value]='item.id'>{{ !item.serialNumber ? item.name : item.serialNumber }}</option>
+          </select>
+        </div>
+
+
+      </div>
+      <div class='form-row'>
+        <div class='form-group col-md-4'>
+          <label>Tip and return</label>
+          <input type='checkbox'
+          [(ngModel)]="this.job.tipAndReturn"
+          [ngModelOptions]="{standalone: true}"/>
+        </div>
+      </div>
+      <div class='form-row' *ngIf='this.job.jobAssignment.vehicleId !== -1'>
+        <div class='form-group col-md-4'>
+          <label>Gross Weight</label>
+          <input type='text' class='form-control' [(ngModel)]='this.job.weight'/>
+        </div>
+      </div>
+      <div class='form-row'>
+        <div class='form-group col-md-4' *ngIf='this.job.jobAssignment.vehicleId !== -1'>
+          <label>Tare Weight</label>
+          <input type='text' class='form-control' [(ngModel)]='this.job.tareWeight'/>
+        </div>
+      </div>
+      <div class='form-row'>
+        <div class='form-group col-md-4' *ngIf='this.job.jobAssignment.vehicleId !== -1'>
+          <label>Net Weight</label>
+          <input type='text' class='form-control' [value]='(this.job.weight - this.job.tareWeight).toFixed(2)' readonly/>
+        </div>
+      </div>
+    </ng-container>
+
+    <button type="submit" class="btn btn-success" (click)='save()'>Save</button>&nbsp;
+    <button type="button" class="btn btn-danger" routerLink='/job-signoff'>Cancel</button>
+  </div>
+</div>

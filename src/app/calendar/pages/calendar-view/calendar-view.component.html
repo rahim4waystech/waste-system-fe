@@ -1,0 +1,111 @@
+<app-calendar-add-event-modal [calendar]='this.calendar'></app-calendar-add-event-modal>
+<app-calendar-edit-event-modal [calendar]='this.calendar' [calendarEvent]='this.currentEvent'></app-calendar-edit-event-modal>
+<div class="container" >
+
+<div class='calendarHeader' [style.background-color]='this.calendar.colour'>
+    {{ this.calendar.name }} <small>{{ this.calendar.description }}</small>
+</div>
+
+<br />
+<br />
+<div class="row">
+    <div class="col-md-4 nopadding">
+      <div class="btn-group">
+        <div
+          class="btn btn-secondary"
+          mwlCalendarPreviousView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()"
+        >
+          Previous
+        </div>
+        <div
+          class="btn btn-outline-secondary"
+          mwlCalendarToday
+          [(viewDate)]="viewDate"
+        >
+          Today
+        </div>
+        <div
+          class="btn btn-secondary"
+          mwlCalendarNextView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()"
+        >
+          Next
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 nopadding" style="text-align: center;">
+      <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+    </div>
+    <div class="col-md-4 nopadding" style='text-align: right;'>
+      <div class="btn-group">
+        <div
+          class="btn btn-secondary"
+          (click)="setView(CalendarView.Month)"
+          [class.active]="view === CalendarView.Month"
+        >
+          Month
+        </div>
+        <div
+          class="btn btn-secondary"
+          (click)="setView(CalendarView.Week)"
+          [class.active]="view === CalendarView.Week"
+        >
+          Week
+        </div>
+        <div
+          class="btn btn-secondary"
+          (click)="setView(CalendarView.Day)"
+          [class.active]="view === CalendarView.Day"
+        >
+          Day
+        </div>
+        <div (click)="this.openAddModal()" class='btn btn-secondary'>
+          Add event
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <div class="row">
+    <div class="col">
+      <ng-container *ngIf='this.calendarLoaded'>
+        <div [ngSwitch]="view">
+          <mwl-calendar-month-view
+            *ngSwitchCase="CalendarView.Month"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            [activeDayIsOpen]="activeDayIsOpen"
+            (dayClicked)="dayClicked($event.day)"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+          >
+          </mwl-calendar-month-view>
+          <mwl-calendar-week-view
+            *ngSwitchCase="CalendarView.Week"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+          >
+          </mwl-calendar-week-view>
+          <mwl-calendar-day-view
+            *ngSwitchCase="CalendarView.Day"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+          >
+          </mwl-calendar-day-view>
+        </div>
+      </ng-container>
+    </div>
+  </div></div>

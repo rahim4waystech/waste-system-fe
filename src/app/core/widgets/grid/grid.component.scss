@@ -1,0 +1,113 @@
+.gridContainer {
+    width:100%;
+    .searchContainer {
+        input {
+            width: 10rem;
+        }
+    }
+
+    .gridStatusLine {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+
+        .resultsPerPageSelect {
+            width: 5rem;
+            display:inline-block;
+        }
+    }
+    .gridPagination {
+      width:100%;
+        ul {
+          display: table;
+          margin: 0 auto;
+            list-style-type: none;
+        }
+
+        li {
+            display: inline-block;
+
+            a.active {
+                text-decoration: underline;
+            }
+        }
+    }
+
+}
+
+
+.searchFiltersContainer {
+  padding: 0px !important;
+  background: white;
+  box-shadow: none !important;
+
+}
+.pricelist-div .searchFiltersContainer {
+  padding: 0px !important;
+  background: white;
+  box-shadow: none !important;
+
+}
+.searchHead{
+  font-size:18px;
+  text-decoration: underline;
+}
+
+th.inverse a {
+  color: #666;
+}
+
+.datePicker {
+  display: inline-block;
+  position: absolute;
+  z-index: 2000;
+  // left: 50rem;
+  // top: 35rem;
+  background-color: #f3f6f9 !important;
+}
+
+.dateSelectorContainer {
+  display: flex;
+  flex-flow: row wrap;
+
+  button {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  i {
+    font-size: 2rem;
+
+    &:hover {
+      color: #2196f3;
+      cursor: pointer;
+    }
+  }
+
+  .dateSelectorBox {
+    background-color: transparent;
+    padding: 0.3rem;
+    width: 20rem;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 0.7rem;
+    color: #34495e;
+    font-weight: bold;
+
+    &:hover {
+      color:#2196f3;
+      cursor: pointer;
+    }
+  }
+}
+.Weighbridge-date{
+  position: relative;
+}
+.Weighbridge-date .datePicker {
+  display: inline-block;
+  position: absolute;
+  z-index: 200 !important;
+  top: 7rem !important;
+  background-color: #f3f6f9 !important;
+}

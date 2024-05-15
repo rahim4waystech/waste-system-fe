@@ -1,0 +1,141 @@
+<div class="fullcontainer ml-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header p-0">
+          <div class="row">
+            <div class="col-12">
+              <app-workshop-nav></app-workshop-nav>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="">
+            <div class="row">
+              <div class="col-12 text-end btn-group justify-content-end">
+                <div> <button class='btn btn-secondary' routerLink='/4workshop/defect/new'> Add Defect</button> </div>
+                &nbsp;
+                <div>
+                  <button class='btn btn-primary' routerLink='/4workshop/driver-report'>Driver Defects</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="row mt-2">
+              <div class="col">
+                <b>Todays Check Completion: </b>
+                <div class="progress" style='height:20px;'>
+                  <div class="progress-bar bg-success" role="progressbar" title='Completed' style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">95%</div>
+                  <div class="progress-bar bg-danger" role="progressbar" title='Not Done' style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">5%</div>
+                </div>
+              </div>
+              <div class="col">
+                <b>Check Status: </b>
+                <div class="progress" style='height:20px;'>
+                  <div class="progress-bar bg-success" role="progressbar" title='Passed' style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">90%</div>
+                  <div class="progress-bar bg-danger" role="progressbar" title='Failed' style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">5%</div>
+                  <div class="progress-bar bg-primary" role="progressbar" title='No Result' style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">5%</div>
+                </div>
+              </div>
+            </div> -->
+            <hr>
+            <div class="row">
+              <div class="col-lg-3 content-block">
+
+                <h4>{{this.defectShortlist.length}} Current Defects</h4>
+                <hr>
+                <div class="card mb-2 font-weight-bold" *ngFor='let defect of this.defectShortlist'
+                  [class.bg-danger]='defect.vehicleSeverityId === 1' [class.text-white]='defect.vehicleSeverityId === 1'
+                  [class.bg-warning]='defect.vehicleSeverityId === 2'
+                  [class.bg-success]='defect.vehicleSeverityId === 3'
+                  [class.bg-primary]='defect.vehicleSeverityId === 4'>
+                  <div class="card-head">
+                    <h4>
+                      <button class='btn btn-info' routerLink='/4workshop/defect/{{defect.id}}'>
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      {{defect.vehicle.registration}}
+                    </h4>
+                  </div>
+                  <div class="card-body">
+                    {{defect.description}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-9">
+                <div class="cards">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="card">
+                        <div class="card-body text-center">
+                          <h4>No Issues</h4>
+                          <hr> {{this.noIssue}} ({{this.noIssuePercent.toFixed(1)}}%)
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="col card">
+                        <div class="card-body text-center">
+                          <h4>Issue Reported</h4>
+                          <hr> {{this.reportedIssue}} ({{this.reportedIssuePercent.toFixed(1)}}%)
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="col card">
+                        <div class="card-body text-center">
+                          <h4>VOR</h4>
+                          <hr> {{this.vorIssue}} ({{this.vorIssuePercent.toFixed(1)}}%)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row mt-0 ">
+                    <div class="col defects">
+                      <app-tabs>
+                        <app-tab title='Open Defects ({{this.getCount(0)}})'>
+                          <app-grid class="mt-5" entity='defects' [filters]='this.openDefectsFilters'
+                            [columns]='this.openDefectsColumns' [buttons]='this.openDefectsButtons'
+                            [searchFilters]='this.openDefectsSearchFilters'
+                            [searchFields]='this.openDefectsSearchFields'>
+                          </app-grid>
+                        </app-tab>
+                        <app-tab title='In Progress ({{this.getCount(1)}})'>
+                          <app-grid entity='defects' [filters]='this.inProgressDefectsFilters'
+                            [columns]='this.inProgressDefectsColumns' [buttons]='this.inProgressDefectsButtons'
+                            [searchFilters]='this.inProgressDefectsSearchFilters'
+                            [searchFields]='this.inProgressDefectsSearchFields'>
+                          </app-grid>
+                        </app-tab>
+                        <app-tab title='VOR Signoff ({{this.getCount(2)}})'>
+                          <app-grid entity='defects' [filters]='this.awaitingSignoffDefectsFilters'
+                            [columns]='this.awaitingSignoffDefectsColumns'
+                            [buttons]='this.awaitingSignoffDefectsButtons'
+                            [searchFilters]='this.awaitingSignoffDefectsSearchFilters'
+                            [searchFields]='this.awaitingSignoffDefectsSearchFields'>
+                          </app-grid>
+                        </app-tab>
+                        <app-tab title='Closed Defects'>
+                          <app-grid  entity='defects' [filters]='this.closedDefectsFilters'
+                            [columns]='this.closedDefectsColumns' [buttons]='this.closedDefectsButtons'
+                            [searchFilters]='this.closedDefectsSearchFilters'
+                            [searchFields]='this.closedDefectsSearchFields'>
+                          </app-grid>
+                        </app-tab>
+                      </app-tabs>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

@@ -1,0 +1,69 @@
+<app-job-signoff-land-edit-job [mode]='"transport"'></app-job-signoff-land-edit-job>
+<app-timeline-transport-edit-order-modal></app-timeline-transport-edit-order-modal>
+<jw-modal id="jobTransportInformationModal">
+    <h1 class='header'>Job Information</h1>
+  <hr />
+    <!-- <div>
+      <label><strong>Order ID: </strong> {{ this.order.id }}</label>
+    </div> -->
+    <div>
+      <label><strong>ID: </strong> {{ this.job.id }}</label>
+    </div>
+    <div>
+      <label><strong>Account Name: </strong> {{ this.job.order.account.name }}</label>
+    </div>
+    <div>
+      <label><strong>Site Name: </strong> {{ this.job.order.site.name }}</label>
+    </div>
+    <div>
+      <label><strong>Time: </strong> {{ this.job.order.time }}</label>
+    </div>
+    <div>
+      <label><strong>PO Number: </strong> {{ this.job.order.poNumber }}</label>
+    </div>
+    <div>
+      <label><strong>Description: </strong> {{ this.job.order.description }}</label>
+    </div>
+    <div>
+      <label><strong>Driver Notes: </strong> {{ this.job.order.driverNotes }}</label>
+    </div>
+    <div>
+      <label><strong>Company Name: </strong> {{ this.job.order.companyName }}</label>
+    </div>
+    <div>
+      <label><strong>Contact Name: </strong> {{ this.job.order.contactName }}</label>
+    </div>
+    <div>
+      <label><strong>Contact Address Line 1: </strong> {{ this.job.order.contactAddressLine1 }}</label>
+    </div>
+    <div>
+      <label><strong>Contact Address Line 2: </strong> {{ this.job.order.contactAddressLine2 }}</label>
+    </div>
+    <div>
+      <label><strong>Contact Address Line 3: </strong> {{ this.job.order.contactAddressLine3 }}</label>
+    </div>
+    <div>
+      <label><strong>Contact City: </strong> {{ this.job.order.contactCity }}</label>
+    </div>
+    <div>
+      <label><strong>Contact Country: </strong> {{ this.job.order.contactCountry }}</label>
+    </div>
+    <div>
+      <label><strong>Contact Postcode: </strong> {{ this.job.order.contactPostCode }}</label>
+    </div>
+    <div>
+      <label><strong>Contact method: </strong> {{ this.job.order.contactEmail }}/{{ this.job.order.contactTelephone }}</label>
+    </div>
+    <div>
+      <label><strong>Timeline Notes: </strong> {{ this.job.timelineNotes }}</label>
+    </div>
+  
+  
+    <button class='btn btn-primary' (click)='this.close()'>Close</button> &nbsp;&nbsp;
+    <a (click)='editOrder(this.job.order.id)' class='btn btn-warning'>Edit Order</a>&nbsp;
+    <a href='/orders/copy/{{ this.job.order.id }}' target='_blank' class='btn btn-info'>Copy Order</a>
+    <a target='_blank' class='btn btn-info' (click)='editJob(this.job.id)'>Edit Job</a>
+    <!-- <a *ngIf='this.canDecline' href='/orders/decline/{{ this.order.id }}' target='_blank' class='btn btn-danger'>Decline Order</a> -->
+  
+  </jw-modal>
+  

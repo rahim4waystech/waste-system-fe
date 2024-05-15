@@ -1,0 +1,85 @@
+<div class="fullcontainer pr-3">
+    <div class='sheet'>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class='titleContainer'>
+                            <h3 class='header'>Report - Sepa Jobs</h3>   
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- <div class='row'>
+                            <div class='col-md-4'>
+                                <label>Ticket Number (one only)</label>
+                                <input type='text' [(ngModel)]="this.searchFilters.ticketNumber" class='form-control' />
+                            </div>
+                            <div class='col-md-4 mt-auto text-end'>
+                                <button class='btn btn-primary' (click)='this.loadReport()'>Run Report</button>
+                            </div>
+                        </div> -->
+                        <div class='row'> 
+                            <div class='col-md-4 form-group'>
+                                <label>Start Date</label>
+                                <input type='date' [(ngModel)]="this.searchFilters.startDate" class='form-control' />
+                            </div>
+                            <div class='col-md-4 form-group'>
+                                <label>End Date</label>
+                                <input type='date' class='form-control' [(ngModel)]="this.searchFilters.endDate" />
+                            </div>
+                            <div class='col-md-4 form-group'>
+                                <label>Tip Site</label>
+                                <ng-select class="form-select" [(ngModel)]="this.searchFilters.tipSiteId" (change)='this.searchFilters.tipSiteId = $event;'>
+                                    <ng-option *ngFor='let item of this.accounts' [value]='item.id'>{{ item.name }}</ng-option>
+                                 </ng-select> 
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 text-end">
+                                <button class='btn btn-sm btn-primary' (click)='this.loadReport()'>Run Report</button>
+                        &nbsp;
+                                <button class='btn btn-sm btn-secondary' (click)='exportToCSV()'>Export to CSV</button>
+                            </div>
+                        </div>
+                       
+                    
+                    </div>
+                </div>
+            </div>
+       
+                    
+       </div>
+
+    <div class='sheet'>
+        <div class='titleContainer' *ngIf='this.results.length > 0'>
+
+            <button class="btn btn-info" (click)="downloadInvoices()">Download Invoices</button>
+            <h1 class='header'>Results</h1>
+            
+            <table class='table table-bordered'>
+                <thead class="table-dark">
+                    <th>Invoice Id</th>
+                    <th>Job Id</th>
+                    <th>Driver</th>
+                    <th>Vehicle</th>
+                    <th>Subcontractor</th>
+                    <th>Subcontractor Reg</th>
+                    <th></th>
+                </thead> 
+
+                <tbody>
+                    <tr *ngFor='let result of this.results'>
+                        <td>{{ result.invoiceId }}</td>
+                        <td>{{ result.jobId }}</td>
+                        <td>{{ result.driver }}</td>
+                        <td>{{ result.vehicle }}</td>
+                        <td>{{ result.subcontractor }}</td>
+                        <td>{{ result.subcontractorReg }}</td>
+                        <td><button class='btn btn-warning' [routerLink]='"/job-signoff/land/view/" + result.jobId'>View job</button> 
+                            <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

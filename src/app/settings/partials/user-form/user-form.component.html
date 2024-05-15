@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="form-group col-md-4">
+    <label for="inputEmail4">First Name</label>
+    <input type="text" name='name' [(ngModel)]='this.user.firstName' [class.is-invalid]='!this.user.firstName' class="form-control" id="inputEmail4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Middle Name</label>
+    <input type="text" name='registration' [(ngModel)]='this.user.middleName' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Last Name</label>
+    <input type="text" name='vinNumber' [(ngModel)]='this.user.lastName' [class.is-invalid]='!this.user.lastName' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Email</label>
+    <input type="text" name='make' [(ngModel)]='this.user.email' [class.is-invalid]='!this.user.email' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Password</label>
+    <input type="password" name='vinNumber' [(ngModel)]='this.user.password' [class.is-invalid]='!this.user.password && this.user.id === -1' class="form-control" id="inputPassword4">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">User Group</label>
+    <select class='form-control' [class.is-invalid]='this.user.userGroupId === -1' (change)='this.user.userGroupId = +$event.target.value; this.user.userGroup.id = this.user.userGroupId'>
+      <option value='-1'>Select a user group</option>
+      <option *ngFor='let item of this.groups' [value]='item.id' [selected]='this.user.userGroupId === item.id'>{{ item.name }}</option>
+    </select>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Driver (Not required)</label>
+    <select class='form-control' (change)='this.user.driverId = +$event.target.value;'>
+      <option value='-1'>Select a driver</option>
+      <option *ngFor='let item of this.drivers' [value]='item.id' [selected]='this.user.driverId === item.id'>{{ item.firstName }} {{ item.lastName }}</option>
+    </select>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="inputPassword4">Fitter (Not required)</label>
+    <select class='form-control' (change)='this.user.fitterId = +$event.target.value;'>
+      <option value='-1'>Select a Fitter</option>
+      <option *ngFor='let item of this.fitters' [value]='item.id' [selected]='this.user.fitterId === item.id'>{{ item.firstName }} {{ item.lastName }}</option>
+    </select>
+  </div>
+</div>
+
+<h3 class='header'>Skills</h3>
+
+<div class="form-group col-md-4">
+  <label for="inputPassword4">Default Timeline</label>
+  <select class='form-control' (change)='setDefaultTimeline($event)'>
+    <option value='-1'>Select a timeline</option>
+    <option *ngFor='let item of this.orderTypes' [value]='item.id' [selected]='this.getPrimarySKillId() === item.id'>{{ item.name }}</option>
+  </select>
+</div>
+
+<table class='table table-bordered'>
+  <thead class="table-dark">
+    <tr>
+      <th>Skill type</th>
+      <th>Has Skill?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let userSkill of this.userSkills'>
+      <td>{{ userSkill.orderType.name }}</td>
+      <td><input type='checkbox' [(ngModel)]="userSkill.active"/></td>
+    </tr>
+  </tbody>
+</table>

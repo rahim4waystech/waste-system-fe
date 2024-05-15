@@ -1,0 +1,47 @@
+<jw-modal id='orderPriceListAddItemModal'>
+    <h1 class='header'>Add from price list</h1>
+
+    <div class='form-group'>
+        <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+        <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+        <div class='form-row col-md-4'>
+            <label>Price List</label>
+            <select class='form-control' (change)='onPriceListSelected($event)'>
+                <option value='-1'>Select a price list</option>
+                <option *ngFor='let priceList of priceLists' [value]='priceList.id'>{{ priceList.name }}</option>
+            </select>
+        </div>
+    </div>
+
+    <ng-container *ngIf='this.priceListId !== -1'>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="inputEmail4">Item</label>
+              <select class='form-control' (change)='onItemSelected($event)'>
+                <option value='-1'>Select an item</option>
+                <option *ngFor='let item of this.items' [value]='item.id'>{{ item.name }}</option>
+              </select>
+            </div>
+        
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Qty</label>
+                <input type="number" name='name' [(ngModel)]='this.orderLine.qty' [class.is-invalid]='!this.orderLine.qty' class="form-control" id="inputEmail4">
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Unit</label>
+                <select [class.is-invalid]='this.orderLine.unitId === -1'  class='form-control' (change)='this.orderLine.unitId = +$event.target.value'>
+                  <option selected value='-1'>Select a unit</option>
+                  <option [selected]='this.orderLine.unitId === item.id' *ngFor='let item of this.units' [value]='item.id'>{{ item.name }}</option>
+                </select>
+              </div>
+        
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Price</label>
+                <input type="number" name='name' [(ngModel)]='this.orderLine.price' [class.is-invalid]='!this.orderLine.price' class="form-control" id="inputEmail4">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success" (click)='this.onSubmit()'>Save</button>&nbsp;
+            <button type="button" class="btn btn-danger" (click)='this.cancel()'>Cancel</button>
+    </ng-container>
+
+</jw-modal>

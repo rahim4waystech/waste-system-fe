@@ -1,0 +1,10 @@
+<jw-modal id="viewImageModal">
+  <div class="row">
+    <div class="col">
+      <img src='data:{{this.image.filetype}};base64,{{this.image.data}}' *ngIf='this.image.data !== undefined'/>
+    </div>
+  </div>
+
+
+  <button class='btn btn-primary' (click)='this.close()'>Close</button>
+</jw-modal>

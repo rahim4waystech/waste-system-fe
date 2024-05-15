@@ -1,0 +1,71 @@
+<jw-modal id='contactModal'>
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <h1 class='header'>Select Contact</h1>
+
+  <div class="row">
+    <div class="col">
+      <app-grid
+      entity='contact'
+      [filters]='this.filters'
+      [columns]='this.columns'
+      [buttons]='this.buttons'
+      [searchFilters]='this.searchFilters'
+      [searchFields]='this.searchFields'
+      [radioSelector]='true'
+      (radioButtonSelected)='this.onCheckedSelected($event)'
+      [amount]='10'
+      ></app-grid>
+    </div>
+  </div>
+
+  <ng-container *ngIf='!newContact'>
+    <div class="row my-3">
+      <div class="col">
+        <button class='btn btn-block btn-info' (click)='this.newContact = true'>Add New Contact</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf='newContact'>
+    <div class="row mt-3">
+      <div class="col">
+        Add New Contact
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-4">
+          <label>First Name</label>
+          <input type='text' [class.is-invalid]='!this.contact.firstName' class='form-control' [(ngModel)]='this.contact.firstName' />
+      </div>
+      <div class="form-group col-md-4">
+          <label>Last Name</label>
+          <input type='text' [class.is-invalid]='!this.contact.lastName' class='form-control' [(ngModel)]='this.contact.lastName' />
+      </div>
+      <div class='form-group col-md-4'>
+          <label>Phone Number</label>
+          <input type='text' [class.is-invalid]='!this.contact.businessPhone' [(ngModel)]="this.contact.businessPhone" class='form-control'/>
+      </div>
+      <div class="form-group col-md-4">
+          <label>Job Role</label>
+          <select [class.is-invalid]='this.contact.roleId === -1' class='form-control' (change)='this.contact.roleId = $event.target.value; this.contact.role = {id: this.contact.roleId}'>
+              <option value='-1'>Select a job role</option>
+              <option [selected]='this.contact.roleId === role.id' *ngFor='let role of this.roles' [value]='role.id'>{{ role.name }}</option>
+          </select>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <button class='btn btn-success' (click)='this.save()'>Add Contact</button>
+        <button class='btn btn-danger' (click)='this.clearNewContact()'>Clear new Contact</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="row">
+    <div class="col">
+      <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+    </div>
+  </div>
+</jw-modal>

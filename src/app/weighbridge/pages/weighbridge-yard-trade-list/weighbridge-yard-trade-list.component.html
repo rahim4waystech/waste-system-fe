@@ -1,0 +1,29 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-6 my-auto">
+              <div class='titleContainer'>
+                <h3 class='header'>All Yard Trade</h3>
+
+              </div>
+            </div>
+            <div class="col-lg-6 my-auto text-end">
+              <div>
+                <button class='btn btn-sm btn-secondary' routerLink='/weighbridge/yard-trade/'><i class="fas fa-plus"></i>
+                  New</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body YardTrade">
+          <app-grid entity='yard-trade' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+            [searchFilters]='this.searchFilters' [searchFields]='this.searchFields'
+            [relationships]='["yardTradePricing", "grade"]'></app-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

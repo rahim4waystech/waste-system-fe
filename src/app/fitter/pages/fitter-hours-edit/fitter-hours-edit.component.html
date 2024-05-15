@@ -1,0 +1,15 @@
+<div class="fullcontainer">
+    <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+    <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+    <div class="alert alert-success" *ngIf='this.isSuccess'>Fitter hours was updated successfully</div>
+    <div class='sheet'>
+      <h1 class='header'>Edit Fitter Hours - {{ this.fitterHours.fitter.firstName }} {{ this.fitterHours.fitter.lastName }} for {{ this.fitterHours.date }}</h1>
+      <app-audit-line [data]='this.fitterHours'></app-audit-line>
+      <form (ngSubmit)='this.onSubmit()' method='post'>
+        <app-fitter-hours-form [fitterHours]='this.fitterHours'></app-fitter-hours-form>
+        <button type="submit" class="btn btn-success">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" routerLink='/4workshop/fitters/hours/advanced'>Cancel</button>
+      </form>
+    </div>
+  </div>
+  

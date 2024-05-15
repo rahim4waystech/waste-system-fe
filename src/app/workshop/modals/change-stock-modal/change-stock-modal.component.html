@@ -1,0 +1,79 @@
+<jw-modal id="stockChangeModal">
+  <div class="row">
+    <div class="col">
+      <h5>Change Stock Level - {{part.name}}</h5>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <table class='table table-bordered'>
+        <tr>
+          <td class='bg-dark text-light'>Part</td>
+          <td class='bg-dark text-light'>Manufacturer</td>
+        </tr>
+        <tr>
+          <td>{{part.name}}</td>
+          <td>{{part.manufacturer}}</td>
+        </tr>
+
+        <tr>
+          <td class='bg-dark text-light'>Value</td>
+          <td class='bg-dark text-light'>Qty</td>
+        </tr>
+        <tr>
+          <td>£{{part.value}}</td>
+          <td>{{part.qty}}</td>
+        </tr>
+        <tr>
+          <td class='bg-dark text-light'>Model</td>
+          <td class='bg-dark text-light'>Description</td>
+        </tr>
+        <tr>
+          <td>{{part.model}}</td>
+          <td>{{part.description}}<td>
+        </tr>
+        <tr>
+          <td class='bg-dark text-light'>Part No.</td>
+          <td class='bg-dark text-light'>EAN</td>
+        </tr>
+        <tr>
+          <td>{{part.manufacturerPartNumber}}</td>
+          <td>{{part.eanNumber}}</td>
+        </tr>
+        <tr>
+          <td class='bg-dark text-light'>SKU</td>
+          <td class='bg-dark text-light'>Depot</td>
+        </tr>
+        <tr>
+          <td>{{part.sku}}</td>
+          <td>{{part.depot.name}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col">
+      <h5>Parts Purchased</h5>
+      <div class="row">
+        <div class="col">
+          <label>Quantity Purchased</label>
+          <div class='input-group'>
+            <input class='form-control' [(ngModel)]='this.newQty' type='number' [class.is-valid]='this.newQty > 0' [class.is-invalid]='this.newQty <= 0'/>
+            <div class='input-group-append'>
+              <span class='input-group-text'>
+                <button class='btn btn-success' (click)='this.save()'>Update Quantity</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col btn-group">
+      <button class='btn btn-success' (click)='this.save()'>Save</button>
+      <button class='btn btn-danger' (click)='this.cancel()'>Close</button>
+    </div>
+  </div>
+</jw-modal>

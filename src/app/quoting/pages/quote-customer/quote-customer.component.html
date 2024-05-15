@@ -1,0 +1,28 @@
+<div class="fullcontainer">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-8">
+              <div class='titleContainer'>
+                <h3 class='header'>1--Select a Company</h3>
+              </div>
+            </div>
+            <div class="col-lg-4 text-end my-auto">
+              <div class="my-auto">
+                <button class='btn btn-secondary' routerLink='/quoting/new/accounts/-1/sites/-1'><i
+                    class="fas fa-pen"></i> Free Style Quoting</button> &nbsp;
+                <button class='btn btn-secondary' routerLink='/quoting'>
+                  <i class="fas fa-arrow-left"></i> Back</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-grid entity='account' [filters]='this.filters' [columns]='this.columns' [buttons]='this.buttons'
+          [searchFilters]='this.searchFilters' [searchFields]='this.searchFields'></app-grid>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,27 @@
+<jw-modal id="calendarInfoModal">
+  <ng-container *ngIf='this.defect.data !== undefined'>
+    <div class="row">
+      <div class="col">
+        <h1 class='header'>{{defect.data.vehicle.registration}} - {{defect.data.description}}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <ul>
+          <li *ngIf='defect.data.vehicleInspectionIntervalsId === -1'>Standard Defect</li>
+          <li *ngIf='defect.data.vehicleInspectionIntervalsId > 0'>{{defect.data.inspectionInterval.name}}</li>
+          <li *ngIf='defect.data.bookedFor !== null'>Booked For: {{defect.data.bookedFor}}</li>
+          <li>{{defect.data.vehicleCheckArea.name}} - {{defect.data.vehicleSeverity.notes}}</li>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="row">
+    <div class="col btn-group">
+      <button *ngIf='this.defect.data !== undefined' class='btn btn-info' (click)='this.viewPage()'>View Defect</button>
+      <button class='btn btn-primary' (click)='this.close()'>Close</button> &nbsp;&nbsp;
+    </div>
+  </div>
+
+</jw-modal>

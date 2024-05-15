@@ -1,0 +1,58 @@
+<jw-modal id="transportRowEditModal">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <h1 class='header'>Edit unit</h1>
+  <div class="form-row" style='display:none'>
+    <div class="form-group">
+      <input type="radio" [checked]='this.roundOption === "own"' name='group[]' (change)="this.onOptionSelect($event, 'own')"/>
+      <label for="inputEmail4">&nbsp;&nbsp;Own Vehicle</label>
+    </div>
+    <div class="form-group">
+      &nbsp;&nbsp;<input type="radio" name='group[]' [checked]='this.roundOption === "sub"' (change)="this.onOptionSelect($event, 'sub')"/>
+      <label for="inputEmail4">&nbsp;&nbsp;Subcontractor</label>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4" style='display:none;'>
+      <label for="inputEmail4">Name</label>
+      <input type="text" [(ngModel)]='this.assignment.name' [class.is-invalid]='!this.assignment.name' name='name' class="form-control" id="inputEmail4">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Depot</label>
+      <ng-select name='depot' [(ngModel)]="this.assignment.depotId" [class.is-invalid]='this.assignment.depotId === -1' (change)='onDepotChanged($event)'>
+        <ng-option *ngFor='let depot of this.depots' [value]='this.depot.id'>{{ depot.name }}</ng-option>
+      </ng-select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail4" [(ngModel)]='this.assignment.driverStartTime' [class.is-invalid]='!this.assignment.driverStartTime'>Driver Start Time</label>
+      <input type="time" class='form-control' [(ngModel)]='this.assignment.driverStartTime' name='name' id="inputEmail4">
+    </div>
+  <div class="form-group col-md-4" *ngIf='this.assignment.depotId !== -1 && this.roundOption === "own"'>
+    <label for="inputEmail4">Driver</label>
+    <ng-select [(ngModel)]='this.assignment.driverId' name='driver' [class.is-invalid]='this.assignment.driverId === -1' (change)='this.assignment.driverId = +$event; this.assignment.driver.id = this.assignment.driverId'>
+      <ng-option *ngFor='let driver of this.drivers' [value]='this.driver.id'>{{ driver.firstName + ' ' + driver.lastName }}</ng-option>
+    </ng-select> 
+  </div>
+  <div class="form-group col-md-4" *ngIf='this.assignment.depotId !== -1 && this.roundOption === "own"'>
+    <label for="inputEmail4">Vehicle</label>
+    <ng-select name='vehicle' [(ngModel)]='this.assignment.vehicleId' [class.is-invalid]='this.assignment.vehicleId === -1' (change)='this.assignment.vehicleId = +$event; this.assignment.vehicle.id = this.assignment.vehicleId'>
+      <ng-option *ngFor='let vehicle of this.vehicles' [value]='this.vehicle.id' [selected]='this.vehicle.id === this.assignment.vehicleId'>{{ vehicle.registration }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="form-group col-md-4" *ngIf='this.assignment.depotId !== -1 && this.roundOption === "own" && this.assignment.orderTypeId === 4'>
+    <label for="inputEmail4">Trailers</label>
+    <ng-select [(ngModel)]='this.assignment.trailerId' [class.is-invalid]='this.assignment.trailerId === -1' (change)='this.assignment.trailerId = +$event; this.assignment.trailer = {id: this.assignment.trailerId}'>
+      <ng-option *ngFor='let vehicle of this.trailers' [value]='vehicle.id'>{{ vehicle.registration }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="form-group col-md-4" *ngIf='this.roundOption === "sub"'>
+    <label for="inputEmail4">Subcontractor</label>
+    <ng-select [(ngModel)]="this.assignment.subcontractorId"  [class.is-invalid]='this.assignment.subcontractorId === -1' (change)='this.assignment.subcontractorId = +$event; this.assignment.subcontractor.id = this.assignment.subcontractorId'>
+      <ng-option *ngFor='let sub of this.subcontractors' [value]='this.sub.id'>{{ sub.name }}</ng-option>
+    </ng-select>
+  </div>
+  </div>
+
+  <button class='btn btn-success' *ngIf="this.canSave" (click)='this.save()'>Save</button>&nbsp;
+  <button class='btn btn-danger' (click)='this.cancel()'>Cancel</button>
+</jw-modal>

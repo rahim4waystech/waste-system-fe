@@ -1,0 +1,14 @@
+<div class="fullcontainer">
+  <div class="alert alert-danger" *ngIf='this.isError'>Please complete all required fields</div>
+  <div class="alert alert-danger" *ngIf='this.isServerError'>Something went wrong. Please try again later.</div>
+  <div class="alert alert-success" *ngIf='this.isSuccess'>Driver hours was updated successfully</div>
+  <div class='sheet'>
+    <h1 class='header'>Edit Driver Hours - {{ this.driverHours.driver.firstName }} {{ this.driverHours.driver.lastName }} for {{ this.driverHours.date }}</h1>
+    <app-audit-line [data]='this.driverHours'></app-audit-line>
+    <form (ngSubmit)='this.onSubmit()' method='post'>
+      <app-driver-hours-form [driverHours]='this.driverHours'></app-driver-hours-form>
+      <button type="submit" class="btn btn-success">Save</button>&nbsp;
+      <button type="button" class="btn btn-danger" routerLink='/drivers/hours/advance'>Cancel</button>
+    </form>
+  </div>
+</div>
